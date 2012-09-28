@@ -1,0 +1,13 @@
+*/*.sln
+*/*.ncb
+*/*.user
+*/*.suo
+*/*.vcproj
+*/*.exe
+*/*.pdp
+*/*.idp
+*/*.dep
+*/*.obj
+*/*.res
+*/*.manifest
+*/*.htm

@@ -11,7 +11,7 @@
 //==============================================================================
 class CFont {
 	public:
-		static CFont	FontControl;
+		static CFont FontControl;
 
 	public:
 		CFont();
@@ -21,11 +21,13 @@ class CFont {
 		void OnCleanup();
 
 	public:
-		void Write(SDL_Surface* Surf_Display, char* Text);
+		void Write(SDL_Surface* Surf_Display, const char* Text, unsigned int x, unsigned int y);
 
 		void SetFontStyle(int style);
 
 		void SetFontOutline(int outline);
+
+		void GetTextSize(const char *text, int *w, int *h);
 
 	private:
 		TTF_Font*	Default;

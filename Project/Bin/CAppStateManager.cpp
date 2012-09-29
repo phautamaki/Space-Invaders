@@ -3,6 +3,7 @@
 
 // Refer to your Other App States Here
 #include "CAppStateIntro.h"
+#include "CAppStateMainMenu.h"
 #include "CAppStateGame.h"
 
 //=============================================================================
@@ -30,6 +31,7 @@ void CAppStateManager::SetActiveAppState(int AppStateID) {
 	// Also, add your App State Here so that the Manager can switch to it
 	if(AppStateID == APPSTATE_NONE)		ActiveAppState = 0;
 	if(AppStateID == APPSTATE_INTRO)	ActiveAppState = CAppStateIntro::GetInstance();
+	if(AppStateID == APPSTATE_MAINMENU)	ActiveAppState = CAppStateMainMenu::GetInstance();
 	if(AppStateID == APPSTATE_GAME)		ActiveAppState = CAppStateGame::GetInstance();
 
 	if(ActiveAppState) ActiveAppState->OnActivate();

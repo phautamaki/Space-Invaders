@@ -6,6 +6,9 @@
 
 //=============================================================================
 class CAppState : public CEvent {
+	protected:
+		int	NextState;
+
 	public:
 		CAppState();
 

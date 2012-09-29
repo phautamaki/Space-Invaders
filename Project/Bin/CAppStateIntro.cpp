@@ -14,6 +14,9 @@ CAppStateIntro::CAppStateIntro() {
 
 //=============================================================================
 void CAppStateIntro::OnActivate() {
+	NextState = APPSTATE_MAINMENU;
+	IntroLength = 3000;
+
 	// Load Simple Logo
 	Surf_Logo = CSurface::OnLoad(PATH_IMAGES "splash.png");
 
@@ -30,8 +33,8 @@ void CAppStateIntro::OnDeactivate() {
 
 //-----------------------------------------------------------------------------
 void CAppStateIntro::OnLoop() {
-	if(StartTime + 3000 < SDL_GetTicks()) {
-		CAppStateManager::SetActiveAppState(APPSTATE_GAME);
+	if(StartTime + IntroLength < SDL_GetTicks()) {
+		CAppStateManager::SetActiveAppState(NextState);
 	}
 }
 
@@ -40,6 +43,11 @@ void CAppStateIntro::OnRender(SDL_Surface* Surf_Display) {
 	if(Surf_Logo) {
 		CSurface::OnDraw(Surf_Display, Surf_Logo, 0, 0);
 	}
+}
+
+//-----------------------------------------------------------------------------
+void CAppStateIntro::OnLButtonDown(int mX, int mY) {
+	CAppStateManager::SetActiveAppState(NextState);
 }
 
 //=============================================================================

@@ -13,6 +13,7 @@ class CAppStateIntro : public CAppState {
 		SDL_Surface* Surf_Logo;
 
 		int StartTime;
+		int	IntroLength;
 
 	private:
 		CAppStateIntro();
@@ -25,6 +26,8 @@ class CAppStateIntro : public CAppState {
 		void OnLoop();
 
 		void OnRender(SDL_Surface* Surf_Display);
+
+		void OnLButtonDown(int mX, int mY);
 
 	public:
 		static CAppStateIntro* GetInstance();

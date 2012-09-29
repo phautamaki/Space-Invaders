@@ -9,6 +9,7 @@ enum {
 	// Add your Other App States Here
 	APPSTATE_NONE,
 	APPSTATE_INTRO,
+	APPSTATE_MAINMENU,
 	APPSTATE_GAME
 };
 

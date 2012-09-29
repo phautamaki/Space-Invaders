@@ -24,7 +24,7 @@ bool CButton::OnLoad(std::string Text, int oX, int oY) {
 	if( isText ) {
 		int tW = 0;
 		int tH = 0;
-		//CFont::FontControl.GetTextSize(Text.c_str(), &tW, &tH );
+		CFont::FontControl.GetTextSize(Text.c_str(), &tW, &tH );
 
 		Width = tW+20;
 		Height = tH+20;
@@ -64,7 +64,7 @@ void CButton::OnRender(SDL_Surface* Surf_Display) {
 		SDL_FillRect( Surf_Display, &Rect, SDL_MapRGB(Surf_Display->format,255,0,0) );
 	}
 
-	//CFont::FontControl.Write(Surf_Display,Label.c_str(),X+10,Y+10);
+	CFont::FontControl.Write(Surf_Display,Label.c_str(),X+10,Y+10);
 }
 //-----------------------------------------------------------------------------
 void CButton::OnRender(SDL_Surface* Surf_Display, int dX, int dY) {

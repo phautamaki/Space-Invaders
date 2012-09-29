@@ -146,7 +146,7 @@ void CAppStateGame::OnRender(SDL_Surface* Surf_Display) {
         CEntity::EntityList[i]->OnRender(Surf_Display);
     }
 
-	CFont::FontControl.Write(Surf_Display, "test");
+	CFont::FontControl.Write(Surf_Display, "test", 50, 50);
 }
 
 //=============================================================================

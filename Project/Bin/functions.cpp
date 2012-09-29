@@ -3,6 +3,7 @@
 
 #include <cstdlib>
 #include <iostream>
+#include <sstream>
 #include <string>
 #include <SDL.h>
 
@@ -15,6 +16,27 @@ void debug( std::string message, int tabs ) {
 		counter++;
 	}
 	std::cout << SDL_GetTicks() << ": " << message << std::endl;
+}
+
+//==============================================================================
+std::string IntToString(int Value) {
+	std::stringstream ss;
+	ss << Value;
+	return ss.str();
+}
+
+//------------------------------------------------------------------------------
+int StringToInt(std::string Text) {
+	return atoi( Text.c_str() );
+
+	int number;
+	std::istringstream ss( Text );
+	ss >> number;
+	if (! ss.good())
+	{
+		return -999;
+	}
+	return number;
 }
 
 //==============================================================================

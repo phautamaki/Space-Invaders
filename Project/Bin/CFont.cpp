@@ -8,8 +8,8 @@ CFont CFont::FontControl;
 
 //==============================================================================
 CFont::CFont() {
-	Color.r = 0;
-	Color.g = 0;
+	Color.r = 255;
+	Color.g = 215;
 	Color.b = 0;
 }
 
@@ -38,11 +38,11 @@ void CFont::OnCleanup() {
 }
 
 //==============================================================================
-void CFont::Write(SDL_Surface* Surf_Display, char* Text) {
+void CFont::Write(SDL_Surface* Surf_Display, const char* Text, unsigned int x, unsigned int y) {
     if( Default == NULL || Text == NULL ) return;
 
 	SDL_Surface* Surf_Text = TTF_RenderText_Blended(Default, Text, Color);
-	CSurface::OnDraw(Surf_Display, Surf_Text, 200, 200);
+	CSurface::OnDraw(Surf_Display, Surf_Text, x, y);
 	SDL_FreeSurface(Surf_Text);
 }
 
@@ -58,4 +58,8 @@ void CFont::SetFontOutline(int outline) {
 	TTF_SetFontOutline(Default, outline);
 }
 
+//------------------------------------------------------------------------------
+void CFont::GetTextSize(const char *text, int *w, int *h) {
+	TTF_SizeText(Default, text, w, h);
+}
 //==============================================================================

@@ -20,13 +20,13 @@ void CAppStateMainMenu::OnLButtonDown(int mX, int mY) {
 	}
 	else if( Start.IsClicked(mX,mY) ) {
 		Start.OnClick();
-		//CAppStateManager::SetActiveAppState(NextState);
+		CAppStateManager::SetActiveAppState(NextState);
 	}
 }
 
 //=============================================================================
 void CAppStateMainMenu::OnActivate() {
-	//NextState = APPSTATE_GAME;
+	NextState = APPSTATE_GAME;
 
 	Start.OnLoad("Start", 200, 100);
 	CUIElement::UIElementList.push_back(&Start);
@@ -71,7 +71,7 @@ void CAppStateMainMenu::OnRender(SDL_Surface* Surf_Display) {
         CUIElement::UIElementList[i]->OnRender(Surf_Display);
     }
 
-//	CFont::FontControl.Write(Surf_Display, "Space Invaders", 50, 50);
+	CFont::FontControl.Write(Surf_Display, "Space Invaders", 50, 50);
 }
 
 //=============================================================================

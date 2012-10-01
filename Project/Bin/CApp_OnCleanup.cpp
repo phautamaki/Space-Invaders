@@ -9,6 +9,9 @@ void CApp::OnCleanup() {
 
     SDL_FreeSurface(Surf_Display);
 	debug("Screen cleared",1);
+	
+	CFactory::Factory.OnCleanup();
+	debug("All entities cleared",1);
 
 	CFont::FontControl.OnCleanup();
 	debug("All fonts cleared",1);

@@ -1,6 +1,7 @@
 //=============================================================================
 #include "CAppStateGame.h"
 #include "CFont.h"
+#include "CFactory.h"
 #include "functions.h"
 #include "Paths.h"
 
@@ -74,6 +75,8 @@ void CAppStateGame::OnActivate() {
 	 
 	CEntity::EntityList.push_back(&Player);
     CEntity::EntityList.push_back(&Player2);
+
+	CEntity::EntityList.push_back(CFactory::Factory.CreateEnemyShip(SHIP_1, 1000, 100));
 	debug("All entities loaded successfully", 1);
 
 	CCamera::CameraControl.TargetMode = TARGET_MODE_CENTER;

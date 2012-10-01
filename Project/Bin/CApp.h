@@ -12,6 +12,7 @@
 
 #include "CFPS.h"
 #include "CAppStateManager.h"
+#include "CFactory.h"
 #include "CSoundBank.h"
 #include "CFont.h"
 

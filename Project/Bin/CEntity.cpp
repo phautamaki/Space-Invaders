@@ -20,7 +20,7 @@ CEntity::CEntity() {
 	Type = 	ENTITY_TYPE_GENERIC;
 
 	Dead = false;
-	Flags = ENTITY_FLAG_GRAVITY;
+	Flags = ENTITY_FLAG_NONE;
 
 	SpeedX = 0;
 	SpeedY = 0;

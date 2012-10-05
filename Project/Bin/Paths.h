@@ -3,6 +3,7 @@
 
 #define PATH_IMAGES	"./images/"
 #define PATH_ENEMIES ""
+#define PATH_ITEMS ""
 
 #define PATH_FONTS	"./fonts/"
 #define PATH_MAPS	"./maps/"

@@ -7,6 +7,8 @@ void CApp::OnLoop() {
 
     CFPS::FPSControl.OnLoop();
 
+	CFactory::Factory.OnLoop();
+
     char Buffer[255];
     sprintf(Buffer, "FPS: %d", CFPS::FPSControl.GetFPS());
     SDL_WM_SetCaption(Buffer, Buffer);

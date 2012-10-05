@@ -33,7 +33,7 @@ void CAppStateIntro::OnDeactivate() {
 
 //-----------------------------------------------------------------------------
 void CAppStateIntro::OnLoop() {
-	if(StartTime + IntroLength < SDL_GetTicks()) {
+	if(static_cast<unsigned int>(StartTime + IntroLength) < SDL_GetTicks()) {
 		CAppStateManager::SetActiveAppState(NextState);
 	}
 }

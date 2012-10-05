@@ -5,6 +5,7 @@
 #include <vector>
 
 #include "CEnemyShip.h"
+#include "CItem.h"
 
 //=============================================================================
 class CFactory {
@@ -14,7 +15,7 @@ class CFactory {
     public:
         CFactory();
 
-		bool OnLoad();
+		bool OnInit();
 
         void OnLoop();
 
@@ -22,6 +23,7 @@ class CFactory {
 
 	public:
 		CEnemyShip* CreateEnemyShip(int type, int nX, int nY);
+		CItem* CreateItem(int type, int nX, int nY);
 
 	private:
 		std::vector< CEntity* > Entities;

@@ -1,28 +1,34 @@
 //=============================================================================
-#ifndef _CENEMYSHIP_H_
-    #define _CENEMYSHIP_H_
-
-#include "CEnemy.h"
+#ifndef _CMANOUVER_H_
+    #define _CMANOUVER_H_
 
 //==============================================================================
-// Not sure where this should be, if at all.. Think about it.
+// Turn left, turn right, speed up etc.
 enum {
-	SHIP_1 = 0,
-	SHIP_2
+	M_START_MOVE = 0,
+	M_STOP_MOVE,
+	M_WAIT,
+	M_TURN_LEFT,
+	M_TURN_RIGHT
 };
 
 //=============================================================================
-class CEnemyShip : public CEnemy {
+class CManouver {
     public:
-        CEnemyShip();
+        CManouver();
 
-		bool OnLoad(char* File, int Width, int Height, int MaxFrames);
+		bool OnLoad(int type);
+		bool OnLoad(int type, int time);
 
-        void OnLoop();
-
-        void OnRender(SDL_Surface* Surf_Display);
+		bool OnLoop(bool& moveleft, bool& moveright);
 
         void OnCleanup();
+
+	private:
+		int Type;
+
+		int StartTime;
+		int Wait;
 };
 
 //=============================================================================

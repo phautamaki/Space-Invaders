@@ -57,6 +57,8 @@ void CAppStateGame::OnKeyUp(SDLKey sym, SDLMod mod, Uint16 unicode) {
 void CAppStateGame::OnActivate() {
 	debug("Game initialization start");
 
+	// Loading area
+	// Note that area is the whole level which might consist of many maps
 	debug("Area loading start", 1);
 	if(CArea::AreaControl.OnLoad(PATH_MAPS "1.area") == false) {
     	return;
@@ -64,6 +66,7 @@ void CAppStateGame::OnActivate() {
 	debug("All areas loaded successfully", 1);
 
 	debug("Entity loading start", 1);
+	// Creating player(s)
 	if(Player.OnLoad("yoshi.png", 64, 64, 8) == false) {
     	return;
     }
@@ -72,13 +75,16 @@ void CAppStateGame::OnActivate() {
     	return;
     }
 	Player2.X = 100;
-	 
 	CEntity::EntityList.push_back(&Player);
     CEntity::EntityList.push_back(&Player2);
 
+	// Enemy Ship
 	CEntity::EntityList.push_back(CFactory::Factory.CreateEnemyShip(SHIP_1, 1000, 100));
+	// Item
+	CEntity::EntityList.push_back(CFactory::Factory.CreateItem(ITEM_1, 1000, 50));
 	debug("All entities loaded successfully", 1);
 
+	// Camera init. Targetin player 1
 	CCamera::CameraControl.TargetMode = TARGET_MODE_CENTER;
     CCamera::CameraControl.SetTarget(&Player.X, &Player.Y);
 	debug("Camera set", 1);

@@ -1,20 +1,22 @@
 //=============================================================================
-#ifndef _CENEMYSHIP_H_
-    #define _CENEMYSHIP_H_
+#ifndef _CITEM_H_
+    #define _CITEM_H_
 
-#include "CEnemy.h"
+#include <vector>
+
+#include "CEntity.h"
+#include "CManouver.h"
 
 //==============================================================================
-// Not sure where this should be, if at all.. Think about it.
+// Could do some kind of sub typing with these (Item -> HP+) or sth like that
 enum {
-	SHIP_1 = 0,
-	SHIP_2
+	ITEM_1 = 0
 };
 
 //=============================================================================
-class CEnemyShip : public CEnemy {
+class CItem : public CEntity {
     public:
-        CEnemyShip();
+        CItem();
 
 		bool OnLoad(char* File, int Width, int Height, int MaxFrames);
 
@@ -23,6 +25,14 @@ class CEnemyShip : public CEnemy {
         void OnRender(SDL_Surface* Surf_Display);
 
         void OnCleanup();
+
+        void OnAnimate();
+
+        bool OnCollision(CEntity* Entity);
+
+	private:
+		std::vector<CManouver*>::iterator CurrentManouver;
+		std::vector<CManouver*> Manouvers;
 };
 
 //=============================================================================

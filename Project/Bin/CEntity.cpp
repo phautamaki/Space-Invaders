@@ -154,17 +154,17 @@ void CEntity::OnMove(float MoveX, float MoveY) {
 		if(Flags & ENTITY_FLAG_GHOST) {
 			PosValid((int)(X + NewX), (int)(Y + NewY)); //We don't care about collisions, but we need to send events to other entities
 
-			X += NewX;
-			Y += NewY;
+			X += static_cast<float>(NewX);
+			Y += static_cast<float>(NewY);
 		}else{
 			if(PosValid((int)(X + NewX), (int)(Y))) {
-				X += NewX;
+				X += static_cast<float>(NewX);
 			}else{
 				SpeedX = 0;
 			}
 
 			if(PosValid((int)(X), (int)(Y + NewY))) {
-				Y += NewY;
+				Y += static_cast<float>(NewY);
 			}else{
                 if(MoveY > 0) {
                     CanJump = true;
@@ -174,8 +174,8 @@ void CEntity::OnMove(float MoveX, float MoveY) {
 			}
 		}
 
-		MoveX += -NewX;
-		MoveY += -NewY;
+		MoveX += static_cast<float>(-NewX);
+		MoveY += static_cast<float>(-NewY);
 
 		if(NewX > 0 && MoveX <= 0) NewX = 0;
 		if(NewX < 0 && MoveX >= 0) NewX = 0;
@@ -270,7 +270,7 @@ bool CEntity::PosValid(int NewX, int NewY) {
 
 	if(Flags & ENTITY_FLAG_MAPONLY) {
 	}else{
-		for(int i = 0;i < EntityList.size();i++) {
+		for(unsigned int i = 0;i < EntityList.size();i++) {
 			if(PosValidEntity(EntityList[i], NewX, NewY) == false) {
 				Return = false;
 			}

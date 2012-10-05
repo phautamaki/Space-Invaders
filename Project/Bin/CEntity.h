@@ -11,12 +11,22 @@
 #include "CSurface.h"
 
 //==============================================================================
+// All the different types should be added here
+// Should perhaps separate different enemy types and items?
 enum {
 	ENTITY_TYPE_GENERIC = 0,
-	ENTITY_TYPE_PLAYER
+	ENTITY_TYPE_PLAYER,
+	ENTITY_TYPE_ENEMY,
+	ENTITY_TYPE_ITEM
 };
 
 //==============================================================================
+/* 
+None = Regular
+Gravity = Affected by gravity.. duh
+Ghost = Doesn't collide
+MapOnly = Doesn't move
+*/
 enum {
 	ENTITY_FLAG_NONE 	= 0,
 

@@ -19,11 +19,11 @@ class CCamera {
 		static CCamera CameraControl;
 
 	private:
-		int X;
-		int Y;
+		float X;
+		float Y;
 
-		float* TargetX;
-		float* TargetY;
+		//float* TargetX;
+		//float* TargetY;
 
 	public:
 		int TargetMode;
@@ -32,16 +32,16 @@ class CCamera {
 		CCamera();
 
 	public:
-		void OnMove(int MoveX, int MoveY);
+		void OnMove(float MoveX, float MoveY);
 
 	public:
 		int GetX();
 		int GetY();
 
 	public:
-		void SetPos(int X, int Y);
+		//void SetPos(int X, int Y);
 
-		void SetTarget(float* X, float* Y);
+		//void SetTarget(float* X, float* Y);
 };
 
 //==============================================================================

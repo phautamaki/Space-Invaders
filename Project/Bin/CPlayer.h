@@ -9,6 +9,9 @@ class CPlayer : public CEntity {
     public:
         CPlayer();
 
+		void StopMoveX();
+		void StopMoveY();
+
 		bool OnLoad(char* File, int Width, int Height, int MaxFrames);
 
         void OnLoop();
@@ -21,9 +24,12 @@ class CPlayer : public CEntity {
 
         bool OnCollision(CEntity* Entity);
 
-		bool Jump();
+		void PlaySoundFly();
 	public:
-		int SoundA;
+		int SoundFly;
+
+		bool MoveUp;
+        bool MoveDown;
 };
 
 //=============================================================================

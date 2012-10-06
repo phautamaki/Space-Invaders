@@ -4,6 +4,10 @@
 
 //=============================================================================
 CPlayer::CPlayer() {
+	MoveUp	  = false;
+	MoveDown  = false;
+	// TODO: change this enum since there is no gravity in this game
+	Flags = ENTITY_FLAG_GRAVITY;
 }
 
 //=============================================================================
@@ -12,17 +16,104 @@ bool CPlayer::OnLoad(char* File, int Width, int Height, int MaxFrames) {
         return false;
     }
 
-	Flags = ENTITY_FLAG_GRAVITY;
-	
-	if((SoundA = CSoundBank::SoundControl.OnLoad("sounda.wav")) == -1) {
-		return false;
-	}
+	// TODO: add sound files to the project
+	//if((SoundFly = CSoundBank::SoundControl.OnLoad("sounda.wav")) == -1) {
+	//	return false;
+	//}
     return true;
 }
 
 //-----------------------------------------------------------------------------
 void CPlayer::OnLoop() {
-	CEntity::OnLoop();
+	// If left or right button is not pressed anymore, stop player movement
+	if(MoveLeft == false && MoveRight == false) {
+		StopMoveX();
+	}
+
+	// If up or down button is not pressed anymore, stop player movement
+	if(MoveUp == false && MoveDown == false) {
+		StopMoveY();
+	}
+
+	// Variables that determine if player has reached left or right end
+	// of the screen and thus isn't allowed to move farther to same direction
+	bool leftScreenCrossed = false;
+	bool rightScreenCrossed = false;
+	
+	// If player is at the left end of the screen. Camera is on the screen 
+	// locally at point 0,0 so comparing to player's location is easy
+	if (X < CCamera::CameraControl.GetX()) {
+		leftScreenCrossed = true;
+	} 
+	// Same thing here with the right end of the screen with little adjustment
+	else if (X > CCamera::CameraControl.GetX()+WWIDTH-60) {
+		rightScreenCrossed = true;
+	}
+		
+	// Player is not at the left end and can move to left freely
+	if(MoveLeft && !leftScreenCrossed) {
+		AccelX = PLAYER_ACCEL_LEFT;
+	} 
+	// Player is not at the right end and can move to right freely
+	else if(MoveRight && !rightScreenCrossed) {
+		AccelX = PLAYER_ACCEL_RIGHT;
+	}
+
+	// Same checking here with vertical borders of the screen. If player
+	// can move freely vertically, acceleration value is assigned
+	bool topScreenCrossed = false;
+	bool bottomScreenCrossed = false;
+
+	if (Y < CCamera::CameraControl.GetY()) {
+		topScreenCrossed = true;
+	} else if (Y > CCamera::CameraControl.GetY()+WHEIGHT-60) {
+		bottomScreenCrossed = true;
+	}
+
+	if(MoveUp) {
+		AccelY = PLAYER_ACCEL_UP;
+	} else if(MoveDown) {
+		AccelY = PLAYER_ACCEL_DOWN;
+	}
+
+	// Automatic speed adjusting calculations
+	SpeedX += AccelX * CFPS::FPSControl.GetSpeedFactor();
+	SpeedY += AccelY * CFPS::FPSControl.GetSpeedFactor();
+
+	// Don't let player's speed go over maximum definitions
+	if(SpeedX > MaxSpeedX)  SpeedX =  MaxSpeedX;
+	if(SpeedX < -MaxSpeedX) SpeedX = -MaxSpeedX;
+	if(SpeedY > MaxSpeedY)  SpeedY =  MaxSpeedY;
+	if(SpeedY < -MaxSpeedY) SpeedY = -MaxSpeedY;
+
+	// Do player's animations
+	OnAnimate();
+
+	// If player is vertically crossing the screen, "push" him violently
+	// back into the actual playing field (player won't see this push though)
+	if (topScreenCrossed) {
+		SpeedY = 1;
+	} else if (bottomScreenCrossed) {
+		SpeedY = -1;
+	}
+
+	/* Move player */
+	
+	// If player is not touching horizontal borders, move normally
+	if (!leftScreenCrossed && !rightScreenCrossed) {
+		OnMove(SpeedX, SpeedY);
+	} 
+	// If player is touching one but his speed is not too slow (left border)
+	// or too fast (right border) to go off the screen, move normally
+	else if (leftScreenCrossed && SpeedX >= CAMERA_SPEED || 
+			 rightScreenCrossed && SpeedX <= CAMERA_SPEED) {
+		OnMove(SpeedX, SpeedY);
+	} 
+	// Otherwise force player to move same speed as the camera (or the
+	// rolling play area)
+	else {
+		OnMove(CAMERA_SPEED, SpeedY);
+	}
 }
 
 //-----------------------------------------------------------------------------
@@ -48,14 +139,49 @@ void CPlayer::OnAnimate() {
 
 //------------------------------------------------------------------------------
 bool CPlayer::OnCollision(CEntity* Entity) {
-    Jump();
+    // Maybe play here some kind of a little crash sound
 
     return true;
 }
 
-bool CPlayer::Jump() {
-	CSoundBank::SoundControl.Play(SoundA);
-	return CEntity::Jump();
+void CPlayer::PlaySoundFly() {
+	//CSoundBank::SoundControl.Play(SoundA);
+	return;
 }
 
 //=============================================================================
+
+// Stop player's moving horizontally
+void CPlayer::StopMoveX() {
+
+	// If left or right isn't pressed and speed differs from CAMERA_SPEED,
+	// let's start to brake player's speed until...
+	if(SpeedX > CAMERA_SPEED) {
+		AccelX = -1;
+	}
+	else if(SpeedX < CAMERA_SPEED) {
+		AccelX =  1;
+	}
+
+	// ... it is slow enough to set to same as CAMERA_SPEED
+	if(SpeedX < (CAMERA_SPEED+1) && SpeedX > (-CAMERA_SPEED-1)) {
+		AccelX = 0;
+		SpeedX = CAMERA_SPEED;
+	}
+}
+
+// Stop player's move vertically
+void CPlayer::StopMoveY() {
+
+	if(SpeedY > 0) {
+		AccelY = -1;
+	}
+	else if(SpeedY < 0) {
+		AccelY =  1;
+	}
+
+	if(SpeedY < 2.0f && SpeedY > -2.0f) {
+		AccelY = 0;
+		SpeedY = 0;
+	}
+}

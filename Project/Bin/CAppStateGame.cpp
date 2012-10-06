@@ -25,8 +25,19 @@ void CAppStateGame::OnKeyDown(SDLKey sym, SDLMod mod, Uint16 unicode) {
 			break;
 		}
 
+		case SDLK_UP: {
+            Player.MoveUp = true;
+            break;
+        }
+
+		case SDLK_DOWN: {
+            Player.MoveDown = true;
+            break;
+        }
+
 		case SDLK_SPACE: {
-		    Player.Jump();
+		    // TODO: make player fire his weapon
+			//Player.Jump();
 		    break;
 		}
 
@@ -48,6 +59,16 @@ void CAppStateGame::OnKeyUp(SDLKey sym, SDLMod mod, Uint16 unicode) {
 			break;
 		}
 
+		case SDLK_UP: {
+            Player.MoveUp = false;
+            break;
+        }
+
+		case SDLK_DOWN: {
+            Player.MoveDown = false;
+            break;
+        }
+
 		default: {
 		}
 	}
@@ -60,23 +81,25 @@ void CAppStateGame::OnActivate() {
 	// Loading area
 	// Note that area is the whole level which might consist of many maps
 	debug("Area loading start", 1);
-	if(CArea::AreaControl.OnLoad(PATH_MAPS "1.area") == false) {
+	if(CArea::AreaControl.OnLoad(PATH_MAPS PATH_AREA1) == false) {
     	return;
     }
 	debug("All areas loaded successfully", 1);
 
 	debug("Entity loading start", 1);
 	// Creating player(s)
-	if(Player.OnLoad("yoshi.png", 64, 64, 8) == false) {
+	if(Player.OnLoad(PATH_IMAGES FILENAME_PLAYER, 64, 64, 8) == false) {
     	return;
     }
 
-    if(Player2.OnLoad("yoshi.png", 64, 64, 8) == false) {
+    if(Player2.OnLoad(PATH_IMAGES FILENAME_PLAYER, 64, 64, 8) == false) {
     	return;
     }
 	Player2.X = 100;
 	CEntity::EntityList.push_back(&Player);
-    CEntity::EntityList.push_back(&Player2);
+
+	// TODO: Player2 not needed yet. Make the game co-op later
+    //CEntity::EntityList.push_back(&Player2);
 
 	// Enemy Ship
 	CEntity::EntityList.push_back(CFactory::Factory.CreateEnemyShip(SHIP_1, 1000, 100));
@@ -84,9 +107,8 @@ void CAppStateGame::OnActivate() {
 	CEntity::EntityList.push_back(CFactory::Factory.CreateItem(ITEM_1, 1000, 50));
 	debug("All entities loaded successfully", 1);
 
-	// Camera init. Targetin player 1
-	CCamera::CameraControl.TargetMode = TARGET_MODE_CENTER;
-    CCamera::CameraControl.SetTarget(&Player.X, &Player.Y);
+	// Camera initialization, make it start from 0,0
+	CCamera::CameraControl.TargetMode = TARGET_MODE_NORMAL;
 	debug("Camera set", 1);
 
 	debug("Game initialization successful");
@@ -132,6 +154,11 @@ void CAppStateGame::OnLoop() {
     }
 
     CEntityCol::EntityColList.clear();
+
+	// Camera movement:
+	// Make camera move wanted amount of pixels per second to right
+	float moveX = CAMERA_SPEED * CFPS::FPSControl.GetSpeedFactor();
+	CCamera::CameraControl.OnMove(moveX, CCamera::CameraControl.GetY());
 }
 
 //-----------------------------------------------------------------------------

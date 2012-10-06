@@ -13,8 +13,6 @@ class CArea {
         std::vector<CMap>       MapList;
 
     private:
-        int                     AreaSize;
-
         SDL_Surface*			Surf_Tileset;
 
     public:

@@ -59,17 +59,8 @@ void CPlayer::OnLoop() {
 		AccelX = PLAYER_ACCEL_RIGHT;
 	}
 
-	// Same checking here with vertical borders of the screen. If player
-	// can move freely vertically, acceleration value is assigned
-	bool topScreenCrossed = false;
-	bool bottomScreenCrossed = false;
-
-	if (Y < CCamera::CameraControl.GetY()) {
-		topScreenCrossed = true;
-	} else if (Y > CCamera::CameraControl.GetY()+WHEIGHT-60) {
-		bottomScreenCrossed = true;
-	}
-
+	// Bottom and top sides of the screen are blocked with blocking tiles
+	// so there is no need to check if player has vertically crossed the line
 	if(MoveUp) {
 		AccelY = PLAYER_ACCEL_UP;
 	} else if(MoveDown) {
@@ -88,14 +79,6 @@ void CPlayer::OnLoop() {
 
 	// Do player's animations
 	OnAnimate();
-
-	// If player is vertically crossing the screen, "push" him violently
-	// back into the actual playing field (player won't see this push though)
-	if (topScreenCrossed) {
-		SpeedY = 1;
-	} else if (bottomScreenCrossed) {
-		SpeedY = -1;
-	}
 
 	/* Move player */
 	

@@ -1,13 +1,13 @@
 #ifndef _DEFINE_H_
     #define _DEFINE_H_
 
-#define MAP_WIDTH	40
-#define MAP_HEIGHT	40
+// Window size in pixels
+#define WWIDTH		960
+#define	WHEIGHT		480
 
-#define TILE_SIZE	16
-
-#define WWIDTH		1280
-#define	WHEIGHT		720
+#define MAP_WIDTH	60 // Number of tiles horizontally in a map
+#define MAP_HEIGHT	30 // Number of tiles vertically in a map
+#define TILE_SIZE	16 // Size of one tile in pixels
 
 /* Player specific settings */
 #define PLAYER_ACCEL_LEFT -3
@@ -16,8 +16,6 @@
 #define PLAYER_ACCEL_DOWN 3
 
 /* Camera specific settings */
-
-// Camera speed in pixels per second
-#define CAMERA_SPEED 2
+#define CAMERA_SPEED 2 // Camera speed in pixels per second
 
 #endif

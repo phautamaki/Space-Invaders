@@ -8,7 +8,6 @@ CArea CArea::AreaControl;
 
 //=============================================================================
 CArea::CArea() {
-    AreaSize = 0;
 }
 
 //=============================================================================
@@ -23,35 +22,35 @@ bool CArea::OnLoad(char* File) {
 
     char TilesetFile[255];
 
+	// Load tileset picture to a surface
     fscanf(FileHandle, "%s\n", TilesetFile);
-
     if((Surf_Tileset = CSurface::OnLoad(TilesetFile)) == false) {
         fclose(FileHandle);
 
         return false;
     }
 
-    fscanf(FileHandle, "%d\n", &AreaSize);
+	// Load maps to CAreas MapList
+	int numberOfMaps;
+	fscanf(FileHandle, "%d\n", &numberOfMaps);
 
-    for(int X = 0;X < AreaSize;X++) {
-        for(int Y = 0;Y < AreaSize;Y++) {
-            char MapFile[255];
+	for(int X = 0;X < numberOfMaps;X++) {
+		char MapFile[255];
 
-            fscanf(FileHandle, "%s ", MapFile);
+		fscanf(FileHandle, "%s ", MapFile);
 
-            CMap tempMap;
-            if(tempMap.OnLoad(MapFile) == false) {
-                fclose(FileHandle);
+		// Load map's tileset into map's Tilelist
+		CMap tempMap;
+		if(tempMap.OnLoad(MapFile) == false) {
+			fclose(FileHandle);
 
-                return false;
-            }
+			return false;
+		}
 
-            tempMap.Surf_Tileset = Surf_Tileset;
-
-            MapList.push_back(tempMap);
-        }
-        fscanf(FileHandle, "\n");
-    }
+		tempMap.Surf_Tileset = Surf_Tileset;
+		MapList.push_back(tempMap);
+		fscanf(FileHandle, "\n");
+	}
 
     fclose(FileHandle);
 
@@ -63,20 +62,16 @@ bool CArea::OnLoad(char* File) {
 //-----------------------------------------------------------------------------
 void CArea::OnRender(SDL_Surface* Surf_Display, int CameraX, int CameraY) {
 	int MapWidth  = MAP_WIDTH * TILE_SIZE;
-	int MapHeight = MAP_HEIGHT * TILE_SIZE;
 
 	int FirstID = -CameraX / MapWidth;
-		FirstID = FirstID + ((-CameraY / MapHeight) * AreaSize);
 
-	for(int i = 0;i < 4;i++) {
-		int ID = FirstID + ((i / 2) * AreaSize) + (i % 2);
+	for(int i = 0;i < 2;i++) {
+		int ID = FirstID + i;
 
 		if(ID < 0 || ID >= MapList.size()) continue;
 
-		int X = ((ID % AreaSize) * MapWidth) + CameraX;
-		int Y = ((ID / AreaSize) * MapHeight) + CameraY;
-
-		MapList[ID].OnRender(Surf_Display, X, Y);
+		int X = ID* MapWidth + CameraX;
+		MapList[ID].OnRender(Surf_Display, X, 0); // Y-coordinate always same
 	}
 }
 
@@ -92,10 +87,8 @@ void CArea::OnCleanup() {
 //=============================================================================
 CMap* CArea::GetMap(int X, int Y) {
 	int MapWidth  = MAP_WIDTH * TILE_SIZE;
-	int MapHeight = MAP_HEIGHT * TILE_SIZE;
 
     int ID = X / MapWidth;
-        ID = ID + ((Y / MapHeight) * AreaSize);
 
     if(ID < 0 || ID >= MapList.size()) {
         return NULL;

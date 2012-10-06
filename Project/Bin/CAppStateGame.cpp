@@ -96,6 +96,9 @@ void CAppStateGame::OnActivate() {
     	return;
     }
 	Player2.X = 100;
+
+	Player.X = 400;
+	Player.Y = 240;
 	CEntity::EntityList.push_back(&Player);
 
 	// TODO: Player2 not needed yet. Make the game co-op later

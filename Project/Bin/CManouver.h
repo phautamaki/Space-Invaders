@@ -25,7 +25,7 @@ class CManouver {
         void OnCleanup();
 
 	private:
-		int Type;
+		int Type;	
 
 		int StartTime;
 		int Wait;

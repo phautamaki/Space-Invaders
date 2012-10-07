@@ -7,7 +7,8 @@ CPlayer::CPlayer() {
 	MoveUp	  = false;
 	MoveDown  = false;
 	// TODO: change this enum since there is no gravity in this game
-	Flags = ENTITY_FLAG_GRAVITY;
+	// NB. Entity already sets the flag_none as default, so this line is not needed at all
+	//Flags = ENTITY_FLAG_GRAVITY;
 }
 
 //=============================================================================

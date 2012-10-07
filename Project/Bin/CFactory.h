@@ -4,6 +4,7 @@
 
 #include <vector>
 
+#include "CPlayer.h"
 #include "CEnemyShip.h"
 #include "CItem.h"
 
@@ -22,11 +23,9 @@ class CFactory {
         void OnCleanup();
 
 	public:
-		CEnemyShip* CreateEnemyShip(int type, int nX, int nY);
-		CItem* CreateItem(int type, int nX, int nY);
-
-	private:
-		std::vector< CEntity* > Entities;
+		bool CreatePlayer(CPlayer& player, int nX, int nY);
+		bool CreateEnemyShip(int type, int nX, int nY);
+		bool CreateItem(int type, int nX, int nY);
 
 };
 

@@ -1,6 +1,7 @@
 //==============================================================================
 #include "CFactory.h"
 #include "Paths.h"
+#include "functions.h"
 
 //==============================================================================
 CFactory CFactory::Factory;
@@ -11,18 +12,21 @@ CFactory::CFactory() {
 
 //------------------------------------------------------------------------------
 bool CFactory::OnInit() {
+
 	return true;
 }
 
 //------------------------------------------------------------------------------
 void CFactory::OnLoop() {
-	std::vector<CEntity*>::iterator it = Entities.begin();
-	while( it != Entities.end() ) {
+	std::vector<CEntity*>::iterator it = CEntity::EntityList.begin();
+	while( it != CEntity::EntityList.end() ) {
 		if( (*it)->Dead ) {
 			(*it)->OnCleanup();
 			delete (*it);
 			(*it) = 0;
-			it = Entities.erase(it);
+			it = CEntity::EntityList.erase(it);
+
+			debug("Factory: Destroyed an object!");
 		}
 		else {
 			it++;
@@ -32,16 +36,29 @@ void CFactory::OnLoop() {
 
 //------------------------------------------------------------------------------
 void CFactory::OnCleanup() {
-	for( unsigned int i = 0; i < Entities.size(); i++ ) {
-		Entities.at(i)->OnCleanup();
-		delete Entities.at(i);
-		Entities.at(i) = 0;
+	for( unsigned int i = 0; i < CEntity::EntityList.size(); i++ ) {
+		CEntity::EntityList.at(i)->OnCleanup();
+		delete CEntity::EntityList.at(i);
+		CEntity::EntityList.at(i) = 0;
 	}
-	Entities.clear();
+	CEntity::EntityList.clear();
 }
 
 //==============================================================================
-CEnemyShip* CFactory::CreateEnemyShip(int type, int nX, int nY) {
+bool CFactory::CreatePlayer(CPlayer& player, int nX, int nY) {
+	if( !player.OnLoad( PATH_IMAGES FILENAME_PLAYER, 64, 64, 8) ){
+		return false;
+	}
+	player.X = static_cast<float>(nX);
+	player.Y = static_cast<float>(nY);
+
+	CEntity::EntityList.push_back(&player);
+
+	return true;
+}
+
+//------------------------------------------------------------------------------
+bool CFactory::CreateEnemyShip(int type, int nX, int nY) {
 	CEnemyShip* tmp = new CEnemyShip;
 	if( type == SHIP_1 )
 	{
@@ -50,15 +67,16 @@ CEnemyShip* CFactory::CreateEnemyShip(int type, int nX, int nY) {
 		tmp->Y = static_cast<float>(nY);
 	}
 	else {
-		return 0;
+		return false;
 	}
 
-	Entities.push_back(tmp);
-	return tmp;
+	CEntity::EntityList.push_back(tmp);
+
+	return true;
 }
 
 //------------------------------------------------------------------------------
-CItem* CFactory::CreateItem(int type, int nX, int nY) {
+bool CFactory::CreateItem(int type, int nX, int nY) {
 	CItem* tmp = new CItem;
 	if( type == ITEM_1 )
 	{
@@ -67,11 +85,11 @@ CItem* CFactory::CreateItem(int type, int nX, int nY) {
 		tmp->Y = static_cast<float>(nY);
 	}
 	else {
-		return 0;
+		return false;
 	}
+	CEntity::EntityList.push_back(tmp);
 
-	Entities.push_back(tmp);
-	return tmp;
+	return true;
 }
 
 //==============================================================================

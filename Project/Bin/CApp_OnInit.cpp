@@ -27,8 +27,6 @@ bool CApp::OnInit() {
 	CFont::FontControl.OnLoad(PATH_FONTS "FairyDustB.ttf", 50 );
 
 	CAppStateManager::SetActiveAppState(APPSTATE_INTRO);
-
-	CFactory::Factory.OnInit();
 	
 	debug("Initialization successful");
     return true;

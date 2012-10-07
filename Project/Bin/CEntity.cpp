@@ -65,6 +65,12 @@ bool CEntity::OnLoad(char* File, int Width, int Height, int MaxFrames) {
 
 //------------------------------------------------------------------------------
 void CEntity::OnLoop() {
+	if( Dead ) return;
+
+	if( X < CCamera::CameraControl.GetX() - 100 ) {
+		Dead = true;
+	}
+
 	//We're not Moving
 	if(MoveLeft == false && MoveRight == false) {
 		StopMove();

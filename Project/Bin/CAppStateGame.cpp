@@ -37,6 +37,7 @@ void CAppStateGame::OnKeyDown(SDLKey sym, SDLMod mod, Uint16 unicode) {
 
 		case SDLK_SPACE: {
 		    // TODO: make player fire his weapon
+			// Could also make player able to charge weapon: Count charge level while key is held down, shoot on onkeyup
 			//Player.Jump();
 		    break;
 		}
@@ -87,27 +88,15 @@ void CAppStateGame::OnActivate() {
 	debug("All areas loaded successfully", 1);
 
 	debug("Entity loading start", 1);
-	// Creating player(s)
-	if(Player.OnLoad(PATH_IMAGES FILENAME_PLAYER, 64, 64, 8) == false) {
-    	return;
-    }
-
-    if(Player2.OnLoad(PATH_IMAGES FILENAME_PLAYER, 64, 64, 8) == false) {
-    	return;
-    }
-	Player2.X = 100;
-
-	Player.X = 400;
-	Player.Y = 240;
-	CEntity::EntityList.push_back(&Player);
+	CFactory::Factory.CreatePlayer(Player, 400, 240);
 
 	// TODO: Player2 not needed yet. Make the game co-op later
     //CEntity::EntityList.push_back(&Player2);
 
 	// Enemy Ship
-	CEntity::EntityList.push_back(CFactory::Factory.CreateEnemyShip(SHIP_1, 1000, 100));
+	CFactory::Factory.CreateEnemyShip(SHIP_1, 1000, 100);
 	// Item
-	CEntity::EntityList.push_back(CFactory::Factory.CreateItem(ITEM_1, 1000, 50));
+	CFactory::Factory.CreateItem(ITEM_1, 1000, 50);
 	debug("All entities loaded successfully", 1);
 
 	// Camera initialization, make it start from 0,0
@@ -124,13 +113,14 @@ void CAppStateGame::OnDeactivate() {
     //--------------------------------------------------------------------------
     // Entities
     //--------------------------------------------------------------------------
-    for(unsigned int i = 0;i < CEntity::EntityList.size();i++) {
+    /*for(unsigned int i = 0;i < CEntity::EntityList.size();i++) {
         if(!CEntity::EntityList[i]) continue;
 
         CEntity::EntityList[i]->OnCleanup();
     }
 
     CEntity::EntityList.clear();
+	*/
 }
 
 //-----------------------------------------------------------------------------

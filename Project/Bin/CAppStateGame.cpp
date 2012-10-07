@@ -121,6 +121,9 @@ void CAppStateGame::OnDeactivate() {
 
     CEntity::EntityList.clear();
 	*/
+
+	// Empty entities
+	CFactory::Factory.OnCleanup();
 }
 
 //-----------------------------------------------------------------------------
@@ -151,7 +154,7 @@ void CAppStateGame::OnLoop() {
 	// Camera movement:
 	// Make camera move wanted amount of pixels per second to right
 	float moveX = CAMERA_SPEED * CFPS::FPSControl.GetSpeedFactor();
-	CCamera::CameraControl.OnMove(moveX, CCamera::CameraControl.GetY());
+	CCamera::CameraControl.OnMove(moveX, static_cast<float>(CCamera::CameraControl.GetY()));
 }
 
 //-----------------------------------------------------------------------------

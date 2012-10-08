@@ -7,6 +7,7 @@ void CApp::OnLoop() {
 
     CFPS::FPSControl.OnLoop();
 
+	// Call this last
 	CFactory::Factory.OnLoop();
 
     char Buffer[255];

@@ -1,5 +1,6 @@
 //==============================================================================
 #include "CEntity.h"
+#include "Define.h"
 
 //==============================================================================
 std::vector<CEntity*> 	CEntity::EntityList;
@@ -16,6 +17,10 @@ CEntity::CEntity() {
 
 	MoveLeft  = false;
 	MoveRight = false;
+	MoveUp	  = false;
+	MoveDown  = false;
+
+	TargetAngle = 999;
 
 	Type = 	ENTITY_TYPE_GENERIC;
 
@@ -67,21 +72,27 @@ bool CEntity::OnLoad(char* File, int Width, int Height, int MaxFrames) {
 void CEntity::OnLoop() {
 	if( Dead ) return;
 
-	if( X < CCamera::CameraControl.GetX() - 100 ) {
+	if( X < CCamera::CameraControl.GetX() - ENTITY_KILLDISTANCE ) {
 		Dead = true;
 	}
 
 	//We're not Moving
-	if(MoveLeft == false && MoveRight == false) {
+	if(MoveLeft == false && MoveRight == false && MoveUp == false && MoveDown == false) {
 		StopMove();
 	}
 
-	if(MoveLeft) {
+	if (MoveLeft) {
 		AccelX = -0.5;
-	}else
-
-	if(MoveRight) {
+	}
+	else if (MoveRight) {
 		AccelX = 0.5;
+	}
+
+	if (MoveUp) {
+		AccelY = -0.5;
+	}
+	else if (MoveDown) {
+		AccelY = 0.5;
 	}
 
 	if(Flags & ENTITY_FLAG_GRAVITY) {
@@ -118,13 +129,6 @@ void CEntity::OnCleanup() {
 
 //------------------------------------------------------------------------------
 void CEntity::OnAnimate() {
-	if(MoveLeft) {
-		CurrentFrameCol = 0;
-	}else
-
-	if(MoveRight) {
-		CurrentFrameCol = 1;
-	}
 
 	Anim_Control.OnAnimate();
 }
@@ -157,21 +161,24 @@ void CEntity::OnMove(float MoveX, float MoveY) {
 	}
 
 	while(true) {
-		if(Flags & ENTITY_FLAG_GHOST) {
+		if (Flags & ENTITY_FLAG_GHOST) {
 			PosValid((int)(X + NewX), (int)(Y + NewY)); //We don't care about collisions, but we need to send events to other entities
 
 			X += static_cast<float>(NewX);
 			Y += static_cast<float>(NewY);
-		}else{
+		}
+		else {
 			if(PosValid((int)(X + NewX), (int)(Y))) {
 				X += static_cast<float>(NewX);
-			}else{
+			}
+			else{
 				SpeedX = 0;
 			}
 
 			if(PosValid((int)(X), (int)(Y + NewY))) {
 				Y += static_cast<float>(NewY);
-			}else{
+			}
+			else{
                 if(MoveY > 0) {
                     CanJump = true;
                 }

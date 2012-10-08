@@ -23,10 +23,12 @@ class CFactory {
         void OnCleanup();
 
 	public:
-		bool CreatePlayer(CPlayer& player, int nX, int nY);
+		CPlayer* CreatePlayer(int nX, int nY);
 		bool CreateEnemyShip(int type, int nX, int nY);
 		bool CreateItem(int type, int nX, int nY);
 
+	private:
+		std::vector<CPlayer*> Players;
 };
 
 //=============================================================================

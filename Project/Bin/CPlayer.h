@@ -27,9 +27,6 @@ class CPlayer : public CEntity {
 		void PlaySoundFly();
 	public:
 		int SoundFly;
-
-		bool MoveUp;
-        bool MoveDown;
 };
 
 //=============================================================================

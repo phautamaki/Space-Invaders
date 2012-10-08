@@ -2,8 +2,6 @@
 #ifndef __CAPPSTATEGAME_H__
 	#define __CAPPSTATEGAME_H__
 
-#include <vector>
-
 #include "CAppState.h"
 
 #include "CArea.h"
@@ -19,10 +17,7 @@ class CAppStateGame : public CAppState {
 	private:
 		static CAppStateGame Instance;
 
-        CPlayer	Player;
-        CPlayer	Player2;
-
-		//std::vector<CEnemy*> Enemies;
+        CPlayer* Player;
 
 	private:
 		CAppStateGame();

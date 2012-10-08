@@ -30,6 +30,8 @@ class CItem : public CEntity {
 
         bool OnCollision(CEntity* Entity);
 
+		void OnMove(float MoveX, float MoveY);
+
 	private:
 		std::vector<CManouver*>::iterator CurrentManouver;
 		std::vector<CManouver*> Manouvers;

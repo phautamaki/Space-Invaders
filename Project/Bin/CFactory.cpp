@@ -38,20 +38,25 @@ void CFactory::OnCleanup() {
 		CEntity::EntityList.at(i) = 0;
 	}
 	CEntity::EntityList.clear();
+
+	// TODO: Make factory keep player data while changing levels
+	Players.clear();
 }
 
 //==============================================================================
 // TODO: Store player in factory, so the player data can be saved between levels
-bool CFactory::CreatePlayer(CPlayer& player, int nX, int nY) {
-	if( !player.OnLoad( PATH_IMAGES FILENAME_PLAYER, 64, 64, 8) ){
+CPlayer* CFactory::CreatePlayer(int nX, int nY) {
+	CPlayer* tmp = new CPlayer;
+	if( !tmp->OnLoad( PATH_IMAGES FILENAME_PLAYER, 64, 64, 8) ){
 		return false;
 	}
-	player.X = static_cast<float>(nX);
-	player.Y = static_cast<float>(nY);
+	tmp->X = static_cast<float>(nX);
+	tmp->Y = static_cast<float>(nY);
 
-	CEntity::EntityList.push_back(&player);
+	Players.push_back(tmp);
+	CEntity::EntityList.push_back(tmp);
 
-	return true;
+	return tmp;
 }
 
 //------------------------------------------------------------------------------

@@ -54,6 +54,11 @@ class CEntity {
 
 		bool	MoveLeft;
 		bool	MoveRight;
+		bool	MoveUp;
+        bool	MoveDown;
+
+		int		Angle;
+		int		TargetAngle;
 
 	public:
 		int		Type;
@@ -61,7 +66,7 @@ class CEntity {
 		bool	Dead;
 		int		Flags;
 
-	protected:
+	public:
 		float	SpeedX;
 		float	SpeedY;
 

@@ -16,29 +16,29 @@ CAppStateGame::CAppStateGame() {
 void CAppStateGame::OnKeyDown(SDLKey sym, SDLMod mod, Uint16 unicode) {
 	switch(sym) {
 		case SDLK_LEFT: {
-			Player.MoveLeft = true;
+			Player->MoveLeft = true;
 			break;
 		}
 
 		case SDLK_RIGHT: {
-			Player.MoveRight = true;
+			Player->MoveRight = true;
 			break;
 		}
 
 		case SDLK_UP: {
-            Player.MoveUp = true;
+            Player->MoveUp = true;
             break;
         }
 
 		case SDLK_DOWN: {
-            Player.MoveDown = true;
+            Player->MoveDown = true;
             break;
         }
 
 		case SDLK_SPACE: {
 		    // TODO: make player fire his weapon
 			// Could also make player able to charge weapon: Count charge level while key is held down, shoot on onkeyup
-			//Player.Jump();
+			//Player->Jump();
 		    break;
 		}
 
@@ -51,22 +51,22 @@ void CAppStateGame::OnKeyDown(SDLKey sym, SDLMod mod, Uint16 unicode) {
 void CAppStateGame::OnKeyUp(SDLKey sym, SDLMod mod, Uint16 unicode) {
 	switch(sym) {
 		case SDLK_LEFT: {
-			Player.MoveLeft = false;
+			Player->MoveLeft = false;
 			break;
 		}
 
 		case SDLK_RIGHT: {
-			Player.MoveRight = false;
+			Player->MoveRight = false;
 			break;
 		}
 
 		case SDLK_UP: {
-            Player.MoveUp = false;
+            Player->MoveUp = false;
             break;
         }
 
 		case SDLK_DOWN: {
-            Player.MoveDown = false;
+            Player->MoveDown = false;
             break;
         }
 
@@ -88,7 +88,7 @@ void CAppStateGame::OnActivate() {
 	debug("All areas loaded successfully", 1);
 
 	debug("Entity loading start", 1);
-	CFactory::Factory.CreatePlayer(Player, 400, 240);
+	Player = CFactory::Factory.CreatePlayer(400, 240);
 
 	// TODO: Player2 not needed yet. Make the game co-op later
     //CEntity::EntityList.push_back(&Player2);

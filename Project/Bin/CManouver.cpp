@@ -1,9 +1,6 @@
 #include "CManouver.h"
 #include "sdl.h"
 
-#include <cstdlib>
-#include <iostream>
-
 //=============================================================================
 CManouver::CManouver(CEntity* parent) {
 	Parent = parent;

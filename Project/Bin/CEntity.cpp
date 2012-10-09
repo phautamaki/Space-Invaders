@@ -2,6 +2,7 @@
 #include "CEntity.h"
 #include "Define.h"
 
+#include <cmath>
 //==============================================================================
 std::vector<CEntity*> 	CEntity::EntityList;
  
@@ -75,28 +76,73 @@ void CEntity::OnLoop() {
 	if( X < CCamera::CameraControl.GetX() - ENTITY_KILLDISTANCE ) {
 		Dead = true;
 	}
+	
+	if( TargetAngle == 999 ) {
+		//We're not Moving
+		if(MoveLeft == false && MoveRight == false && MoveUp == false && MoveDown == false) {
+			StopMove();
+		}
 
-	//We're not Moving
-	if(MoveLeft == false && MoveRight == false && MoveUp == false && MoveDown == false) {
-		StopMove();
-	}
+		if (MoveLeft) {
+			AccelX = -0.5;
+		}
+		else if (MoveRight) {
+			AccelX = 0.5;
+		}
 
-	if (MoveLeft) {
-		AccelX = -0.5;
-	}
-	else if (MoveRight) {
-		AccelX = 0.5;
-	}
+		if (MoveUp) {
+			AccelY = -0.5;
+		}
+		else if (MoveDown) {
+			AccelY = 0.5;
+		}
 
-	if (MoveUp) {
-		AccelY = -0.5;
+		if(Flags & ENTITY_FLAG_GRAVITY) {
+			AccelY = 0.75f;
+		}
 	}
-	else if (MoveDown) {
-		AccelY = 0.5;
-	}
-
-	if(Flags & ENTITY_FLAG_GRAVITY) {
-		AccelY = 0.75f;
+	else{
+		// Need to turn the moving direction of object to TargetAngle
+		if( Angle >= 0 && Angle < 90 ) {
+			if( Angle > TargetAngle ) {
+				AccelX = static_cast<float>(AccelX + 0.05);
+				AccelY = static_cast<float>(AccelY - 0.05);
+			}
+			else {
+				AccelX = static_cast<float>(AccelX - 0.05);
+				AccelY = static_cast<float>(AccelY + 0.05);
+			}
+		}
+		else if( Angle >= 90 && Angle <= 180 ) {
+			if( Angle > TargetAngle ) {
+				AccelX = static_cast<float>(AccelX + 0.05);
+				AccelY = static_cast<float>(AccelY + 0.05);
+			}
+			else {
+				AccelX = static_cast<float>(AccelX - 0.05);
+				AccelY = static_cast<float>(AccelY - 0.05);
+			}
+		}
+		else if( Angle < 0 && Angle >= -90 ) {
+			if( Angle > TargetAngle ) {
+				AccelX = static_cast<float>(AccelX - 0.05);
+				AccelY = static_cast<float>(AccelY - 0.05);
+			}
+			else {
+				AccelX = static_cast<float>(AccelX + 0.05);
+				AccelY = static_cast<float>(AccelY + 0.05);
+			}
+		}
+		else if( Angle < -90 && Angle >= -180 ) {
+			if( Angle > TargetAngle ) {
+				AccelX = static_cast<float>(AccelX - 0.05);
+				AccelY = static_cast<float>(AccelY + 0.05);
+			}
+			else {
+				AccelX = static_cast<float>(AccelX + 0.05);
+				AccelY = static_cast<float>(AccelY - 0.05);
+			}
+		}
 	}
 
 	SpeedX += AccelX * CFPS::FPSControl.GetSpeedFactor();
@@ -141,6 +187,13 @@ bool CEntity::OnCollision(CEntity* Entity) {
 //==============================================================================
 void CEntity::OnMove(float MoveX, float MoveY) {
 	if(MoveX == 0 && MoveY == 0) return;
+	
+	int oldAngle = Angle;
+	Angle = static_cast<int>(atan2(MoveY, MoveX) * 180.0 / 3.141592);
+
+	if( oldAngle == -180 && Angle == 180 ){
+		Angle = -180;
+	}
 
 	double NewX = 0;
 	double NewY = 0;

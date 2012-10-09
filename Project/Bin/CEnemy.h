@@ -2,7 +2,10 @@
 #ifndef _CENEMY_H_
     #define _CENEMY_H_
 
+#include <vector>
+
 #include "CEntity.h"
+#include "CManouver.h"
 
 //=============================================================================
 class CEnemy : public CEntity {
@@ -20,6 +23,10 @@ class CEnemy : public CEntity {
         void OnAnimate();
 
         bool OnCollision(CEntity* Entity);
+
+	protected:
+		std::vector<CManouver*>::iterator CurrentManouver;
+		std::vector<CManouver*> Manouvers;
 };
 
 //=============================================================================

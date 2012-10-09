@@ -32,7 +32,7 @@ class CItem : public CEntity {
 
 		void OnMove(float MoveX, float MoveY);
 
-	private:
+	protected:
 		std::vector<CManouver*>::iterator CurrentManouver;
 		std::vector<CManouver*> Manouvers;
 };

@@ -17,7 +17,11 @@ class CAppStateGame : public CAppState {
 	private:
 		static CAppStateGame Instance;
 
-        CPlayer* Player;
+        CPlayer*		Player;
+
+		// Scrolling space background
+		SDL_Surface*	SpaceBG;
+		int				BG_offset;
 
 	private:
 		CAppStateGame();

@@ -16,6 +16,17 @@ enum {
 	M_TURN
 };
 
+/* 
+When turning:
+0 = right
+90 = down
+-90 = up
+180 & -180 = left
+
+Always turn towards the smaller change
+ie. from 90 to 180, not -180
+*/
+
 //=============================================================================
 class CManouver {
     public:

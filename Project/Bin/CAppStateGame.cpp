@@ -99,6 +99,13 @@ void CAppStateGame::OnActivate() {
 	CFactory::Factory.CreateItem(ITEM_1, 1000, 50);
 	debug("All entities loaded successfully", 1);
 
+	debug("Additional image loading stat", 1);
+	if((SpaceBG = CSurface::OnLoad(PATH_IMAGES FILENAME_SPACE_BG_1)) == NULL) {
+		return;
+	}
+	BG_offset = BG_WIDTH;
+	debug("Additional images loaded successfully", 1);
+
 	// Camera initialization, make it start from 0,0
 	CCamera::CameraControl.TargetMode = TARGET_MODE_NORMAL;
 	debug("Camera set", 1);
@@ -155,6 +162,11 @@ void CAppStateGame::OnLoop() {
 	// Make camera move wanted amount of pixels per second to right
 	float moveX = CAMERA_SPEED * CFPS::FPSControl.GetSpeedFactor();
 	CCamera::CameraControl.OnMove(moveX, static_cast<float>(CCamera::CameraControl.GetY()));
+	// Update BG offset
+	BG_offset = BG_offset - BG_SPEED * CFPS::FPSControl.GetSpeedFactor();
+	if( BG_offset <= 0 ) {
+		BG_offset = BG_WIDTH;
+	}
 }
 
 //-----------------------------------------------------------------------------
@@ -167,6 +179,8 @@ void CAppStateGame::OnRender(SDL_Surface* Surf_Display) {
 
 	SDL_FillRect(Surf_Display, &Rect, 0);
 
+	CSurface::OnDraw(Surf_Display, SpaceBG, BG_offset, 0);
+	CSurface::OnDraw(Surf_Display, SpaceBG, BG_offset-BG_WIDTH, 0);
 	CArea::AreaControl.OnRender(Surf_Display, -CCamera::CameraControl.GetX(), -CCamera::CameraControl.GetY());
 
     //--------------------------------------------------------------------------

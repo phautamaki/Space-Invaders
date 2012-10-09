@@ -18,6 +18,10 @@
 #define PLAYER_ACCEL_UP		-3
 #define PLAYER_ACCEL_DOWN	 3
 
+/* Background specific settings */
+#define BG_SPEED 1
+#define BG_WIDTH 960
+
 /* Camera specific settings */
 #define CAMERA_SPEED 2 // Camera speed in pixels per second
 

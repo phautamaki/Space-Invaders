@@ -13,7 +13,7 @@
 //==============================================================================
 // All the different types should be added here
 // Should perhaps separate different enemy types and items?
-enum {
+enum Types {
 	ENTITY_TYPE_GENERIC = 0,
 	ENTITY_TYPE_PLAYER,
 	ENTITY_TYPE_ENEMY,

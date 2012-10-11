@@ -1,6 +1,7 @@
 //=============================================================================
 #include "CPlayer.h"
 #include "CSoundBank.h"
+#include "functions.h"
 
 //=============================================================================
 CPlayer::CPlayer() {
@@ -124,6 +125,22 @@ void CPlayer::OnAnimate() {
 //------------------------------------------------------------------------------
 bool CPlayer::OnCollision(CEntity* Entity) {
     // Maybe play here some kind of a little crash sound
+
+	int whatHitMe = Entity->Type;
+
+	switch(whatHitMe) {
+
+	case Types::ENTITY_TYPE_ENEMY: 
+		debug("I hit an enemy. I die. :(");
+		//Should the player be killed via factory?
+		break;
+	case Types::ENTITY_TYPE_ITEM: debug("I hit and item. I become strong!");
+		Entity->OnCleanup();
+		Entity->Dead = true; //Should this also be done via factory?		
+		break;
+	default: debug("I hit something. Not sure what...");
+		break;
+	}
 
     return true;
 }

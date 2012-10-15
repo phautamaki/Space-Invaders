@@ -47,7 +47,7 @@ void CFactory::OnCleanup() {
 // TODO: Store player in factory, so the player data can be saved between levels
 CPlayer* CFactory::CreatePlayer(int nX, int nY) {
 	CPlayer* tmp = new CPlayer;
-	if( !tmp->OnLoad( PATH_IMAGES FILENAME_PLAYER, 64, 64, 8) ){
+	if( !tmp->OnLoad( PATH_IMAGES FILENAME_PLAYER, PLAYER_SPRITE_WIDTH, PLAYER_SPRITE_HEIGHT, PLAYER_MAX_FRAMES) ){
 		return false;
 	}
 	tmp->X = static_cast<float>(nX);

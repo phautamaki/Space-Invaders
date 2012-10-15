@@ -114,7 +114,7 @@ void CPlayer::OnCleanup() {
 //------------------------------------------------------------------------------
 void CPlayer::OnAnimate() {
 	if(SpeedX != 0) {
-		Anim_Control.MaxFrames = 8;
+		Anim_Control.MaxFrames = PLAYER_MAX_FRAMES;
 	}else{
 		Anim_Control.MaxFrames = 0;
 	}
@@ -124,22 +124,27 @@ void CPlayer::OnAnimate() {
 
 //------------------------------------------------------------------------------
 bool CPlayer::OnCollision(CEntity* Entity) {
+	// Prevent multiple handlings for same collissions
+	if( Entity->Dead ) return false;
+
     // Maybe play here some kind of a little crash sound
+	// Play the sounds for player inside switch-case
 
 	int whatHitMe = Entity->Type;
 
 	switch(whatHitMe) {
-
-	case Types::ENTITY_TYPE_ENEMY: 
-		debug("I hit an enemy. I die. :(");
-		//Should the player be killed via factory?
-		break;
-	case Types::ENTITY_TYPE_ITEM: debug("I hit and item. I become strong!");
-		Entity->OnCleanup();
-		Entity->Dead = true; //Should this also be done via factory?		
-		break;
-	default: debug("I hit something. Not sure what...");
-		break;
+		case ENTITY_TYPE_ENEMY: 
+			debug("I hit an enemy. I die. :(");
+			// Should the player be killed via factory?
+			// Yes, but it's probably a good idea NOT to actually kill player (ie destroy object). Maybe better to tell CAppStateGame to substract lives, restart level and such..
+			break;
+		case ENTITY_TYPE_ITEM: debug("I hit an item. I became strong!");
+			Entity->OnCleanup();
+			Entity->Dead = true; //Should this also be done via factory?		
+			// To previous comment: No, factory should only used to create entities and remove dead entities
+			break;
+		default: debug("I hit something. Not sure what...");
+			break;
 	}
 
     return true;

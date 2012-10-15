@@ -18,6 +18,10 @@
 #define PLAYER_ACCEL_UP		-3
 #define PLAYER_ACCEL_DOWN	 3
 
+#define PLAYER_SPRITE_WIDTH		100
+#define PLAYER_SPRITE_HEIGHT	64
+#define PLAYER_MAX_FRAMES		1
+
 /* Background specific settings */
 #define BG_SPEED 1
 #define BG_WIDTH 960

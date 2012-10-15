@@ -11,7 +11,7 @@
 
 #define PATH_AREA1	"1.area"
 
-#define FILENAME_PLAYER "yoshi.png"
+#define FILENAME_PLAYER "ship.png"
 #define FILENAME_SPACE_BG_1 "space_bg.png"
 
 #endif

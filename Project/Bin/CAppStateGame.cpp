@@ -90,8 +90,7 @@ void CAppStateGame::OnActivate() {
 	debug("Entity loading start", 1);
 	Player = CFactory::Factory.CreatePlayer(400, 240);
 
-	// TODO: Player2 not needed yet. Make the game co-op later
-    //CEntity::EntityList.push_back(&Player2);
+	// TODO: Player2 not needed yet. Make the game support co-op later
 
 	// Enemy Ship
 	CFactory::Factory.CreateEnemyShip(SHIP_1, 1000, 100);

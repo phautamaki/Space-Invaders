@@ -7,6 +7,7 @@
 #include "CPlayer.h"
 #include "CEnemyShip.h"
 #include "CItem.h"
+#include "CBullet.h"
 
 //=============================================================================
 class CFactory {
@@ -26,6 +27,7 @@ class CFactory {
 		CPlayer* CreatePlayer(int nX, int nY);
 		bool CreateEnemyShip(int type, int nX, int nY);
 		bool CreateItem(int type, int nX, int nY);
+		bool CreateBullet(int type, int nX, int nY);
 
 	private:
 		std::vector<CPlayer*> Players;

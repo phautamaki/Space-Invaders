@@ -17,7 +17,9 @@ enum Types {
 	ENTITY_TYPE_GENERIC = 0,
 	ENTITY_TYPE_PLAYER,
 	ENTITY_TYPE_ENEMY,
-	ENTITY_TYPE_ITEM
+	ENTITY_TYPE_ITEM,
+	ENTITY_TYPE_BULLET_NORMAL,
+	ENTITY_TYPE_BULLET_CHARGE1
 };
 
 //==============================================================================

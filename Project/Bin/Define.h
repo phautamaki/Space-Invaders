@@ -22,6 +22,10 @@
 #define PLAYER_SPRITE_HEIGHT	64
 #define PLAYER_MAX_FRAMES		1
 
+#define PLAYER_SHOOT_DELAY			300
+#define PLAYER_BULLET_NORMAL_SPEED	25
+#define PLAYER_BULLET_CHARGE1_SPEED	20
+
 /* Background specific settings */
 #define BG_SPEED 1
 #define BG_WIDTH 960

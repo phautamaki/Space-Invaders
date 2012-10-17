@@ -73,7 +73,11 @@ bool CEntity::OnLoad(char* File, int Width, int Height, int MaxFrames) {
 void CEntity::OnLoop() {
 	if( Dead ) return;
 
+	// Kill entities that move too far out of screen
 	if( X < CCamera::CameraControl.GetX() - ENTITY_KILLDISTANCE ) {
+		Dead = true;
+	}
+	else if( X > CCamera::CameraControl.GetX() + WWIDTH + ENTITY_KILLDISTANCE && Type != ENTITY_TYPE_GENERIC ) {
 		Dead = true;
 	}
 	

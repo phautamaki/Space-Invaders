@@ -14,65 +14,12 @@ CAppStateGame::CAppStateGame() {
 
 //=============================================================================
 void CAppStateGame::OnKeyDown(SDLKey sym, SDLMod mod, Uint16 unicode) {
-	switch(sym) {
-		case SDLK_LEFT: {
-			Player->MoveLeft = true;
-			break;
-		}
-
-		case SDLK_RIGHT: {
-			Player->MoveRight = true;
-			break;
-		}
-
-		case SDLK_UP: {
-            Player->MoveUp = true;
-            break;
-        }
-
-		case SDLK_DOWN: {
-            Player->MoveDown = true;
-            break;
-        }
-
-		case SDLK_SPACE: {
-		    // TODO: make player fire his weapon
-			// Could also make player able to charge weapon: Count charge level while key is held down, shoot on onkeyup
-			//Player->Jump();
-		    break;
-		}
-
-		default: {
-		}
-	}
+	Player->OnKeyDown(sym, mod, unicode);
 }
 
 //------------------------------------------------------------------------------
 void CAppStateGame::OnKeyUp(SDLKey sym, SDLMod mod, Uint16 unicode) {
-	switch(sym) {
-		case SDLK_LEFT: {
-			Player->MoveLeft = false;
-			break;
-		}
-
-		case SDLK_RIGHT: {
-			Player->MoveRight = false;
-			break;
-		}
-
-		case SDLK_UP: {
-            Player->MoveUp = false;
-            break;
-        }
-
-		case SDLK_DOWN: {
-            Player->MoveDown = false;
-            break;
-        }
-
-		default: {
-		}
-	}
+	Player->OnKeyUp(sym, mod, unicode);
 }
 
 //=============================================================================
@@ -162,7 +109,7 @@ void CAppStateGame::OnLoop() {
 	float moveX = CAMERA_SPEED * CFPS::FPSControl.GetSpeedFactor();
 	CCamera::CameraControl.OnMove(moveX, static_cast<float>(CCamera::CameraControl.GetY()));
 	// Update BG offset
-	BG_offset = BG_offset - BG_SPEED * CFPS::FPSControl.GetSpeedFactor();
+	BG_offset = static_cast<int>(BG_offset - BG_SPEED * CFPS::FPSControl.GetSpeedFactor());
 	if( BG_offset <= 0 ) {
 		BG_offset = BG_WIDTH;
 	}
@@ -191,7 +138,23 @@ void CAppStateGame::OnRender(SDL_Surface* Surf_Display) {
         CEntity::EntityList[i]->OnRender(Surf_Display);
     }
 
-	CFont::FontControl.Write(Surf_Display, "test", 50, 50);
+	// Player ChargeBar
+	int BarStart = WWIDTH/2 - 50;
+	SDL_Rect RectRed;
+	RectRed.x = BarStart;
+	RectRed.y = 30;
+	RectRed.w = Player->ChargeLevel * 10;
+	RectRed.h = 10;
+	SDL_Rect RectGray;
+	RectGray.x = BarStart;
+	RectGray.y = 30;
+	RectGray.w = 100;
+	RectGray.h = 10;
+
+	SDL_FillRect(Surf_Display, &RectGray, SDL_MapRGB(Surf_Display->format, 211, 211, 211));
+	SDL_FillRect(Surf_Display, &RectRed, SDL_MapRGB(Surf_Display->format, 255, 0, 0));
+
+	//CFont::FontControl.Write(Surf_Display, "test", 50, 50);
 }
 
 //=============================================================================

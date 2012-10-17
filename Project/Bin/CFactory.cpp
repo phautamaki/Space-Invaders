@@ -97,4 +97,23 @@ bool CFactory::CreateItem(int type, int nX, int nY) {
 	return true;
 }
 
+//------------------------------------------------------------------------------
+bool CFactory::CreateBullet(int type, int nX, int nY) {
+	if( type != ENTITY_TYPE_BULLET_NORMAL &&
+		type != ENTITY_TYPE_BULLET_CHARGE1 ) {
+		return false;
+	}
+
+	CBullet* tmp = new CBullet;
+	bool EntityOK = true;
+
+	EntityOK = tmp->OnLoad( type );
+	tmp->X = static_cast<float>(nX);
+	tmp->Y = static_cast<float>(nY);
+	
+	CEntity::EntityList.push_back(tmp);
+
+	return EntityOK;
+}
+
 //==============================================================================

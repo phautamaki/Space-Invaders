@@ -2,6 +2,8 @@
 #include "CBullet.h"
 #include "Paths.h"
 
+#include "functions.h"
+
 //=============================================================================
 CBullet::CBullet() {
 }
@@ -50,6 +52,28 @@ bool CBullet::OnLoad(int nType) {
 	Manouvers.push_back(tmpMan);
 	CurrentManouver = Manouvers.begin();
 	
+    return true;
+}
+
+//------------------------------------------------------------------------------
+bool CBullet::OnCollision(CEntity* Entity) {
+	// Prevent multiple handlings for same collissions
+	if( Entity->Dead ) return false;
+
+	int whatHitMe = Entity->Type;
+
+	switch(whatHitMe) {
+		case ENTITY_TYPE_GENERIC:
+			Dead = true;
+			break;
+		case ENTITY_TYPE_ENEMY: 
+			break;
+		case ENTITY_TYPE_ITEM:
+			break;
+		default: 
+			break;
+	}
+
     return true;
 }
 

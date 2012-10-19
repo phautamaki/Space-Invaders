@@ -1,13 +1,12 @@
 #include "CUIElement.h"
 
-#include "functions.h"
-
 //==============================================================================
 std::vector<CUIElement*> 	CUIElement::UIElementList;
 
 //==============================================================================
 CUIElement::CUIElement() {
 	Hover = false;
+	Hoverable = false;
 }
 
 //-----------------------------------------------------------------------------
@@ -21,7 +20,7 @@ bool CUIElement::OnLoad(char* File, int Width, int Height) {
 
 //-----------------------------------------------------------------------------
 void CUIElement::OnLoop() {
-	if( Hover ) {
+	if( Hoverable ) {
 		int mouse_x;
 		int mouse_y;
 

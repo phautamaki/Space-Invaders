@@ -30,6 +30,9 @@ class CUIElement{
 		int		Height;
 
 		int		State;
+		bool	Hoverable;
+
+	protected:
 		bool	Hover;
 
 	public:

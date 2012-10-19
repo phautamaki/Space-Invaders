@@ -13,6 +13,10 @@ class CAppStateMainMenu : public CAppState {
 	private:
 		static CAppStateMainMenu Instance;
 
+		SDL_Surface* MainBG;
+		SDL_Surface* Title1;
+		SDL_Surface* Title2;
+
 		CButton Start;
 		CButton Exit;
 

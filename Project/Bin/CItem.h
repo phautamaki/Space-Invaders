@@ -2,10 +2,7 @@
 #ifndef _CITEM_H_
     #define _CITEM_H_
 
-#include <vector>
-
-#include "CEntity.h"
-#include "CManouver.h"
+#include "CManouvarableEntity.h"
 
 //==============================================================================
 // Could do some kind of sub typing with these (Item -> HP+) or sth like that
@@ -14,7 +11,7 @@ enum {
 };
 
 //=============================================================================
-class CItem : public CEntity {
+class CItem : public CManouvarableEntity {
     public:
         CItem();
 
@@ -31,10 +28,6 @@ class CItem : public CEntity {
         bool OnCollision(CEntity* Entity);
 
 		void OnMove(float MoveX, float MoveY);
-
-	protected:
-		std::vector<CManouver*>::iterator CurrentManouver;
-		std::vector<CManouver*> Manouvers;
 };
 
 //=============================================================================

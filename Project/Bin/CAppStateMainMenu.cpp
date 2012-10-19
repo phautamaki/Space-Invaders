@@ -2,6 +2,7 @@
 #include "CAppStateMainMenu.h"
 #include "CAppStateManager.h"
 #include "CFont.h"
+#include "Paths.h"
 
 //=============================================================================
 CAppStateMainMenu CAppStateMainMenu::Instance;
@@ -28,14 +29,30 @@ void CAppStateMainMenu::OnLButtonDown(int mX, int mY) {
 void CAppStateMainMenu::OnActivate() {
 	NextState = APPSTATE_GAME;
 
-	Start.OnLoad("Start", 200, 100);
+	if((MainBG = CSurface::OnLoad(PATH_IMAGES PATH_TITLE FILENAME_TITLE_BG)) == NULL) {
+		return;
+	}
+	if((Title1 = CSurface::OnLoad(PATH_IMAGES PATH_TITLE FILENAME_TITLE_TEXT_1)) == NULL) {
+		return;
+	}
+	if((Title2 = CSurface::OnLoad(PATH_IMAGES PATH_TITLE FILENAME_TITLE_TEXT_2)) == NULL) {
+		return;
+	}
+
+	Start.OnLoad("Start", WWIDTH/2-150, WHEIGHT - 150);
+	Start.Hoverable = true;
 	CUIElement::UIElementList.push_back(&Start);
-	Exit.OnLoad("Quit", 200, 300);
+	Exit.OnLoad("Quit", WWIDTH/2+50, WHEIGHT - 150);
+	Exit.Hoverable = true;
 	CUIElement::UIElementList.push_back(&Exit);
 }
 
 //-----------------------------------------------------------------------------
 void CAppStateMainMenu::OnDeactivate() {
+	SDL_FreeSurface(MainBG);
+	SDL_FreeSurface(Title1);
+	SDL_FreeSurface(Title2);
+
 	//--------------------------------------------------------------------------
     // UI
     //--------------------------------------------------------------------------
@@ -50,6 +67,10 @@ void CAppStateMainMenu::OnDeactivate() {
 
 //-----------------------------------------------------------------------------
 void CAppStateMainMenu::OnLoop() {
+    for(unsigned int i = 0;i < CUIElement::UIElementList.size();i++) {
+        if(!CUIElement::UIElementList[i]) continue;
+        CUIElement::UIElementList[i]->OnLoop();
+    }
 }
 
 //-----------------------------------------------------------------------------
@@ -60,7 +81,11 @@ void CAppStateMainMenu::OnRender(SDL_Surface* Surf_Display) {
 	Rect.w = WWIDTH;
 	Rect.h = WHEIGHT;
 
-	SDL_FillRect( Surf_Display, &Rect, SDL_MapRGB(Surf_Display->format,100,215,0) );
+	SDL_FillRect( Surf_Display, &Rect, 0 );
+
+	CSurface::OnDraw(Surf_Display, MainBG, 0, 0);
+	CSurface::OnDraw(Surf_Display, Title1, WWIDTH/2-377, 50);
+	CSurface::OnDraw(Surf_Display, Title2, WWIDTH/2-157, 130);
 
 	//--------------------------------------------------------------------------
     // UI
@@ -70,8 +95,6 @@ void CAppStateMainMenu::OnRender(SDL_Surface* Surf_Display) {
 
         CUIElement::UIElementList[i]->OnRender(Surf_Display);
     }
-
-	CFont::FontControl.Write(Surf_Display, "Space Invaders", 50, 50);
 }
 
 //=============================================================================

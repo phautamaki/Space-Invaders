@@ -12,7 +12,7 @@ class CButton : public CUIElement {
 	public:
         CButton();
 
-		bool OnLoad(std::string Text, int oX, int oY);
+		bool OnLoad(std::string Text, int oX, int oY, bool Image = true);
 
 		void OnRender(SDL_Surface* Surf_Display);
 		void OnRender(SDL_Surface* Surf_Display, int dX, int dY);
@@ -25,6 +25,8 @@ class CButton : public CUIElement {
 		std::string Label;
 
 	private:
+		int TextStart;
+
 		SDL_Surface*	Surf_Entity;
 
 };

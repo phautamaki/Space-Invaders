@@ -7,7 +7,7 @@ CItem::CItem() {
 
 //=============================================================================
 bool CItem::OnLoad(char* File, int Width, int Height, int MaxFrames) {
-    if(CEntity::OnLoad(File, Width, Height, MaxFrames) == false) {
+    if(CManouvarableEntity::OnLoad(File, Width, Height, MaxFrames) == false) {
         return false;
     }
 	Type = 	ENTITY_TYPE_ITEM;
@@ -66,44 +66,22 @@ bool CItem::OnLoad(char* File, int Width, int Height, int MaxFrames) {
 void CItem::OnLoop() {
 	if( Dead ) return;
 
-	CEntity::OnLoop();
-
-	if( CurrentManouver != Manouvers.end() ) {
-		if( (*CurrentManouver)->OnLoop() ) {
-			CurrentManouver++;
-		}
-	}
-	else {
-		CurrentManouver = Manouvers.begin();
-	}	
+	CManouvarableEntity::OnLoop();
 }
 
 //-----------------------------------------------------------------------------
 void CItem::OnRender(SDL_Surface* Surf_Display) {
-	CEntity::OnRender(Surf_Display);
+	CManouvarableEntity::OnRender(Surf_Display);
 }
 
 //------------------------------------------------------------------------------
 void CItem::OnCleanup() {
-	CEntity::OnCleanup();
-
-	for( unsigned int i = 0; i < Manouvers.size(); i++ ) {
-		Manouvers.at(i)->OnCleanup();
-		delete Manouvers.at(i);
-		Manouvers.at(i) = 0;
-	}
-	Manouvers.clear();
+	CManouvarableEntity::OnCleanup();
 }
 
 //------------------------------------------------------------------------------
 void CItem::OnAnimate() {
-	if(SpeedX != 0) {
-		//Anim_Control.MaxFrames = 8;
-	}else{
-		//Anim_Control.MaxFrames = 0;
-	}
-
-	CEntity::OnAnimate();
+	CManouvarableEntity::OnAnimate();
 }
 
 //------------------------------------------------------------------------------

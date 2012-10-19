@@ -10,6 +10,8 @@ class CBullet : public CManouvarableEntity {
         CBullet();
 
 		bool OnLoad(int nType);
+
+		bool OnCollision(CEntity* Entity);
 };
 
 //=============================================================================

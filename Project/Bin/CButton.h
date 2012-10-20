@@ -6,6 +6,7 @@
 
 #include "CUIElement.h"
 #include "CSurface.h"
+#include <SDL_Mixer.h>
 
 //=============================================================================
 class CButton : public CUIElement {
@@ -26,6 +27,8 @@ class CButton : public CUIElement {
 
 	private:
 		int TextStart;
+
+		Mix_Chunk *ButtonClickSound;
 
 		SDL_Surface*	Surf_Entity;
 

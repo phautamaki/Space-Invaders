@@ -24,6 +24,8 @@
 #define FILENAME_PLAYER		"ship.png"
 #define FILENAME_SPACE_BG_1 "space_bg.png"
 
+#define FILENAME_BUTTON_CLICK "button_click.wav"
+
 #define FILENAME_SHOOTING_BASIC "shoot_basic.wav"
 #define FILENAME_SHOOTING_BIG "shoot_big.wav"
 

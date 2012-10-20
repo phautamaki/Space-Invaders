@@ -3,6 +3,7 @@
 #include "CSoundBank.h"
 #include "CFactory.h"
 #include "functions.h"
+#include "Paths.h"
 
 //=============================================================================
 CPlayer::CPlayer() {
@@ -12,9 +13,14 @@ CPlayer::CPlayer() {
 	ChargeLevel = 0;
 	ChargeStart = 0;
 	LastShot	= 0;
-	// TODO: change this enum since there is no gravity in this game
-	// NB. Entity already sets the flag_none as default, so this line is not needed at all
-	//Flags = ENTITY_FLAG_GRAVITY;
+
+	ShootingSoundBasic = Mix_LoadWAV(PATH_EFFECTS FILENAME_SHOOTING_BASIC);
+	ShootingSoundBig = Mix_LoadWAV(PATH_EFFECTS FILENAME_SHOOTING_BIG);
+	PlayerCrashingSound = Mix_LoadWAV(PATH_EFFECTS FILENAME_PLAYER_CRASHING);
+
+	ShootingSoundBasic == NULL ? debug("Shit hit the fan when loading ShootingSoundBasic.") : debug("Loading ShootingSoundBasic was a great success!");
+	ShootingSoundBig  == NULL ? debug("Shit hit the fan when loading ShootingSoundBig.") : debug("Loading ShootingSoundBig was a great success!");
+	PlayerCrashingSound == NULL ? debug("Shit hit the fan when loading PlayerCrashingSound.") : debug("Loading PlayerCrashingSound was a great success!");
 }
 
 //=============================================================================
@@ -70,9 +76,11 @@ void CPlayer::Shoot() {
 	if( LastShot + PLAYER_SHOOT_DELAY < SDL_GetTicks() ) {
 		if( ChargeLevel < 10 ) {
 			CFactory::Factory.CreateBullet(ENTITY_TYPE_BULLET_NORMAL, X + PLAYER_SPRITE_WIDTH + 5, Y + PLAYER_SPRITE_HEIGHT / 2);
+			Mix_PlayChannel( -1, ShootingSoundBasic, 0 );
 		}
 		else if( ChargeLevel >= 10 ) {
 			CFactory::Factory.CreateBullet(ENTITY_TYPE_BULLET_CHARGE1, X + PLAYER_SPRITE_WIDTH + 5, Y + PLAYER_SPRITE_HEIGHT / 2);
+			Mix_PlayChannel( -1, ShootingSoundBig, 0 );
 		}
 
 		LastShot = SDL_GetTicks();
@@ -199,17 +207,14 @@ bool CPlayer::OnCollision(CEntity* Entity) {
 	// Prevent multiple handlings for same collissions
 	if( Entity->Dead ) return false;
 
-    // Maybe play here some kind of a little crash sound
-	// Play the sounds for player inside switch-case
-
 	int whatHitMe = Entity->Type;
 
 	switch(whatHitMe) {
 		case ENTITY_TYPE_ENEMY: 
 			debug("I hit an enemy. I die. :(");
-			// Should the player be killed via factory?
-			// Yes, but it's probably a good idea NOT to actually kill player (ie destroy object). Maybe better to tell CAppStateGame to substract lives, restart level and such..
-			// Check AppStateManager for this functionality!
+			Entity->Dead = true;
+			//Some epic explosion animation should happen here.
+			Mix_PlayChannel( -1, PlayerCrashingSound, 0 );
 			break;
 		case ENTITY_TYPE_ITEM: debug("I hit an item. I became strong!");
 			Entity->OnCleanup();

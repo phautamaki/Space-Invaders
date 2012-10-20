@@ -2,9 +2,11 @@
     #define _PATHS_H_
 
 
-#define PATH_IMAGES	"./images/"
-#define PATH_FONTS	"./fonts/"
-#define PATH_MAPS	"./maps/"
+#define PATH_IMAGES		"./images/"
+#define PATH_FONTS		"./fonts/"
+#define PATH_MAPS		"./maps/"
+#define PATH_EFFECTS	"./sounds/effects/"
+#define PATH_MUSIC		"./sounds/music/"
 
 #define PATH_UI			""
 #define PATH_TITLE		""
@@ -21,5 +23,10 @@
 
 #define FILENAME_PLAYER		"ship.png"
 #define FILENAME_SPACE_BG_1 "space_bg.png"
+
+#define FILENAME_SHOOTING_BASIC "shoot_basic.wav"
+#define FILENAME_SHOOTING_BIG "shoot_big.wav"
+
+#define FILENAME_PLAYER_CRASHING "player_ship_crashing.wav"
 
 #endif

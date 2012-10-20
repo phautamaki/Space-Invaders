@@ -3,6 +3,7 @@
     #define _CPLAYER_H_
 
 #include "CEntity.h"
+#include <SDL_mixer.h>
 
 //=============================================================================
 class CPlayer : public CEntity {
@@ -42,6 +43,11 @@ class CPlayer : public CEntity {
 	private:
 		int ChargeStart;
 		int LastShot;
+
+		Mix_Chunk *ShootingSoundBasic;
+		Mix_Chunk *ShootingSoundBig;
+		
+		Mix_Chunk *PlayerCrashingSound;
 };
 
 //=============================================================================

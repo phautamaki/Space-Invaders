@@ -3,6 +3,10 @@
 #include "Define.h"
 
 #include <cmath>
+
+#define Maximum(a, b) ((a > b) ? a : b)
+#define Minimum(a, b) ((a < b) ? a : b)
+
 //==============================================================================
 std::vector<CEntity*> 	CEntity::EntityList;
  
@@ -12,6 +16,8 @@ CEntity::CEntity() {
 
 	X = 0;
 	Y = 0;
+	originX = 0;
+	originY = 0;
 
 	Width 	= 0;
 	Height 	= 0;
@@ -34,19 +40,11 @@ CEntity::CEntity() {
 	AccelX = 0;
 	AccelY = 0;
 
-	CanJump = false;
-
 	MaxSpeedX = 10;
 	MaxSpeedY = 10;
 
 	CurrentFrameCol = 0;
 	CurrentFrameRow = 0;
-
-	Col_X = 0;
-	Col_Y = 0;
-
-	Col_Width  = 0;
-	Col_Height = 0;
 }
 
 //------------------------------------------------------------------------------
@@ -63,6 +61,8 @@ bool CEntity::OnLoad(char* File, int Width, int Height, int MaxFrames) {
 
 	this->Width = Width;
 	this->Height = Height;
+	this->originX = Width / 2.0f;
+	this->originY = Height / 2.0f;
 
 	Anim_Control.MaxFrames = MaxFrames;
 
@@ -202,8 +202,6 @@ void CEntity::OnMove(float MoveX, float MoveY) {
 	double NewX = 0;
 	double NewY = 0;
 
-	CanJump = false;
-
 	MoveX *= CFPS::FPSControl.GetSpeedFactor();
 	MoveY *= CFPS::FPSControl.GetSpeedFactor();
 
@@ -229,18 +227,16 @@ void CEntity::OnMove(float MoveX, float MoveY) {
 				X += static_cast<float>(NewX);
 			}
 			else{
-				SpeedX = 0;
+				//SpeedX = 0;
+				X += static_cast<float>(NewX); // TODO: REMOVE
 			}
 
 			if(PosValid((int)(X), (int)(Y + NewY))) {
 				Y += static_cast<float>(NewY);
 			}
 			else{
-                if(MoveY > 0) {
-                    CanJump = true;
-                }
-
-				SpeedY = 0;
+				//SpeedY = 0;
+				Y += static_cast<float>(NewY); // TODO: REMOVE
 			}
 		}
 
@@ -261,14 +257,6 @@ void CEntity::OnMove(float MoveX, float MoveY) {
 	}
 }
 
-//------------------------------------------------------------------------------
-bool CEntity::Jump() {
-	if(CanJump == false) return false;
-
-	SpeedY = -MaxSpeedY;
-
-	return true;
-}
 
 //------------------------------------------------------------------------------
 void CEntity::StopMove() {
@@ -286,6 +274,110 @@ void CEntity::StopMove() {
 	}
 }
 
+SDL_Rect CEntity::GetBounds()
+{
+    SDL_Rect bounds;
+    bounds.x = (Sint16)(X);
+    bounds.y = (Sint16)(Y);
+    bounds.w = (Sint16)(Width);
+    bounds.h = (Sint16)(Height);
+ 
+    return bounds;
+}
+
+SDL_Rect CEntity::GetFrameBounds()
+{
+    SDL_Rect frameBounds;
+    frameBounds.x = 0;
+    frameBounds.y = 0;
+    frameBounds.w = (Sint16)Width;
+    frameBounds.h = (Sint16)Height;
+     
+    return frameBounds;
+}
+
+SDL_Rect CEntity::NormalizeBounds(const SDL_Rect& rect)
+{
+    SDL_Rect normalized;
+    normalized.x = rect.x - (Sint16)X + GetFrameBounds().x;
+    normalized.y = rect.y - (Sint16)Y + GetFrameBounds().y;
+    normalized.w = rect.w;
+    normalized.h = rect.h;
+     
+    return normalized;
+}
+
+SDL_Rect CEntity::Intersection(const SDL_Rect& boundsA, const SDL_Rect& boundsB)
+{
+    int x1 = Maximum(boundsA.x, boundsB.x);
+    int y1 = Maximum(boundsA.y, boundsB.y);
+    int x2 = Minimum(boundsA.x + boundsA.w, boundsB.x + boundsB.w);
+    int y2 = Minimum(boundsA.y + boundsA.h, boundsB.y + boundsB.h);
+     
+    int width = x2 - x1;
+    int height = y2 - y1;
+     
+    if(width > 0 && height > 0)
+    {
+        SDL_Rect intersect = {x1, y1, width, height};
+        return intersect;
+    }
+    else
+    {
+        SDL_Rect intersect = {0, 0, 0, 0};
+        return intersect;
+    }
+}
+
+bool CEntity::CheckCollision(CEntity* entityA, CEntity* entityB)
+{
+    SDL_Rect collisionRect = Intersection(entityA->GetBounds(), entityB->GetBounds());
+ 
+    if(collisionRect.w == 0 && collisionRect.h == 0)
+        return false;
+ 
+    SDL_Rect normalA = entityA->NormalizeBounds(collisionRect);
+    SDL_Rect normalB = entityB->NormalizeBounds(collisionRect);
+ 
+    for(int y = 0; y < collisionRect.h; y++)
+        for(int x = 0; x < collisionRect.w; x++)
+            if(GetAlphaXY(entityA, normalA.x + x, normalA.y + y) && GetAlphaXY(entityB, normalB.x + x, normalB.y + y))
+                return true;
+ 
+    return false;
+}
+
+bool CEntity::GetAlphaXY(CEntity* entity, int x, int y)
+{
+    int bpp = entity->Surf_Entity->format->BytesPerPixel;
+    Uint8* p = (Uint8*)entity->Surf_Entity->pixels + y * entity->Surf_Entity->pitch + x * bpp;
+    Uint32 pixelColor;
+     
+    switch(bpp)
+    {
+        case(1):
+            pixelColor = *p;
+            break;
+        case(2):
+            pixelColor = *(Uint16*)p;
+            break;
+        case(3):
+            if(SDL_BYTEORDER == SDL_BIG_ENDIAN)
+                pixelColor = p[0] << 16 | p[1] << 8 | p[2];
+            else
+                pixelColor = p[0] | p[1] << 8 | p[2] << 16;
+            break;
+        case(4):
+            pixelColor = *(Uint32*)p;
+            break;
+    }
+     
+    Uint8 red, green, blue, alpha;
+    SDL_GetRGBA(pixelColor, entity->Surf_Entity->format, &red, &green, &blue, &alpha);
+ 
+    return alpha > 10;
+}
+
 //==============================================================================
 bool CEntity::Collides(int oX, int oY, int oW, int oH) {
     int left1, left2;
@@ -293,19 +385,19 @@ bool CEntity::Collides(int oX, int oY, int oW, int oH) {
     int top1, top2;
     int bottom1, bottom2;
 
-	int tX = (int)X + Col_X;
-	int tY = (int)Y + Col_Y;
+	int tX = (int)X;
+	int tY = (int)Y;
 
     left1 = tX;
     left2 = oX;
 
-    right1 = left1 + Width - 1 - Col_Width;
+	right1 = left1 + Width - 1;
     right2 = oX + oW - 1;
 
     top1 = tY;
     top2 = oY;
 
-    bottom1 = top1 + Height - 1 - Col_Height;
+	bottom1 = top1 + Height - 1;
     bottom2 = oY + oH - 1;
 
 
@@ -322,11 +414,11 @@ bool CEntity::Collides(int oX, int oY, int oW, int oH) {
 bool CEntity::PosValid(int NewX, int NewY) {
 	bool Return = true;
 
-	int StartX 	= (NewX + Col_X) / TILE_SIZE;
-	int StartY 	= (NewY + Col_Y) / TILE_SIZE;
+	int StartX 	= NewX / TILE_SIZE;
+	int StartY 	= NewY / TILE_SIZE;
 
-	int EndX	= ((NewX + Col_X) + Width - Col_Width - 1) 		/ TILE_SIZE;
-	int EndY	= ((NewY + Col_Y) + Height - Col_Height - 1)	/ TILE_SIZE;
+	int EndX	= (NewX + Width - 1) / TILE_SIZE;
+	int EndY	= (NewY + Height - 1) / TILE_SIZE;
 
 	for(int iY = StartY;iY <= EndY;iY++) {
 		for(int iX = StartX;iX <= EndX;iX++) {
@@ -367,7 +459,7 @@ bool CEntity::PosValidTile(CTile* Tile) {
 bool CEntity::PosValidEntity(CEntity* Entity, int NewX, int NewY) {
 	if(this != Entity && Entity != NULL && Entity->Dead == false &&
 		Entity->Flags ^ ENTITY_FLAG_MAPONLY &&
-		Entity->Collides(NewX + Col_X, NewY + Col_Y, Width - Col_Width - 1, Height - Col_Height - 1) == true) {
+		Entity->Collides(NewX, NewY, Width - 1, Height - 1) == true) {
 
 		CEntityCol EntityCol;
 

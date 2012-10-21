@@ -9,6 +9,13 @@
 #define MAP_HEIGHT	30 // Number of tiles vertically in a map
 #define TILE_SIZE	16 // Size of one tile in pixels
 
+/* Background specific settings */
+#define BG_SPEED 1
+#define BG_WIDTH 960
+
+/* Camera specific settings */
+#define CAMERA_SPEED 2 // Camera speed in pixels per second
+
 /* Common settings for all entities */
 #define ENTITY_KILLDISTANCE 200 // Entity status is set to dead after camera gets this far past it
 
@@ -18,6 +25,9 @@
 #define PLAYER_ACCEL_UP		-3
 #define PLAYER_ACCEL_DOWN	 3
 
+#define PLAYER_MAX_SPEED_X 10
+#define PLAYER_MAX_SPEED_Y 10
+
 #define PLAYER_SPRITE_WIDTH		100
 #define PLAYER_SPRITE_HEIGHT	64
 #define PLAYER_MAX_FRAMES		1
@@ -26,11 +36,9 @@
 #define PLAYER_BULLET_NORMAL_SPEED	25
 #define PLAYER_BULLET_CHARGE1_SPEED	20
 
-/* Background specific settings */
-#define BG_SPEED 1
-#define BG_WIDTH 960
-
-/* Camera specific settings */
-#define CAMERA_SPEED 2 // Camera speed in pixels per second
+/* Enemy specific settings */
+#define ENEMY_SHIP_SPRITE_WIDTH		34
+#define ENEMY_SHIP_SPRITE_HEIGHT	30
+#define ENEMY_SHIP_MAX_FRAMES		1
 
 #endif

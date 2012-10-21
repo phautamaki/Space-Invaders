@@ -50,6 +50,8 @@ class CEntity {
 	public:
 		float	X;
 		float	Y;
+		float	originX;
+		float	originY;
 
 		int		Width;
 		int		Height;
@@ -75,8 +77,6 @@ class CEntity {
 		float	AccelX;
 		float	AccelY;
 
-		bool	CanJump;
-
 	public:
 		float	MaxSpeedX;
 		float	MaxSpeedY;
@@ -84,12 +84,6 @@ class CEntity {
 	protected:
 		int		CurrentFrameCol;
 		int		CurrentFrameRow;
-
-	protected:
-		int		Col_X;
-		int		Col_Y;
-		int		Col_Width;
-		int		Col_Height;
 
 	public:
 		CEntity();
@@ -112,11 +106,16 @@ class CEntity {
 	public:
 		void    OnMove(float MoveX, float MoveY);
 
-		virtual bool Jump();
-
 		void 	StopMove();
 
 	public:
+		SDL_Rect GetBounds();
+		SDL_Rect GetFrameBounds();
+		SDL_Rect NormalizeBounds(const SDL_Rect& rect);
+        static SDL_Rect Intersection(const SDL_Rect& boundsA, const SDL_Rect& boundsB);
+        static bool CheckCollision(CEntity* entityA, CEntity* entityB);
+        static bool GetAlphaXY(CEntity* entity, int x, int y);
+
 		bool    Collides(int oX, int oY, int oW, int oH);
 
 	private:

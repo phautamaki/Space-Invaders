@@ -14,6 +14,7 @@
 
 //=============================================================================
 class CAppStateGame : public CAppState {
+	
 	private:
 		static CAppStateGame Instance;
 

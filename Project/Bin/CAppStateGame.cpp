@@ -5,6 +5,8 @@
 #include "functions.h"
 #include "Paths.h"
 
+#include "CApp.h"
+
 //=============================================================================
 CAppStateGame CAppStateGame::Instance;
 
@@ -41,6 +43,7 @@ void CAppStateGame::OnActivate() {
 
 	// Enemy Ship
 	CFactory::Factory.CreateEnemyShip(SHIP_1, 1000, 100);
+
 	// Item
 	CFactory::Factory.CreateItem(ITEM_1, 1000, 50);
 	debug("All entities loaded successfully", 1);
@@ -97,9 +100,27 @@ void CAppStateGame::OnLoop() {
 
         if(EntityA == NULL || EntityB == NULL) continue;
 
-        if(EntityA->OnCollision(EntityB)) {
-            EntityB->OnCollision(EntityA);
-        }
+
+		/* Pixel precise collision detection */
+
+		// Create rectangle of the possible collision area
+		SDL_Rect collisionRect = CEntity::Intersection(EntityA->GetBounds(), EntityB->GetBounds());
+		
+		// Check if there is even a possible collision
+		if(collisionRect.w != 0 && collisionRect.h != 0 ) {
+
+			// Check if there is/are actual pixel overlapping between
+			// both entities. If there is...
+			if(CEntity::CheckCollision(EntityA, EntityB)) {
+				
+				// Let both entities know of the collision
+				EntityA->OnCollision(EntityB);
+				EntityB->OnCollision(EntityA);
+				//debug("Collision");
+				
+			}
+		}
+		
     }
 
     CEntityCol::EntityColList.clear();

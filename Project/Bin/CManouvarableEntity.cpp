@@ -19,7 +19,7 @@ void CManouvarableEntity::OnLoop() {
 	if( Dead ) return;
 
 	CEntity::OnLoop();
-
+	
 	if( CurrentManouver != Manouvers.end() ) {
 		if( (*CurrentManouver)->OnLoop() ) {
 			CurrentManouver++;
@@ -27,7 +27,7 @@ void CManouvarableEntity::OnLoop() {
 	}
 	else {
 		CurrentManouver = Manouvers.begin();
-	}	
+	}
 }
 
 //-----------------------------------------------------------------------------

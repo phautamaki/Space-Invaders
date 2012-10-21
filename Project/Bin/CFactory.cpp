@@ -66,7 +66,7 @@ bool CFactory::CreateEnemyShip(int type, int nX, int nY) {
 
 	switch( type ) {
 		case SHIP_1:
-			tmp->OnLoad( PATH_IMAGES PATH_ENEMIES "ship1.png",34, 30, 1);
+			tmp->OnLoad( PATH_IMAGES PATH_ENEMIES "ship1.png",ENEMY_SHIP_SPRITE_WIDTH, ENEMY_SHIP_SPRITE_HEIGHT, ENEMY_SHIP_MAX_FRAMES);
 			tmp->X = static_cast<float>(nX);
 			tmp->Y = static_cast<float>(nY);
 			break;

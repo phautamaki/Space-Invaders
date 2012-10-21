@@ -10,6 +10,9 @@ CPlayer::CPlayer() {
 	MoveUp	  = false;
 	MoveDown  = false;
 
+	MaxSpeedX = PLAYER_MAX_SPEED_X;
+	MaxSpeedY = PLAYER_MAX_SPEED_Y;
+
 	ChargeLevel = 0;
 	ChargeStart = 0;
 	LastShot	= 0;
@@ -102,6 +105,7 @@ bool CPlayer::OnLoad(char* File, int Width, int Height, int MaxFrames) {
 
 //-----------------------------------------------------------------------------
 void CPlayer::OnLoop() {
+
 	// If left or right button is not pressed anymore, stop player movement
 	if(MoveLeft == false && MoveRight == false) {
 		StopMoveX();
@@ -204,6 +208,7 @@ void CPlayer::OnAnimate() {
 
 //------------------------------------------------------------------------------
 bool CPlayer::OnCollision(CEntity* Entity) {
+	
 	// Prevent multiple handlings for same collissions
 	if( Entity->Dead ) return false;
 
@@ -217,15 +222,15 @@ bool CPlayer::OnCollision(CEntity* Entity) {
 			Mix_PlayChannel( -1, PlayerCrashingSound, 0 );
 			break;
 		case ENTITY_TYPE_ITEM: debug("I hit an item. I became strong!");
-			Entity->OnCleanup();
+			//Entity->OnCleanup();
 			Entity->Dead = true; //Should this also be done via factory?		
 			// To previous comment: No, factory should only be used to create entities and remove dead entities
 			break;
 		default: debug("I hit something. Not sure what...");
 			break;
 	}
-
-    return true;
+	
+    return true; 
 }
 
 //------------------------------------------------------------------------------

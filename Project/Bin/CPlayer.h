@@ -31,23 +31,25 @@ class CPlayer : public CEntity {
 
         bool OnCollision(CEntity* Entity);
 
+		bool OnCollision(CTile* Tile);
+
 		void OnKeyDown(SDLKey sym, SDLMod mod, Uint16 unicode);
 
        	void OnKeyUp(SDLKey sym, SDLMod mod, Uint16 unicode);
 
 	public:
-		int SoundFly;
+		int	ChargeLevel;
 
-		int ChargeLevel;
+		bool TookHit;
 
 	private:
 		int ChargeStart;
 		int LastShot;
 
-		Mix_Chunk *ShootingSoundBasic;
-		Mix_Chunk *ShootingSoundBig;
+		Mix_Chunk* ShootingSoundBasic;
+		Mix_Chunk* ShootingSoundBig;
 		
-		Mix_Chunk *PlayerCrashingSound;
+		Mix_Chunk* PlayerCrashingSound;
 };
 
 //=============================================================================

@@ -39,7 +39,7 @@ class CCamera {
 		int GetY();
 
 	public:
-		//void SetPos(int X, int Y);
+		void SetPos(int X, int Y);
 
 		//void SetTarget(float* X, float* Y);
 };

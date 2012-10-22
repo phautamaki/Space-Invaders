@@ -43,6 +43,9 @@ class CAppStateGame : public CAppState {
 
 	public:
 		static CAppStateGame* GetInstance();
+
+	private:
+		void ResetLevel();
 };
 
 //=============================================================================

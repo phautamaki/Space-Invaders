@@ -77,4 +77,18 @@ bool CBullet::OnCollision(CEntity* Entity) {
     return true;
 }
 
+//------------------------------------------------------------------------------
+bool CBullet::OnCollision(CTile* Tile) {
+	bool PassThrough = false;
+
+	switch( Tile->TypeID ){
+		case TILE_TYPE_BLOCK:
+			Dead = true;
+			break;
+		default:
+			break;
+	}
+	return PassThrough;
+}
+
 //=============================================================================

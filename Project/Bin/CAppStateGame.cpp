@@ -66,18 +66,6 @@ void CAppStateGame::OnActivate() {
 void CAppStateGame::OnDeactivate() {
 	CArea::AreaControl.OnCleanup();
 
-    //--------------------------------------------------------------------------
-    // Entities
-    //--------------------------------------------------------------------------
-    /*for(unsigned int i = 0;i < CEntity::EntityList.size();i++) {
-        if(!CEntity::EntityList[i]) continue;
-
-        CEntity::EntityList[i]->OnCleanup();
-    }
-
-    CEntity::EntityList.clear();
-	*/
-
 	// Empty entities
 	CFactory::Factory.OnCleanup();
 }
@@ -100,7 +88,6 @@ void CAppStateGame::OnLoop() {
 
         if(EntityA == NULL || EntityB == NULL) continue;
 
-
 		/* Pixel precise collision detection */
 
 		// Create rectangle of the possible collision area
@@ -108,19 +95,14 @@ void CAppStateGame::OnLoop() {
 		
 		// Check if there is even a possible collision
 		if(collisionRect.w != 0 && collisionRect.h != 0 ) {
-
 			// Check if there is/are actual pixel overlapping between
 			// both entities. If there is...
 			if(CEntity::CheckCollision(EntityA, EntityB)) {
-				
 				// Let both entities know of the collision
 				EntityA->OnCollision(EntityB);
 				EntityB->OnCollision(EntityA);
-				//debug("Collision");
-				
 			}
 		}
-		
     }
 
     CEntityCol::EntityColList.clear();
@@ -133,6 +115,11 @@ void CAppStateGame::OnLoop() {
 	BG_offset = static_cast<int>(BG_offset - BG_SPEED * CFPS::FPSControl.GetSpeedFactor());
 	if( BG_offset <= 0 ) {
 		BG_offset = BG_WIDTH;
+	}
+
+	// Player died -> Reset level
+	if( Player->TookHit ) {
+		ResetLevel();
 	}
 }
 
@@ -181,6 +168,17 @@ void CAppStateGame::OnRender(SDL_Surface* Surf_Display) {
 //=============================================================================
 CAppStateGame* CAppStateGame::GetInstance() {
 	return &Instance;
+}
+
+//=============================================================================
+void CAppStateGame::ResetLevel(){
+	Player->TookHit = false;
+
+	Player->X = 400;
+	Player->Y = 240;
+	Player->SpeedX = Player->SpeedY = Player->AccelX = Player->AccelY = 0;
+
+	CCamera::CameraControl.SetPos(0,0);
 }
 
 //=============================================================================

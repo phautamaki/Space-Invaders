@@ -12,7 +12,6 @@
 
 //==============================================================================
 // All the different types should be added here
-// Should perhaps separate different enemy types and items?
 enum Types {
 	ENTITY_TYPE_GENERIC = 0,
 	ENTITY_TYPE_PLAYER,
@@ -20,6 +19,9 @@ enum Types {
 	ENTITY_TYPE_ITEM,
 	ENTITY_TYPE_BULLET_NORMAL,
 	ENTITY_TYPE_BULLET_CHARGE1
+};
+enum SubTypes {
+	ENTITY_SUBTYPE_NONE = 0
 };
 
 //==============================================================================
@@ -66,6 +68,7 @@ class CEntity {
 
 	public:
 		int		Type;
+		int		SubType;
 
 		bool	Dead;
 		int		Flags;
@@ -102,6 +105,8 @@ class CEntity {
 		virtual void OnAnimate();
 
 		virtual bool OnCollision(CEntity* Entity);
+
+		virtual bool OnCollision(CTile* Tile);
 
 	public:
 		void    OnMove(float MoveX, float MoveY);

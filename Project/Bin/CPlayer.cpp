@@ -7,8 +7,9 @@
 
 //=============================================================================
 CPlayer::CPlayer() {
-	MoveUp	  = false;
-	MoveDown  = false;
+	MoveUp		= false;
+	MoveDown	= false;
+	TookHit		= false;
 
 	MaxSpeedX = PLAYER_MAX_SPEED_X;
 	MaxSpeedY = PLAYER_MAX_SPEED_Y;
@@ -193,6 +194,10 @@ void CPlayer::OnRender(SDL_Surface* Surf_Display) {
 //------------------------------------------------------------------------------
 void CPlayer::OnCleanup() {
 	CEntity::OnCleanup();
+
+	Mix_FreeChunk(ShootingSoundBasic);
+	Mix_FreeChunk(ShootingSoundBig);
+	Mix_FreeChunk(PlayerCrashingSound);
 }
 
 //------------------------------------------------------------------------------
@@ -212,9 +217,7 @@ bool CPlayer::OnCollision(CEntity* Entity) {
 	// Prevent multiple handlings for same collissions
 	if( Entity->Dead ) return false;
 
-	int whatHitMe = Entity->Type;
-
-	switch(whatHitMe) {
+	switch(Entity->Type) {
 		case ENTITY_TYPE_ENEMY: 
 			debug("I hit an enemy. I die. :(");
 			Entity->Dead = true;
@@ -222,15 +225,27 @@ bool CPlayer::OnCollision(CEntity* Entity) {
 			Mix_PlayChannel( -1, PlayerCrashingSound, 0 );
 			break;
 		case ENTITY_TYPE_ITEM: debug("I hit an item. I became strong!");
-			//Entity->OnCleanup();
-			Entity->Dead = true; //Should this also be done via factory?		
-			// To previous comment: No, factory should only be used to create entities and remove dead entities
+			Entity->Dead = true;	
 			break;
 		default: debug("I hit something. Not sure what...");
 			break;
 	}
 	
     return true; 
+}
+
+//------------------------------------------------------------------------------
+bool CPlayer::OnCollision(CTile* Tile){
+	bool PassThrough = false;
+
+	switch( Tile->TypeID ){
+		case TILE_TYPE_BLOCK:
+			TookHit = true;
+			break;
+		default:
+			break;
+	}
+	return PassThrough;
 }
 
 //------------------------------------------------------------------------------

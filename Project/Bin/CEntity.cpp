@@ -29,7 +29,8 @@ CEntity::CEntity() {
 
 	TargetAngle = 999;
 
-	Type = 	ENTITY_TYPE_GENERIC;
+	Type	= ENTITY_TYPE_GENERIC;
+	SubType = ENTITY_SUBTYPE_NONE;
 
 	Dead = false;
 	Flags = ENTITY_FLAG_NONE;
@@ -183,9 +184,14 @@ void CEntity::OnAnimate() {
 	Anim_Control.OnAnimate();
 }
 
-//------------------------------------------------------------------------------
+//==============================================================================
 bool CEntity::OnCollision(CEntity* Entity) {
     return true;
+}
+
+//------------------------------------------------------------------------------
+bool CEntity::OnCollision(CTile* Tile) {
+    return false;
 }
 
 //==============================================================================
@@ -274,6 +280,7 @@ void CEntity::StopMove() {
 	}
 }
 
+//------------------------------------------------------------------------------
 SDL_Rect CEntity::GetBounds()
 {
     SDL_Rect bounds;
@@ -285,6 +292,7 @@ SDL_Rect CEntity::GetBounds()
     return bounds;
 }
 
+//------------------------------------------------------------------------------
 SDL_Rect CEntity::GetFrameBounds()
 {
     SDL_Rect frameBounds;
@@ -296,6 +304,7 @@ SDL_Rect CEntity::GetFrameBounds()
     return frameBounds;
 }
 
+//------------------------------------------------------------------------------
 SDL_Rect CEntity::NormalizeBounds(const SDL_Rect& rect)
 {
     SDL_Rect normalized;
@@ -307,6 +316,7 @@ SDL_Rect CEntity::NormalizeBounds(const SDL_Rect& rect)
     return normalized;
 }
 
+//------------------------------------------------------------------------------
 SDL_Rect CEntity::Intersection(const SDL_Rect& boundsA, const SDL_Rect& boundsB)
 {
     int x1 = Maximum(boundsA.x, boundsB.x);
@@ -329,6 +339,7 @@ SDL_Rect CEntity::Intersection(const SDL_Rect& boundsA, const SDL_Rect& boundsB)
     }
 }
 
+//------------------------------------------------------------------------------
 bool CEntity::CheckCollision(CEntity* entityA, CEntity* entityB)
 {
     SDL_Rect collisionRect = Intersection(entityA->GetBounds(), entityB->GetBounds());
@@ -347,6 +358,7 @@ bool CEntity::CheckCollision(CEntity* entityA, CEntity* entityB)
     return false;
 }
 
+//------------------------------------------------------------------------------
 bool CEntity::GetAlphaXY(CEntity* entity, int x, int y)
 {
     int bpp = entity->Surf_Entity->format->BytesPerPixel;
@@ -425,7 +437,7 @@ bool CEntity::PosValid(int NewX, int NewY) {
 			CTile* Tile = CArea::AreaControl.GetTile(iX * TILE_SIZE, iY * TILE_SIZE);
 
 			if(PosValidTile(Tile) == false) {
-				Return = false;
+				Return = OnCollision(Tile);
 			}
 		}
 	}

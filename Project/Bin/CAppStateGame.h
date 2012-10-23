@@ -2,6 +2,8 @@
 #ifndef __CAPPSTATEGAME_H__
 	#define __CAPPSTATEGAME_H__
 
+#include <vector>
+
 #include "CAppState.h"
 
 #include "CArea.h"
@@ -9,6 +11,7 @@
 #include "CEntity.h"
 #include "CEnemy.h"
 #include "CSurface.h"
+#include "CFileReader.h"
 
 #include "CPlayer.h"
 
@@ -41,10 +44,28 @@ class CAppStateGame : public CAppState {
 
 		void OnRender(SDL_Surface* Surf_Display);
 
+		struct LevelInfo {
+
+			unsigned int ActiveXPosition; //When comes visible
+			unsigned int Type;			  //Item or enemy
+			unsigned int SubType;		  //What kind
+			unsigned int YPosition;		  //Y-position from which appears (X is calculated based on Cameras X-position).
+
+		};
+
+		std::vector<LevelInfo> GetCurrentLevelInfo(const std::string& filename);
+
 	public:
 		static CAppStateGame* GetInstance();
 
 	private:
+
+		//Holds the information about different entities (enemies and items) that should appear.
+		std::vector<LevelInfo> Level;
+
+		//Next index to inspect from Level-vector
+		unsigned int LevelInfoIndex;
+
 		void ResetLevel();
 };
 

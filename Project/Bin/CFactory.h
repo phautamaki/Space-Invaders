@@ -1,6 +1,6 @@
 //=============================================================================
 #ifndef _CFACTORY_H_
-    #define _CFACTORY_H_
+#define _CFACTORY_H_
 
 #include <vector>
 

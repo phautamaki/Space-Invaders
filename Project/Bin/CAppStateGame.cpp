@@ -1,9 +1,13 @@
 //=============================================================================
+#include <fstream>
+#include <sstream>
+#include <string>
 #include "CAppStateGame.h"
 #include "CFont.h"
 #include "CFactory.h"
 #include "functions.h"
 #include "Paths.h"
+#include "CFileReader.h"
 
 #include "CApp.h"
 
@@ -41,11 +45,12 @@ void CAppStateGame::OnActivate() {
 
 	// TODO: Player2 not needed yet. Make the game support co-op later
 
-	// Enemy Ship
-	CFactory::Factory.CreateEnemyShip(SHIP_1, 1000, 100);
+	//Loading of level information. Level changing feature should be implemented.
+	Level = GetCurrentLevelInfo ("level1info.txt");
 
-	// Item
-	CFactory::Factory.CreateItem(ITEM_1, 1000, 50);
+	//We start from the first item in the vector
+	LevelInfoIndex = 0;
+
 	debug("All entities loaded successfully", 1);
 
 	debug("Additional image loading stat", 1);
@@ -120,6 +125,27 @@ void CAppStateGame::OnLoop() {
 	// Player died -> Reset level
 	if( Player->TookHit ) {
 		ResetLevel();
+	}	
+
+	if( LevelInfoIndex < Level.size() && CCamera::CameraControl.GetX() >= Level.at(LevelInfoIndex).ActiveXPosition) {
+
+		CAppStateGame::LevelInfo TmpInfo = Level.at(LevelInfoIndex);
+		
+		switch(TmpInfo.Type) {
+			case ENTITY_TYPE_ENEMY:
+				// Enemy Ship. SubTypes should be used here once they exist (SHIP_1)
+				CFactory::Factory.CreateEnemyShip(SHIP_1, CCamera::CameraControl.GetX()+1000, TmpInfo.YPosition);
+				break;
+			case ENTITY_TYPE_ITEM:
+				// Item
+				CFactory::Factory.CreateItem(ITEM_1, CCamera::CameraControl.GetX()+1000, TmpInfo.YPosition);
+				break;
+			default:
+				break;
+		}
+
+		LevelInfoIndex++;
+	
 	}
 }
 
@@ -179,6 +205,61 @@ void CAppStateGame::ResetLevel(){
 	Player->SpeedX = Player->SpeedY = Player->AccelX = Player->AccelY = 0;
 
 	CCamera::CameraControl.SetPos(0,0);
+	
+	//Let's set index back to the start
+	LevelInfoIndex = 0;
+
+	//And kill everything except player (it seems that player is currently type ENTITY_TYPE_GENERIC and not ENTITY_TYPE_PLAYER).
+	for(unsigned int i = 0;i < CEntity::EntityList.size();i++) {
+		if(!CEntity::EntityList[i] || CEntity::EntityList[i]->Type == ENTITY_TYPE_GENERIC) continue;
+
+		CEntity::EntityList[i]->Dead = true;
+    }
+
 }
 
 //=============================================================================
+
+std::vector<CAppStateGame::LevelInfo> CAppStateGame::GetCurrentLevelInfo(const std::string& filename) {
+
+	//Temporary vector to be returned
+	std::vector<CAppStateGame::LevelInfo> tmp;
+
+	std::ifstream file;
+	CFileReader::FileReader.GetFile(filename, file);
+	std::string line;
+
+	//In the file the contents should be in (one item on one line) format ActiveXPosition Type SubType YPosition.
+	while(!file.eof()) {
+
+		//First we get the item
+		std::getline(file, line);
+		std::istringstream istream(line);
+		std::vector<int>values;
+		std::string value = "";
+		
+		//Then we get the separate values
+		while(istream >> value) {
+			values.push_back(StringToInt(value));
+		}
+
+		//Lousy check to see if contets in the file are in correct format
+		if(values.size() == 4) {
+			CAppStateGame::LevelInfo info;
+			info.ActiveXPosition = values.at(0);
+			info.Type = values.at(1);
+			info.SubType = values.at(2);
+		    info.YPosition = values.at(3);
+
+			tmp.push_back(info);
+		}
+		else {
+			debug("There was some problems with the file. Could not read contents properly");
+			break;
+		}
+		
+	}
+
+	return tmp;
+
+}

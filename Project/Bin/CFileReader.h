@@ -15,8 +15,6 @@ public:
 
 	bool CheckFileExistence(std::string& filename);
 
-	std::string HV();
-
 private:
 
 };

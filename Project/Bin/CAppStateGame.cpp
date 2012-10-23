@@ -260,6 +260,7 @@ std::vector<CAppStateGame::LevelInfo> CAppStateGame::GetCurrentLevelInfo(const s
 		
 	}
 
+	file.close();
 	return tmp;
 
 }

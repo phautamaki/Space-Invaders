@@ -17,15 +17,31 @@
 
 //=============================================================================
 class CAppStateGame : public CAppState {
+	public:
+		struct LevelInfo {
+			unsigned int ActiveXPosition; //When comes visible
+			unsigned int Type;			  //Item or enemy
+			unsigned int SubType;		  //What kind
+			unsigned int YPosition;		  //Y-position from which appears (X is calculated based on Cameras X-position).
+
+		};
 	
 	private:
 		static CAppStateGame Instance;
 
         CPlayer*		Player;
 
+		// GUI
+		SDL_Surface*	IconLife;
+
 		// Scrolling space background
 		SDL_Surface*	SpaceBG;
 		int				BG_offset;
+
+		//Holds the information about different entities (enemies and items) that should appear.
+		std::vector<LevelInfo> Level;
+		//Next index to inspect from Level-vector
+		unsigned int LevelInfoIndex;
 
 	private:
 		CAppStateGame();
@@ -34,6 +50,8 @@ class CAppStateGame : public CAppState {
        	void OnKeyDown(SDLKey sym, SDLMod mod, Uint16 unicode);
 
        	void OnKeyUp(SDLKey sym, SDLMod mod, Uint16 unicode);
+
+		std::vector<LevelInfo> GetCurrentLevelInfo(const std::string& filename);
 
 	public:
 		void OnActivate();
@@ -44,28 +62,10 @@ class CAppStateGame : public CAppState {
 
 		void OnRender(SDL_Surface* Surf_Display);
 
-		struct LevelInfo {
-
-			unsigned int ActiveXPosition; //When comes visible
-			unsigned int Type;			  //Item or enemy
-			unsigned int SubType;		  //What kind
-			unsigned int YPosition;		  //Y-position from which appears (X is calculated based on Cameras X-position).
-
-		};
-
-		std::vector<LevelInfo> GetCurrentLevelInfo(const std::string& filename);
-
 	public:
 		static CAppStateGame* GetInstance();
 
 	private:
-
-		//Holds the information about different entities (enemies and items) that should appear.
-		std::vector<LevelInfo> Level;
-
-		//Next index to inspect from Level-vector
-		unsigned int LevelInfoIndex;
-
 		void ResetLevel();
 };
 

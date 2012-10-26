@@ -6,7 +6,8 @@ CCamera CCamera::CameraControl;
 
 //==============================================================================
 CCamera::CCamera() {
-	X = Y = 0;
+	X = 0;
+	Y = 0;
 
 	//TargetX = TargetY = NULL;
 

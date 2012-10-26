@@ -37,8 +37,15 @@ class CPlayer : public CEntity {
 
        	void OnKeyUp(SDLKey sym, SDLMod mod, Uint16 unicode);
 
+	private:
+		void Die();
+
 	public:
-		int	ChargeLevel;
+		unsigned int Lives;
+
+		unsigned int Points;
+
+		unsigned int ChargeLevel;
 
 		bool TookHit;
 

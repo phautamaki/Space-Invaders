@@ -71,7 +71,7 @@ void CArea::OnRender(SDL_Surface* Surf_Display, int CameraX, int CameraY) {
 		if(ID < 0 || ID >= static_cast<int>(MapList.size())) continue;
 
 		int X = ID* MapWidth + CameraX;
-		MapList[ID].OnRender(Surf_Display, X, 0); // Y-coordinate always same
+		MapList[ID].OnRender(Surf_Display, X, GUI_HEIGHT); // Y-coordinate always same
 	}
 }
 
@@ -99,6 +99,8 @@ CMap* CArea::GetMap(int X, int Y) {
 
 //-----------------------------------------------------------------------------
 CTile* CArea::GetTile(int X, int Y) {
+	Y = Y - GUI_HEIGHT;
+
 	int MapWidth  = MAP_WIDTH * TILE_SIZE;
 	int MapHeight = MAP_HEIGHT * TILE_SIZE;
 

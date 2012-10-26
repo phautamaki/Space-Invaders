@@ -86,6 +86,7 @@ bool CBullet::OnCollision(CTile* Tile) {
 			Dead = true;
 			break;
 		default:
+			PassThrough = true;
 			break;
 	}
 	return PassThrough;

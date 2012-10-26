@@ -44,6 +44,15 @@ void CFactory::OnCleanup() {
 }
 
 //==============================================================================
+void CFactory::FlagNonPlayerEntities() {
+	for(unsigned int i = 0;i < CEntity::EntityList.size();i++) {
+		if(!CEntity::EntityList[i] || CEntity::EntityList[i]->Type == ENTITY_TYPE_PLAYER) continue;
+
+		CEntity::EntityList[i]->Dead = true;
+    }
+}
+
+//------------------------------------------------------------------------------
 // TODO: Store player in factory, so the player data can be saved between levels
 CPlayer* CFactory::CreatePlayer(int nX, int nY) {
 	CPlayer* tmp = new CPlayer;
@@ -51,7 +60,7 @@ CPlayer* CFactory::CreatePlayer(int nX, int nY) {
 		return false;
 	}
 	tmp->X = static_cast<float>(nX);
-	tmp->Y = static_cast<float>(nY);
+	tmp->Y = static_cast<float>(nY+GUI_HEIGHT);
 
 	Players.push_back(tmp);
 	CEntity::EntityList.push_back(tmp);
@@ -68,7 +77,7 @@ bool CFactory::CreateEnemyShip(int type, int nX, int nY) {
 		case SHIP_1:
 			tmp->OnLoad( PATH_IMAGES PATH_ENEMIES "ship1.png",ENEMY_SHIP_SPRITE_WIDTH, ENEMY_SHIP_SPRITE_HEIGHT, ENEMY_SHIP_MAX_FRAMES);
 			tmp->X = static_cast<float>(nX);
-			tmp->Y = static_cast<float>(nY);
+			tmp->Y = static_cast<float>(nY+GUI_HEIGHT);
 			break;
 		default:
 			return false;
@@ -87,7 +96,7 @@ bool CFactory::CreateItem(int type, int nX, int nY) {
 		case ITEM_1:
 			tmp->OnLoad( PATH_IMAGES PATH_ITEMS "star.png",15, 16, 1);
 			tmp->X = static_cast<float>(nX);
-			tmp->Y = static_cast<float>(nY);
+			tmp->Y = static_cast<float>(nY+GUI_HEIGHT);
 			break;
 		default:
 			return false;

@@ -24,6 +24,9 @@ class CFactory {
         void OnCleanup();
 
 	public:
+		// Flag non-player entities as dead
+		void FlagNonPlayerEntities();
+
 		CPlayer* CreatePlayer(int nX, int nY);
 		bool CreateEnemyShip(int type, int nX, int nY);
 		bool CreateItem(int type, int nX, int nY);

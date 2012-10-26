@@ -437,6 +437,7 @@ bool CEntity::PosValid(int NewX, int NewY) {
 			CTile* Tile = CArea::AreaControl.GetTile(iX * TILE_SIZE, iY * TILE_SIZE);
 
 			if(PosValidTile(Tile) == false) {
+				// Check collission events with tile
 				Return = OnCollision(Tile);
 			}
 		}

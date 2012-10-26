@@ -41,7 +41,7 @@ void CAppStateGame::OnActivate() {
 	debug("All areas loaded successfully", 1);
 
 	debug("Entity loading start", 1);
-	Player = CFactory::Factory.CreatePlayer(400, 240);
+	Player = CFactory::Factory.CreatePlayer(400, 290);
 
 	// TODO: Player2 not needed yet. Make the game support co-op later
 
@@ -54,6 +54,9 @@ void CAppStateGame::OnActivate() {
 	debug("All entities loaded successfully", 1);
 
 	debug("Additional image loading stat", 1);
+	if((IconLife = CSurface::OnLoad(PATH_IMAGES PATH_UI FILENAME_UI_ICON_LIFE)) == NULL) {
+		return;
+	}
 	if((SpaceBG = CSurface::OnLoad(PATH_IMAGES FILENAME_SPACE_BG_1)) == NULL) {
 		return;
 	}
@@ -159,8 +162,8 @@ void CAppStateGame::OnRender(SDL_Surface* Surf_Display) {
 
 	SDL_FillRect(Surf_Display, &Rect, 0);
 
-	CSurface::OnDraw(Surf_Display, SpaceBG, BG_offset, 0);
-	CSurface::OnDraw(Surf_Display, SpaceBG, BG_offset-BG_WIDTH, 0);
+	CSurface::OnDraw(Surf_Display, SpaceBG, BG_offset, GUI_HEIGHT);
+	CSurface::OnDraw(Surf_Display, SpaceBG, BG_offset-BG_WIDTH, GUI_HEIGHT);
 	CArea::AreaControl.OnRender(Surf_Display, -CCamera::CameraControl.GetX(), -CCamera::CameraControl.GetY());
 
     //--------------------------------------------------------------------------
@@ -172,6 +175,9 @@ void CAppStateGame::OnRender(SDL_Surface* Surf_Display) {
         CEntity::EntityList[i]->OnRender(Surf_Display);
     }
 
+	//--------------------------------------------------------------------------
+    // UI
+    //--------------------------------------------------------------------------
 	// Player ChargeBar
 	int BarStart = WWIDTH/2 - 50;
 	SDL_Rect RectRed;
@@ -188,6 +194,11 @@ void CAppStateGame::OnRender(SDL_Surface* Surf_Display) {
 	SDL_FillRect(Surf_Display, &RectGray, SDL_MapRGB(Surf_Display->format, 211, 211, 211));
 	SDL_FillRect(Surf_Display, &RectRed, SDL_MapRGB(Surf_Display->format, 255, 0, 0));
 
+	// Life icons
+	for(unsigned int i = 0; i < Player->Lives; i++ ){
+		CSurface::OnDraw(Surf_Display, IconLife, 50 + (i*30), 30);
+	}
+
 	//CFont::FontControl.Write(Surf_Display, "test", 50, 50);
 }
 
@@ -198,24 +209,25 @@ CAppStateGame* CAppStateGame::GetInstance() {
 
 //=============================================================================
 void CAppStateGame::ResetLevel(){
-	Player->TookHit = false;
+	if( Player->Lives == 0 ) {
+		NextState = APPSTATE_MAINMENU;
+		CAppStateManager::SetActiveAppState(NextState);
+	}
+	else {
+		Player->TookHit = false;
 
-	Player->X = 400;
-	Player->Y = 240;
-	Player->SpeedX = Player->SpeedY = Player->AccelX = Player->AccelY = 0;
+		Player->X = 400;
+		Player->Y = 290+GUI_HEIGHT;
+		Player->SpeedX = Player->SpeedY = Player->AccelX = Player->AccelY = 0;
 
-	CCamera::CameraControl.SetPos(0,0);
-	
-	//Let's set index back to the start
-	LevelInfoIndex = 0;
+		CCamera::CameraControl.SetPos(0,0);
+		
+		//Let's set spawner index back to the start
+		LevelInfoIndex = 0;
 
-	//And kill everything except player (it seems that player is currently type ENTITY_TYPE_GENERIC and not ENTITY_TYPE_PLAYER).
-	for(unsigned int i = 0;i < CEntity::EntityList.size();i++) {
-		if(!CEntity::EntityList[i] || CEntity::EntityList[i]->Type == ENTITY_TYPE_GENERIC) continue;
-
-		CEntity::EntityList[i]->Dead = true;
-    }
-
+		//And kill everything except player 
+		CFactory::Factory.FlagNonPlayerEntities();
+	}
 }
 
 //=============================================================================
@@ -229,7 +241,8 @@ std::vector<CAppStateGame::LevelInfo> CAppStateGame::GetCurrentLevelInfo(const s
 	CFileReader::FileReader.GetFile(filename, file);
 	std::string line;
 
-	//In the file the contents should be in (one item on one line) format ActiveXPosition Type SubType YPosition.
+	//In the file the contents should be in (one item on one line) 
+	//Format: ActiveXPosition Type SubType YPosition.
 	while(!file.eof()) {
 
 		//First we get the item
@@ -262,5 +275,6 @@ std::vector<CAppStateGame::LevelInfo> CAppStateGame::GetCurrentLevelInfo(const s
 
 	file.close();
 	return tmp;
-
 }
+
+//=============================================================================

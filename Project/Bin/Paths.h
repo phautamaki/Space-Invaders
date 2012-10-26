@@ -15,7 +15,8 @@
 
 #define PATH_AREA1	"1.area"
 
-#define FILENAME_UI_BUTTON	"button.png"
+#define FILENAME_UI_BUTTON		"button.png"
+#define FILENAME_UI_ICON_LIFE	"icon_life.png"
 
 #define FILENAME_TITLE_BG		"title_bg.png"
 #define FILENAME_TITLE_TEXT_1	"title1.png"

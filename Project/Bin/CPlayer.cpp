@@ -7,6 +7,11 @@
 
 //=============================================================================
 CPlayer::CPlayer() {
+	Type = ENTITY_TYPE_PLAYER;
+
+	Lives	= PLAYER_STARTING_LIVES;
+	Points	= 0;
+
 	MoveUp		= false;
 	MoveDown	= false;
 	TookHit		= false;
@@ -219,15 +224,15 @@ bool CPlayer::OnCollision(CEntity* Entity) {
 
 	switch(Entity->Type) {
 		case ENTITY_TYPE_ENEMY: 
-			debug("I hit an enemy. I die. :(");
-			Entity->Dead = true;
+			Die();
 			//Some epic explosion animation should happen here.
 			Mix_PlayChannel( -1, PlayerCrashingSound, 0 );
 			break;
-		case ENTITY_TYPE_ITEM: debug("I hit an item. I became strong!");
+		case ENTITY_TYPE_ITEM: 
 			Entity->Dead = true;	
 			break;
-		default: debug("I hit something. Not sure what...");
+		default: 
+			// Unknown collision
 			break;
 	}
 	
@@ -240,7 +245,7 @@ bool CPlayer::OnCollision(CTile* Tile){
 
 	switch( Tile->TypeID ){
 		case TILE_TYPE_BLOCK:
-			TookHit = true;
+			Die();
 			break;
 		default:
 			break;
@@ -313,6 +318,15 @@ void CPlayer::OnKeyUp(SDLKey sym, SDLMod mod, Uint16 unicode) {
 
 		default: {
 		}
+	}
+}
+
+//=============================================================================
+void CPlayer::Die() {
+	// There might be multiple collission events from a single hit
+	if(!TookHit){
+		Lives--;
+		TookHit = true;
 	}
 }
 

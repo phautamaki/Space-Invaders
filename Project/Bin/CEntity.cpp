@@ -226,27 +226,29 @@ void CEntity::OnMove(float MoveX, float MoveY) {
 
 	while(true) {
 		if (Flags & ENTITY_FLAG_GHOST) {
-			PosValid((int)(X + NewX), (int)(Y + NewY)); //We don't care about collisions, but we need to send events to other entities
+			CheckCollisions((int)(X + NewX), (int)(Y + NewY)); //We don't care about collisions, but we need to send events to other entities
 
 			X += static_cast<float>(NewX);
 			Y += static_cast<float>(NewY);
 		}
 		else {
-			if(PosValid((int)(X + NewX), (int)(Y))) {
-				X += static_cast<float>(NewX);
-			}
-			else {
-				//X += static_cast<float>(NewX);
-				SpeedX = 0;
-			}
+			int newLocX = (int)(X + NewX);
+			int newLocY = (int)(Y + NewY);
 
-			if(PosValid((int)(X), (int)(Y + NewY))) {
+			CheckCollisions(newLocX, (int)Y);
+			CheckCollisions((int)(X), newLocY);
+
+			X += static_cast<float>(NewX);
+
+			// If entity's new location is inside top and bottom 
+			// edge of the screen
+			if (newLocY > GUI_HEIGHT && (newLocY+PLAYER_SPRITE_HEIGHT) < WHEIGHT) {
 				Y += static_cast<float>(NewY);
 			}
-			else{
+			else {
 				SpeedY = 0;
-				//Y += static_cast<float>(NewY); // TODO: REMOVE
 			}
+
 		}
 
 		MoveX += static_cast<float>(-NewX);
@@ -299,24 +301,20 @@ bool CEntity::Collides(int oX, int oY, int oW, int oH) {
 }
 
 //==============================================================================
-bool CEntity::PosValid(int NewX, int NewY) {
-	bool Return = true;
+void CEntity::CheckCollisions(int NewX, int NewY) {
 
+	// Check if entity collides with any tile
 	CheckPossibleTileCollision(NewX, NewY);
 
-	// If entity is at the top or bottom corner of the screen, prevent
-	// it from moving outside the screen
-	if (NewY < GUI_HEIGHT) Return = false;
-	else if ((NewY+PLAYER_SPRITE_HEIGHT) > (WHEIGHT)) Return = false;
-	
+	// Queue all possible collisions with other entities
 	if (Flags & ENTITY_FLAG_MAPONLY) { }
 	else {
 		for(unsigned int i = 0;i < EntityList.size();i++) {
 			QueuePossibleEntityCollision(EntityList[i], NewX, NewY);
 		}
 	}
-	
-	return Return;
+
+	return;
 }
 
 //------------------------------------------------------------------------------

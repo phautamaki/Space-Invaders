@@ -125,7 +125,7 @@ class CEntity {
 		bool    Collides(int oX, int oY, int oW, int oH);
 
 	private:
-		bool 	PosValid(int NewX, int NewY);
+		void	CheckCollisions(int NewX, int NewY);
 
 		void 	QueuePossibleEntityCollision(CEntity* Entity, int NewX, int NewY);
 		void    CheckPossibleTileCollision(int NewX, int NewY);

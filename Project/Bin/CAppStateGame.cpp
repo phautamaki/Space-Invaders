@@ -129,7 +129,7 @@ void CAppStateGame::OnLoop() {
 	if( Player->TookHit ) {
 		ResetLevel();
 	}	
-
+	
 	if( LevelInfoIndex < Level.size() && CCamera::CameraControl.GetX() >= Level.at(LevelInfoIndex).ActiveXPosition) {
 
 		CAppStateGame::LevelInfo TmpInfo = Level.at(LevelInfoIndex);

@@ -120,15 +120,16 @@ class CEntity {
         static SDL_Rect Intersection(const SDL_Rect& boundsA, const SDL_Rect& boundsB);
         static bool CheckCollision(CEntity* entityA, CEntity* entityB);
         static bool GetAlphaXY(CEntity* entity, int x, int y);
+		bool GetAlphaXYTile(SDL_Surface* tileset, int x, int y);
 
 		bool    Collides(int oX, int oY, int oW, int oH);
 
 	private:
 		bool 	PosValid(int NewX, int NewY);
 
-		bool 	PosValidTile(CTile* Tile);
-
-		bool 	PosValidEntity(CEntity* Entity, int NewX, int NewY);
+		void 	QueuePossibleEntityCollision(CEntity* Entity, int NewX, int NewY);
+		void    CheckPossibleTileCollision(int NewX, int NewY);
+		bool	CheckTileCollision(CTile* tile, int tileX, int tileY);
 };
 
 //==============================================================================

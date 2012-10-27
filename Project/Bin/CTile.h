@@ -8,7 +8,6 @@
 enum {
     TILE_TYPE_NONE = 0,
 
-    TILE_TYPE_NORMAL,
     TILE_TYPE_BLOCK
 };
 

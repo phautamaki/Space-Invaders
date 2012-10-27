@@ -2,6 +2,9 @@
 #include "CEntity.h"
 #include "Define.h"
 
+#include "functions.h"
+#include <iostream>
+
 #include <cmath>
 
 #define Maximum(a, b) ((a > b) ? a : b)
@@ -232,17 +235,17 @@ void CEntity::OnMove(float MoveX, float MoveY) {
 			if(PosValid((int)(X + NewX), (int)(Y))) {
 				X += static_cast<float>(NewX);
 			}
-			else{
-				//SpeedX = 0;
-				X += static_cast<float>(NewX); // TODO: REMOVE
+			else {
+				//X += static_cast<float>(NewX);
+				SpeedX = 0;
 			}
 
 			if(PosValid((int)(X), (int)(Y + NewY))) {
 				Y += static_cast<float>(NewY);
 			}
 			else{
-				//SpeedY = 0;
-				Y += static_cast<float>(NewY); // TODO: REMOVE
+				SpeedY = 0;
+				//Y += static_cast<float>(NewY); // TODO: REMOVE
 			}
 		}
 
@@ -263,8 +266,80 @@ void CEntity::OnMove(float MoveX, float MoveY) {
 	}
 }
 
+//==============================================================================
+bool CEntity::Collides(int oX, int oY, int oW, int oH) {
+    int left1, left2;
+    int right1, right2;
+    int top1, top2;
+    int bottom1, bottom2;
+
+	int tX = (int)X;
+	int tY = (int)Y;
+
+    left1 = tX;
+    left2 = oX;
+
+	right1 = left1 + Width - 1;
+    right2 = oX + oW - 1;
+
+    top1 = tY;
+    top2 = oY;
+
+	bottom1 = top1 + Height - 1;
+    bottom2 = oY + oH - 1;
+
+
+    if (bottom1 < top2) return false;
+    if (top1 > bottom2) return false;
+
+    if (right1 < left2) return false;
+    if (left1 > right2) return false;
+
+    return true;
+}
+
+//==============================================================================
+bool CEntity::PosValid(int NewX, int NewY) {
+	bool Return = true;
+
+	CheckPossibleTileCollision(NewX, NewY);
+
+	// If entity is at the top or bottom corner of the screen, prevent
+	// it from moving outside the screen
+	if (NewY < GUI_HEIGHT) Return = false;
+	else if ((NewY+PLAYER_SPRITE_HEIGHT) > (WHEIGHT)) Return = false;
+	
+	if (Flags & ENTITY_FLAG_MAPONLY) { }
+	else {
+		for(unsigned int i = 0;i < EntityList.size();i++) {
+			QueuePossibleEntityCollision(EntityList[i], NewX, NewY);
+		}
+	}
+	
+	return Return;
+}
 
 //------------------------------------------------------------------------------
+void CEntity::QueuePossibleEntityCollision(CEntity* Entity, int NewX, int NewY) {
+	if(this != Entity && Entity != NULL && !Entity->Dead &&
+		Entity->Flags ^ ENTITY_FLAG_MAPONLY &&
+		Entity->Collides(NewX, NewY, Width - 1, Height - 1) == true) {
+
+		CEntityCol EntityCol;
+
+		EntityCol.EntityA = this;
+		EntityCol.EntityB = Entity;
+
+		CEntityCol::EntityColList.push_back(EntityCol);
+
+		return;
+	}
+
+	return;
+}
+
+//==============================================================================
+
 void CEntity::StopMove() {
 	if(SpeedX > 0) {
 		AccelX = -1;
@@ -390,101 +465,113 @@ bool CEntity::GetAlphaXY(CEntity* entity, int x, int y)
     return alpha > 10;
 }
 
-//==============================================================================
-bool CEntity::Collides(int oX, int oY, int oW, int oH) {
-    int left1, left2;
-    int right1, right2;
-    int top1, top2;
-    int bottom1, bottom2;
 
-	int tX = (int)X;
-	int tY = (int)Y;
+//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
-    left1 = tX;
-    left2 = oX;
-
-	right1 = left1 + Width - 1;
-    right2 = oX + oW - 1;
-
-    top1 = tY;
-    top2 = oY;
-
-	bottom1 = top1 + Height - 1;
-    bottom2 = oY + oH - 1;
-
-
-    if (bottom1 < top2) return false;
-    if (top1 > bottom2) return false;
-
-    if (right1 < left2) return false;
-    if (left1 > right2) return false;
-
-    return true;
-}
-
-//==============================================================================
-bool CEntity::PosValid(int NewX, int NewY) {
-	bool Return = true;
-
+void CEntity::CheckPossibleTileCollision(int NewX, int NewY) {
 	int StartX 	= NewX / TILE_SIZE;
 	int StartY 	= NewY / TILE_SIZE;
 
 	int EndX	= (NewX + Width - 1) / TILE_SIZE;
 	int EndY	= (NewY + Height - 1) / TILE_SIZE;
-
+	
+	// Check every tile around the entity that it might be touching
 	for(int iY = StartY;iY <= EndY;iY++) {
 		for(int iX = StartX;iX <= EndX;iX++) {
-			CTile* Tile = CArea::AreaControl.GetTile(iX * TILE_SIZE, iY * TILE_SIZE);
-
-			if(PosValidTile(Tile) == false) {
-				// Check collission events with tile
-				Return = OnCollision(Tile);
+			CTile* tile = CArea::AreaControl.GetTile(iX * TILE_SIZE, iY * TILE_SIZE);
+			
+			// If the tile is blocking type, check pixel precisely
+			// if the entity is colliding it
+			if(tile != NULL && tile->TypeID == TILE_TYPE_BLOCK ) {
+				
+ 				if (CheckTileCollision(tile, iX, iY)) {
+					OnCollision(tile); // Call on collision
+				}
 			}
 		}
 	}
 
-	if(Flags & ENTITY_FLAG_MAPONLY) {
-	}else{
-		for(unsigned int i = 0;i < EntityList.size();i++) {
-			if(PosValidEntity(EntityList[i], NewX, NewY) == false) {
-				Return = false;
+	return;
+}
+
+bool CEntity::CheckTileCollision(CTile* tile, int tileX, int tileY)
+{
+	// Create rectangle of the tile's area in the space
+	SDL_Rect tileBounds;
+	tileBounds.x = (Sint16)(tileX*TILE_SIZE);
+    tileBounds.y = (Sint16)(tileY*TILE_SIZE);
+    tileBounds.w = (Sint16)(TILE_SIZE);
+    tileBounds.h = (Sint16)(TILE_SIZE);
+
+    SDL_Rect collisionRect = Intersection(this->GetBounds(), tileBounds);
+ 
+    if(collisionRect.w == 0 && collisionRect.h == 0) return false;
+
+	CMap* map = CArea::AreaControl.GetMap((int)X, (int)Y);
+	SDL_Surface* tileset = map->Surf_Tileset;
+
+	int TilesetWidth  = tileset->w / TILE_SIZE;
+	int TilesetHeight = tileset->h / TILE_SIZE;
+	int TilesetX = (tile->TileID % TilesetWidth) * TILE_SIZE;
+	int TilesetY = (tile->TileID / TilesetWidth) * TILE_SIZE;
+
+    SDL_Rect entityRect = this->NormalizeBounds(collisionRect);
+
+	// Set the correct area from the tileset to compare
+	SDL_Rect tileRect;
+	tileRect.x = TilesetX;
+	tileRect.y = TilesetY;
+
+	if (collisionRect.h > TILE_SIZE || collisionRect.w > TILE_SIZE) {
+		return false;
+	}
+
+    for(int y = 0; y < collisionRect.h; y++) {
+        for(int x = 0; x < collisionRect.w; x++) {
+
+			// Here we check if both are on top of each other pixel precisely
+            if(GetAlphaXY(this, entityRect.x + x, entityRect.y + y) && GetAlphaXYTile(tileset, tileRect.x + x, tileRect.y + y)) {
+                return true;
 			}
 		}
 	}
 
-	return Return;
+    return false;
 }
 
 //------------------------------------------------------------------------------
-bool CEntity::PosValidTile(CTile* Tile) {
-	if(Tile == NULL) {
-		return true;
-	}
 
-	if(Tile->TypeID == TILE_TYPE_BLOCK) {
-		return false;
-	}
+bool CEntity::GetAlphaXYTile(SDL_Surface* tileset, int x, int y)
+{
 
-	return true;
+    int bpp = tileset->format->BytesPerPixel;
+    Uint8* p = (Uint8*)tileset->pixels + y * tileset->pitch + x * bpp;
+    Uint32 pixelColor;
+     
+    switch(bpp)
+    {
+        case(1):
+            pixelColor = *p;
+            break;
+        case(2):
+            pixelColor = *(Uint16*)p;
+            break;
+        case(3):
+            if(SDL_BYTEORDER == SDL_BIG_ENDIAN)
+                pixelColor = p[0] << 16 | p[1] << 8 | p[2];
+            else
+                pixelColor = p[0] | p[1] << 8 | p[2] << 16;
+            break;
+        case(4):
+            pixelColor = *(Uint32*)p;
+            break;
+    }
+     
+    Uint8 red, green, blue, alpha;
+    SDL_GetRGBA(pixelColor, tileset->format, &red, &green, &blue, &alpha);
+ 
+    return alpha > 10;
 }
 
-//------------------------------------------------------------------------------
-bool CEntity::PosValidEntity(CEntity* Entity, int NewX, int NewY) {
-	if(this != Entity && Entity != NULL && Entity->Dead == false &&
-		Entity->Flags ^ ENTITY_FLAG_MAPONLY &&
-		Entity->Collides(NewX, NewY, Width - 1, Height - 1) == true) {
-
-		CEntityCol EntityCol;
-
-		EntityCol.EntityA = this;
-		EntityCol.EntityB = Entity;
-
-		CEntityCol::EntityColList.push_back(EntityCol);
-
-		return false;
-	}
-
-	return true;
-}
-
-//==============================================================================

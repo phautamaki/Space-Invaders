@@ -133,7 +133,7 @@ void CPlayer::OnLoop() {
 		leftScreenCrossed = true;
 	} 
 	// Same thing here with the right end of the screen with little adjustment
-	else if (X > CCamera::CameraControl.GetX()+WWIDTH-60) {
+	else if ((X+PLAYER_SPRITE_WIDTH) > (CCamera::CameraControl.GetX()+WWIDTH)) {
 		rightScreenCrossed = true;
 	}
 		

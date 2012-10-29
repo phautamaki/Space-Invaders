@@ -10,18 +10,17 @@
 class CAnimation {
 	private:
 		int	    CurrentFrame;
-
 		int     FrameInc;
 
-    private:
         int     FrameRate; //Milliseconds
-
 		long    OldTime;
 
 	public:
         int	    MaxFrames;
 
 		bool	Oscillate;
+
+		unsigned int LoopCount;
 
 	public:
 		CAnimation();

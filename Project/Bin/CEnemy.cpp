@@ -1,5 +1,6 @@
 //=============================================================================
 #include "CEnemy.h"
+#include "CFactory.h"
 
 //=============================================================================
 CEnemy::CEnemy() {
@@ -24,8 +25,19 @@ void CEnemy::OnLoop() {
 	CManouvarableEntity::OnLoop();
 }
 
-//------------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
 bool CEnemy::OnCollision(CEntity* Entity) {
+	if( Dead ) return false;
+
+	switch( Entity->Type ) {
+		case ENTITY_TYPE_BULLET:
+			CFactory::Factory.CreateExplosion(X-130,Y-200);
+			Dead = true;
+			break;
+		default:
+			break;
+	}
+
     return true;
 }
 

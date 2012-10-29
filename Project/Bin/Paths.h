@@ -8,10 +8,11 @@
 #define PATH_EFFECTS	"./sounds/effects/"
 #define PATH_MUSIC		"./sounds/music/"
 
-#define PATH_UI			""
-#define PATH_TITLE		""
-#define PATH_ENEMIES	""
-#define PATH_ITEMS		""
+#define PATH_UI				""
+#define PATH_TITLE			""
+#define PATH_ENEMIES		""
+#define PATH_ITEMS			""
+#define PATH_SPECIALEFFECTS	""
 
 #define PATH_AREA1	"1.area"
 

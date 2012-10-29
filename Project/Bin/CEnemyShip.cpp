@@ -15,15 +15,7 @@ bool CEnemyShip::OnLoad(char* File, int Width, int Height, int MaxFrames) {
 	
 	// Start moving left
 	tmpMan = new CManouver(this);
-	tmpMan->OnLoad(M_MOVE_UP);
-	Manouvers.push_back(tmpMan);
-	// Wait 0,1s
-	tmpMan = new CManouver(this);
-	tmpMan->OnLoad(M_WAIT, 200);
-	Manouvers.push_back(tmpMan);
-	// Wait 0,1s
-	tmpMan = new CManouver(this);
-	tmpMan->OnLoad(M_TURN, -180);
+	tmpMan->OnLoad(M_MOVE_LEFT);
 	Manouvers.push_back(tmpMan);
 	// Wait 10s
 	tmpMan = new CManouver(this);

@@ -74,8 +74,8 @@ bool CFactory::CreateEnemyShip(int type, int nX, int nY) {
 	CEnemyShip* tmp = new CEnemyShip;
 
 	switch( type ) {
-		case SHIP_1:
-			tmp->OnLoad( PATH_IMAGES PATH_ENEMIES "ship1.png",ENEMY_SHIP_SPRITE_WIDTH, ENEMY_SHIP_SPRITE_HEIGHT, ENEMY_SHIP_MAX_FRAMES);
+		case ENITTY_SUBTYPE_ENEMY_1:
+			tmp->OnLoad( PATH_IMAGES PATH_ENEMIES "ship1.png",ENEMY_SHIP_1_SPRITE_WIDTH, ENEMY_SHIP_1_SPRITE_HEIGHT, ENEMY_SHIP_1_MAX_FRAMES);
 			tmp->X = static_cast<float>(nX);
 			tmp->Y = static_cast<float>(nY+GUI_HEIGHT);
 			break;
@@ -108,8 +108,8 @@ bool CFactory::CreateItem(int type, int nX, int nY) {
 
 //------------------------------------------------------------------------------
 bool CFactory::CreateBullet(int type, int nX, int nY) {
-	if( type != ENTITY_TYPE_BULLET_NORMAL &&
-		type != ENTITY_TYPE_BULLET_CHARGE1 ) {
+	if( type != ENTITY_SUBTYPE_BULLET_NORMAL &&
+		type != ENTITY_SUBTYPE_BULLET_CHARGE1 ) {
 		return false;
 	}
 
@@ -123,6 +123,20 @@ bool CFactory::CreateBullet(int type, int nX, int nY) {
 	CEntity::EntityList.push_back(tmp);
 
 	return EntityOK;
+}
+
+//==============================================================================
+bool CFactory::CreateExplosion(int nX, int nY){
+	CSpecialEffect* tmp = new CSpecialEffect;
+
+	if(!tmp->OnLoad( PATH_IMAGES PATH_SPECIALEFFECTS "explosion.png",256, 150, 5)){
+		return false;
+	}
+	tmp->X = static_cast<float>(nX);
+	tmp->Y = static_cast<float>(nY+GUI_HEIGHT);
+	CEntity::EntityList.push_back(tmp);
+
+	return true;
 }
 
 //==============================================================================

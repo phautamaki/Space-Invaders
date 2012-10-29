@@ -13,20 +13,19 @@ CArea::CArea() {
 //=============================================================================
 bool CArea::OnLoad(char* File) {
     OnCleanup();
-
     FILE* FileHandle = fopen(File, "r");
 
     if(FileHandle == NULL) {
+		debug("Error: Couldn't open area file.");
         return false;
     }
-
     char TilesetFile[255];
 
 	// Load tileset picture to a surface
     fscanf(FileHandle, "%s\n", TilesetFile);
     if((Surf_Tileset = CSurface::OnLoad(TilesetFile)) == false) {
         fclose(FileHandle);
-
+		debug("Error: Couldn't load tileset for area.");
         return false;
     }
 
@@ -43,7 +42,7 @@ bool CArea::OnLoad(char* File) {
 		CMap tempMap;
 		if(tempMap.OnLoad(MapFile) == false) {
 			fclose(FileHandle);
-
+			debug("Error: Couldn't load tilset for map.");
 			return false;
 		}
 
@@ -79,8 +78,8 @@ void CArea::OnRender(SDL_Surface* Surf_Display, int CameraX, int CameraY) {
 void CArea::OnCleanup() {
 	if(Surf_Tileset) {
 		SDL_FreeSurface(Surf_Tileset);
+		Surf_Tileset = NULL;
 	}
-
 	MapList.clear();
 }
 

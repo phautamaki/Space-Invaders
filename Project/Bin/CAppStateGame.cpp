@@ -80,6 +80,27 @@ void CAppStateGame::OnDeactivate() {
 
 //-----------------------------------------------------------------------------
 void CAppStateGame::OnLoop() {
+	// Spawn new entities
+	if( LevelInfoIndex < Level.size() && CCamera::CameraControl.GetX() >= Level.at(LevelInfoIndex).ActiveXPosition) {
+
+		CAppStateGame::LevelInfo TmpInfo = Level.at(LevelInfoIndex);
+		
+		switch(TmpInfo.Type) {
+			case ENTITY_TYPE_ENEMY:
+				// Enemy Ship
+				CFactory::Factory.CreateEnemyShip(ENITTY_SUBTYPE_ENEMY_1, CCamera::CameraControl.GetX()+1000, TmpInfo.YPosition);
+				break;
+			case ENTITY_TYPE_ITEM:
+				// Item
+				CFactory::Factory.CreateItem(ITEM_1, CCamera::CameraControl.GetX()+1000, TmpInfo.YPosition);
+				break;
+			default:
+				break;
+		}
+
+		LevelInfoIndex++;
+	}
+
     //--------------------------------------------------------------------------
     // Entities
     //--------------------------------------------------------------------------
@@ -128,27 +149,6 @@ void CAppStateGame::OnLoop() {
 	// Player died -> Reset level
 	if( Player->TookHit ) {
 		ResetLevel();
-	}	
-	
-	if( LevelInfoIndex < Level.size() && CCamera::CameraControl.GetX() >= Level.at(LevelInfoIndex).ActiveXPosition) {
-
-		CAppStateGame::LevelInfo TmpInfo = Level.at(LevelInfoIndex);
-		
-		switch(TmpInfo.Type) {
-			case ENTITY_TYPE_ENEMY:
-				// Enemy Ship. SubTypes should be used here once they exist (SHIP_1)
-				CFactory::Factory.CreateEnemyShip(SHIP_1, CCamera::CameraControl.GetX()+1000, TmpInfo.YPosition);
-				break;
-			case ENTITY_TYPE_ITEM:
-				// Item
-				CFactory::Factory.CreateItem(ITEM_1, CCamera::CameraControl.GetX()+1000, TmpInfo.YPosition);
-				break;
-			default:
-				break;
-		}
-
-		LevelInfoIndex++;
-	
 	}
 }
 

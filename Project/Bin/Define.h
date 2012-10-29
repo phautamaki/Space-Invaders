@@ -49,9 +49,9 @@
 
 //-----------------------------------------------------------------------------
 /* Enemy specific settings */
-#define ENEMY_SHIP_SPRITE_WIDTH		34
-#define ENEMY_SHIP_SPRITE_HEIGHT	30
-#define ENEMY_SHIP_MAX_FRAMES		1
+#define ENEMY_SHIP_1_SPRITE_WIDTH	33
+#define ENEMY_SHIP_1_SPRITE_HEIGHT	39
+#define ENEMY_SHIP_1_MAX_FRAMES		3
 
 //=============================================================================
 #endif

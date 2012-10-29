@@ -183,7 +183,6 @@ void CEntity::OnCleanup() {
 
 //------------------------------------------------------------------------------
 void CEntity::OnAnimate() {
-
 	Anim_Control.OnAnimate();
 }
 

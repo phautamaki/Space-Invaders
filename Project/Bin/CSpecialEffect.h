@@ -1,21 +1,15 @@
 //=============================================================================
-#ifndef _CENEMYSHIP_H_
-    #define _CENEMYSHIP_H_
+#ifndef _CSPECIALEFFECT_H_
+    #define _CSPECIALEFFECT_H_
 
-#include "CEnemy.h"
+#include "CEntity.h"
 
 //=============================================================================
-class CEnemyShip : public CEnemy {
+class CSpecialEffect : public CEntity {
     public:
-        CEnemyShip();
-
-		bool OnLoad(char* File, int Width, int Height, int MaxFrames);
+        CSpecialEffect();
 
         void OnLoop();
-
-        void OnRender(SDL_Surface* Surf_Display);
-
-        void OnCleanup();
 };
 
 //=============================================================================

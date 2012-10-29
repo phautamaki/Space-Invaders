@@ -16,7 +16,7 @@ bool CBullet::OnLoad(int nType) {
 	int MaxFrames = 0;
 
 	switch( nType ) {
-		case ENTITY_TYPE_BULLET_NORMAL: 
+		case ENTITY_SUBTYPE_BULLET_NORMAL: 
 			File = PATH_IMAGES PATH_ITEMS "bullet_normal.png";
 			Width = 22;
 			Height = 11;
@@ -25,7 +25,7 @@ bool CBullet::OnLoad(int nType) {
 			MaxSpeedX = SpeedX = PLAYER_BULLET_NORMAL_SPEED;
 
 			break;
-		case ENTITY_TYPE_BULLET_CHARGE1:
+		case ENTITY_SUBTYPE_BULLET_CHARGE1:
 			File = PATH_IMAGES PATH_ITEMS "bullet_charge1.png";
 			Width = 44;
 			Height = 22;
@@ -42,8 +42,9 @@ bool CBullet::OnLoad(int nType) {
         return false;
     }
 
-	Type = 	nType;
-	AccelX = 1;
+	Type	= ENTITY_TYPE_BULLET;
+	SubType = nType;
+	AccelX	= 1;
 
 	Angle = 0;
 	CManouver* tmpMan = 0;

@@ -11,6 +11,8 @@ CAnimation::CAnimation() {
     OldTime         = 0;
 
     Oscillate       = false;
+
+	LoopCount		= 0;
 }
 
 //------------------------------------------------------------------------------
@@ -36,6 +38,7 @@ void CAnimation::OnAnimate() {
     }else{
         if(CurrentFrame >= MaxFrames - 1) {
             CurrentFrame = 0;
+			LoopCount++;
         }
     }
 }

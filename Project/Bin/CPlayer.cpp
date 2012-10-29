@@ -84,11 +84,11 @@ void CPlayer::Shoot() {
 	// Can't shoot too fast
 	if( LastShot + PLAYER_SHOOT_DELAY < SDL_GetTicks() ) {
 		if( ChargeLevel < 10 ) {
-			CFactory::Factory.CreateBullet(ENTITY_TYPE_BULLET_NORMAL, X + PLAYER_SPRITE_WIDTH + 5, Y + PLAYER_SPRITE_HEIGHT / 2);
+			CFactory::Factory.CreateBullet(ENTITY_SUBTYPE_BULLET_NORMAL, X + PLAYER_SPRITE_WIDTH + 5, Y + PLAYER_SPRITE_HEIGHT / 2);
 			Mix_PlayChannel( -1, ShootingSoundBasic, 0 );
 		}
 		else if( ChargeLevel >= 10 ) {
-			CFactory::Factory.CreateBullet(ENTITY_TYPE_BULLET_CHARGE1, X + PLAYER_SPRITE_WIDTH + 5, Y + PLAYER_SPRITE_HEIGHT / 2);
+			CFactory::Factory.CreateBullet(ENTITY_SUBTYPE_BULLET_CHARGE1, X + PLAYER_SPRITE_WIDTH + 5, Y + PLAYER_SPRITE_HEIGHT / 2);
 			Mix_PlayChannel( -1, ShootingSoundBig, 0 );
 		}
 

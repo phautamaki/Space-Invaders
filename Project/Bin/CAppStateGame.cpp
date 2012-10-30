@@ -8,6 +8,7 @@
 #include "functions.h"
 #include "Paths.h"
 #include "CFileReader.h"
+#include "CSoundBank.h"
 
 #include "CApp.h"
 
@@ -66,6 +67,12 @@ void CAppStateGame::OnActivate() {
 	// Camera initialization, make it start from 0,0
 	CCamera::CameraControl.TargetMode = TARGET_MODE_NORMAL;
 	debug("Camera set", 1);
+
+	//Loads the level music TODO: Music!
+	//CSoundBank::SoundControl.OnLoad(CSoundBank::MUSIC, "FirstLevelMusic", PATH_MUSIC "darkness.ogg");
+
+	//Plays the music
+	//CSoundBank::SoundControl.Play(CSoundBank::MUSIC, "FirstLevelMusic");
 
 	debug("Game initialization successful");
 }

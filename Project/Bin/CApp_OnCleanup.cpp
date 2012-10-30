@@ -21,6 +21,7 @@ void CApp::OnCleanup() {
  
 	TTF_Quit();
 	debug("SDL TTF closed",1);
+
 	Mix_CloseAudio();
 	debug("SDL mixer closed",1);
     SDL_Quit();

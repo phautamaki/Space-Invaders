@@ -53,10 +53,6 @@ class CPlayer : public CEntity {
 		int ChargeStart;
 		int LastShot;
 
-		Mix_Chunk* ShootingSoundBasic;
-		Mix_Chunk* ShootingSoundBig;
-		
-		Mix_Chunk* PlayerCrashingSound;
 };
 
 //=============================================================================

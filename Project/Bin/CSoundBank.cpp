@@ -11,37 +11,112 @@ CSoundBank::CSoundBank() {
 }
 
 //------------------------------------------------------------------------------
-int CSoundBank::OnLoad(char* File) {
-    Mix_Chunk* TempSound = NULL;
+bool CSoundBank::OnLoad(SoundType type, std::string ID, char* File) {
+    
+	Mix_Chunk* TempSound = NULL;
+	Mix_Music* TempMusic = NULL;
 
-    if((TempSound = Mix_LoadWAV(File)) == NULL) {
-        return -1;
-    }
+	switch(type) {
 
-    SoundList.push_back(TempSound);
+	case EFFECT:
+		
 
-	if( SoundList.size() - 1 ){
-		std::string filename = File;
-		debug("Loaded sound " + filename, 2);
+		if((TempSound = Mix_LoadWAV(File)) == NULL) {
+			return false;
+		}
+
+		SoundList.insert(make_pair(ID, TempSound));
+
+		if( SoundList.size() - 1 ){
+			std::string filename = File;
+			debug("Loaded sound " + filename, 2);
+		}
+		AllocateChannels(SoundList.size()-1);
+		return true;
+		break;
+
+	case MUSIC:
+		
+
+		if((TempMusic = Mix_LoadMUS(File)) == NULL) {
+			return -1;
+		}
+
+		MusicList.insert(make_pair(ID, TempMusic));
+
+		if( MusicList.size() - 1) {
+			std::string filename = File;
+			debug("Loaded music " + filename, 2);
+			return false;
+		}
+		return true;
+		break;
 	}
-    return (SoundList.size() - 1);
+}
+
+int CSoundBank::AllocateChannels(int NumberOfChannels) {
+
+	//This unreserves everything in the beginning
+	Mix_AllocateChannels(0);
+
+	int reserved_count;
+	reserved_count=Mix_AllocateChannels(NumberOfChannels);
+	if(reserved_count!=NumberOfChannels) {
+
+		debug(IntToString(NumberOfChannels) + " channels were not allocated!");
+	
+	}
+
+	return reserved_count;
 }
 
 //------------------------------------------------------------------------------
 void CSoundBank::OnCleanup() {
-    for(unsigned int i = 0;i < SoundList.size();i++) {
-        Mix_FreeChunk(SoundList[i]);
-    }
 
+	for( std::map< std::string, Mix_Chunk*>::iterator i = SoundList.begin();
+		i != SoundList.end(); ++i ) {
+			Mix_FreeChunk(i->second);
+	}
+
+	for( std::map< std::string, Mix_Music*>::iterator i = MusicList.begin();
+		i != MusicList.end(); ++i ) {
+			Mix_FreeMusic(i->second);
+	}
+
+	Mix_AllocateChannels(0);
     SoundList.clear();
+	MusicList.clear();
+
 }
 
 //==============================================================================
-void CSoundBank::Play(int ID) {
-    if(ID < 0 || ID >= SoundList.size()) return;
-    if(SoundList[ID] == NULL) return;
+void CSoundBank::Play(SoundType type, std::string ID) {
+	
+	switch(type) {
+	
+	case EFFECT:
+		if(SoundList[ID] == NULL) return;
 
-    Mix_PlayChannel(-1, SoundList[ID], 0);
+		if(ID == "ShootingSoundBasic") {
+			Mix_PlayChannel(0, SoundList[ID], 0);
+		}
+		else if(ID == "ShootingSoundBig") {
+			Mix_PlayChannel(1, SoundList[ID], 0);
+		}
+		else{
+			Mix_PlayChannel(-1, SoundList[ID], 0);
+		}
+		
+		break;
+	
+	case MUSIC:
+		if(MusicList[ID] == NULL) return;
+		//Music playing test
+		if(Mix_PlayingMusic() == 0) {
+			Mix_PlayMusic(MusicList[ID], -1);
+		}		
+		break;
+	}
 }
 
 //==============================================================================

@@ -23,13 +23,17 @@ CPlayer::CPlayer() {
 	ChargeStart = 0;
 	LastShot	= 0;
 
-	ShootingSoundBasic = Mix_LoadWAV(PATH_EFFECTS FILENAME_SHOOTING_BASIC);
-	ShootingSoundBig = Mix_LoadWAV(PATH_EFFECTS FILENAME_SHOOTING_BIG);
-	PlayerCrashingSound = Mix_LoadWAV(PATH_EFFECTS FILENAME_PLAYER_CRASHING);
+	!CSoundBank::SoundControl.OnLoad(CSoundBank::EFFECT, "ShootingSoundBasic", PATH_EFFECTS FILENAME_SHOOTING_BASIC) ? debug("Shit hit the fan when loading ShootingSoundBasic.") : debug("Loading ShootingSoundBasic was a great success!");
+	!CSoundBank::SoundControl.OnLoad(CSoundBank::EFFECT, "ShootingSoundBig", PATH_EFFECTS FILENAME_SHOOTING_BIG) ? debug("Shit hit the fan when loading ShootingSoundBig.") : debug("Loading ShootingSoundBig was a great success!");
+	!CSoundBank::SoundControl.OnLoad(CSoundBank::EFFECT, "PlayerCrashingSound", PATH_EFFECTS FILENAME_PLAYER_CRASHING) ? debug("Shit hit the fan when loading PlayerCrashingSound.") : debug("Loading PlayerCrashingSound was a great success!");
+	
+	//ShootingSoundBasic = Mix_LoadWAV(PATH_EFFECTS FILENAME_SHOOTING_BASIC);
+	//ShootingSoundBig = Mix_LoadWAV(PATH_EFFECTS FILENAME_SHOOTING_BIG);
+	//PlayerCrashingSound = Mix_LoadWAV(PATH_EFFECTS FILENAME_PLAYER_CRASHING);
 
-	ShootingSoundBasic == NULL ? debug("Shit hit the fan when loading ShootingSoundBasic.") : debug("Loading ShootingSoundBasic was a great success!");
-	ShootingSoundBig  == NULL ? debug("Shit hit the fan when loading ShootingSoundBig.") : debug("Loading ShootingSoundBig was a great success!");
-	PlayerCrashingSound == NULL ? debug("Shit hit the fan when loading PlayerCrashingSound.") : debug("Loading PlayerCrashingSound was a great success!");
+	//ShootingSoundBasic == NULL ? debug("Shit hit the fan when loading ShootingSoundBasic.") : debug("Loading ShootingSoundBasic was a great success!");
+	//ShootingSoundBig  == NULL ? debug("Shit hit the fan when loading ShootingSoundBig.") : debug("Loading ShootingSoundBig was a great success!");
+	//PlayerCrashingSound == NULL ? debug("Shit hit the fan when loading PlayerCrashingSound.") : debug("Loading PlayerCrashingSound was a great success!");
 }
 
 //=============================================================================
@@ -85,11 +89,11 @@ void CPlayer::Shoot() {
 	if( LastShot + PLAYER_SHOOT_DELAY < SDL_GetTicks() ) {
 		if( ChargeLevel < 10 ) {
 			CFactory::Factory.CreateBullet(ENTITY_SUBTYPE_BULLET_NORMAL, X + PLAYER_SPRITE_WIDTH + 5, Y + PLAYER_SPRITE_HEIGHT / 2);
-			Mix_PlayChannel( -1, ShootingSoundBasic, 0 );
+			CSoundBank::SoundControl.Play(CSoundBank::EFFECT, "ShootingSoundBasic");
 		}
 		else if( ChargeLevel >= 10 ) {
 			CFactory::Factory.CreateBullet(ENTITY_SUBTYPE_BULLET_CHARGE1, X + PLAYER_SPRITE_WIDTH + 5, Y + PLAYER_SPRITE_HEIGHT / 2);
-			Mix_PlayChannel( -1, ShootingSoundBig, 0 );
+			CSoundBank::SoundControl.Play(CSoundBank::EFFECT, "ShootingSoundBig");
 		}
 
 		LastShot = SDL_GetTicks();
@@ -102,10 +106,6 @@ bool CPlayer::OnLoad(char* File, int Width, int Height, int MaxFrames) {
         return false;
     }
 
-	// TODO: add sound files to the project
-	//if((SoundFly = CSoundBank::SoundControl.OnLoad("sounda.wav")) == -1) {
-	//	return false;
-	//}
     return true;
 }
 
@@ -199,10 +199,6 @@ void CPlayer::OnRender(SDL_Surface* Surf_Display) {
 //------------------------------------------------------------------------------
 void CPlayer::OnCleanup() {
 	CEntity::OnCleanup();
-
-	Mix_FreeChunk(ShootingSoundBasic);
-	Mix_FreeChunk(ShootingSoundBig);
-	Mix_FreeChunk(PlayerCrashingSound);
 }
 
 //------------------------------------------------------------------------------
@@ -220,13 +216,13 @@ void CPlayer::OnAnimate() {
 bool CPlayer::OnCollision(CEntity* Entity) {
 	
 	// Prevent multiple handlings for same collissions
-	if( Entity->Dead ) return false;
+	if( Dead || Entity->Dead ) return false;
 
 	switch(Entity->Type) {
 		case ENTITY_TYPE_ENEMY: 
 			Die();
 			//Some epic explosion animation should happen here.
-			Mix_PlayChannel( -1, PlayerCrashingSound, 0 );
+			CSoundBank::SoundControl.Play(CSoundBank::EFFECT, "PlayerCrashingSound");
 			break;
 		case ENTITY_TYPE_ITEM: 
 			Entity->Dead = true;	

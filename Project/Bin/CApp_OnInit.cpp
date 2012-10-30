@@ -11,6 +11,7 @@ bool CApp::OnInit() {
 	if(Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 4096) < 0) {
 		return false;
 	}
+
 	debug("SDL mixer initialized", 1);
 	if (TTF_Init() < 0) {
 		return false;

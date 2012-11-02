@@ -11,6 +11,11 @@
 #include "CSpecialEffect.h"
 
 //=============================================================================
+enum ExplType {
+	EXPLOSION_ENEMY = 0,
+	EXPLOSION_TILE
+};
+
 class CFactory {
 	public:
 		static CFactory Factory;
@@ -35,7 +40,7 @@ class CFactory {
 		bool CreateBullet(int type, int nX, int nY);
 
 		// Create effects
-		bool CreateExplosion(int nX, int nY);
+		bool CreateExplosion(int nX, int nY, ExplType explosion);
 
 	private:
 		std::vector<CPlayer*> Players;

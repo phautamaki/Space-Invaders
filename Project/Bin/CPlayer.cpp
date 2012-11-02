@@ -221,8 +221,6 @@ bool CPlayer::OnCollision(CEntity* Entity) {
 	switch(Entity->Type) {
 		case ENTITY_TYPE_ENEMY: 
 			Die();
-			//Some epic explosion animation should happen here.
-			CSoundBank::SoundControl.Play(CSoundBank::EFFECT, "PlayerCrashingSound");
 			break;
 		case ENTITY_TYPE_ITEM: 
 			Entity->Dead = true;	
@@ -241,6 +239,9 @@ bool CPlayer::OnCollision(CTile* Tile){
 
 	switch( Tile->TypeID ){
 		case TILE_TYPE_BLOCK:
+			Die();
+			break;
+		case TILE_TYPE_BLOCK_BREAKABLE:
 			Die();
 			break;
 		default:
@@ -321,6 +322,9 @@ void CPlayer::OnKeyUp(SDLKey sym, SDLMod mod, Uint16 unicode) {
 void CPlayer::Die() {
 	// There might be multiple collission events from a single hit
 	if(!TookHit){
+		// Play explosion sound of player's death
+		CSoundBank::SoundControl.Play(CSoundBank::EFFECT, "PlayerCrashingSound");
+
 		Lives--;
 		TookHit = true;
 	}

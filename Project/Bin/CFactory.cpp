@@ -126,12 +126,20 @@ bool CFactory::CreateBullet(int type, int nX, int nY) {
 }
 
 //==============================================================================
-bool CFactory::CreateExplosion(int nX, int nY){
+bool CFactory::CreateExplosion(int nX, int nY, ExplType explosion){
 	CSpecialEffect* tmp = new CSpecialEffect;
 
-	if(!tmp->OnLoad( PATH_IMAGES PATH_SPECIALEFFECTS "explosion.png",256, 150, 5)){
-		return false;
+	if (explosion == EXPLOSION_ENEMY) {
+		if(!tmp->OnLoad( PATH_IMAGES PATH_SPECIALEFFECTS "explosion.png",256, 150, 5)){
+			return false;
+		}
 	}
+	else if (explosion == EXPLOSION_TILE) {
+		if(!tmp->OnLoad( PATH_IMAGES PATH_SPECIALEFFECTS "explosion_tile.png",32, 32, 4)){
+			return false;
+		}
+	}
+
 	tmp->X = static_cast<float>(nX);
 	tmp->Y = static_cast<float>(nY+GUI_HEIGHT);
 	CEntity::EntityList.push_back(tmp);

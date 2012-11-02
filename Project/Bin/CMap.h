@@ -15,9 +15,10 @@ class CMap {
 
 	private:
 		std::vector<CTile>      TileList;
+		int mapNumber;
 
 	public:
-		CMap();
+		CMap(int MapNumber);
 
 	public:
 		bool OnLoad(char* File);

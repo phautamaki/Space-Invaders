@@ -104,10 +104,6 @@ void CEntity::OnLoop() {
 		else if (MoveDown) {
 			AccelY = 0.5;
 		}
-
-		if(Flags & ENTITY_FLAG_GRAVITY) {
-			AccelY = 0.75f;
-		}
 	}
 	else{
 		// Need to turn the moving direction of object to TargetAngle
@@ -306,11 +302,8 @@ void CEntity::CheckCollisions(int NewX, int NewY) {
 	CheckPossibleTileCollision(NewX, NewY);
 
 	// Queue all possible collisions with other entities
-	if (Flags & ENTITY_FLAG_MAPONLY) { }
-	else {
-		for(unsigned int i = 0;i < EntityList.size();i++) {
-			QueuePossibleEntityCollision(EntityList[i], NewX, NewY);
-		}
+	for(unsigned int i = 0;i < EntityList.size();i++) {
+		QueuePossibleEntityCollision(EntityList[i], NewX, NewY);
 	}
 
 	return;
@@ -319,7 +312,6 @@ void CEntity::CheckCollisions(int NewX, int NewY) {
 //------------------------------------------------------------------------------
 void CEntity::QueuePossibleEntityCollision(CEntity* Entity, int NewX, int NewY) {
 	if(this != Entity && Entity != NULL && !Entity->Dead &&
-		Entity->Flags ^ ENTITY_FLAG_MAPONLY &&
 		Entity->Collides(NewX, NewY, Width - 1, Height - 1) == true) {
 
 		CEntityCol EntityCol;
@@ -481,7 +473,8 @@ void CEntity::CheckPossibleTileCollision(int NewX, int NewY) {
 			
 			// If the tile is blocking type, check pixel precisely
 			// if the entity is colliding it
-			if(tile != NULL && tile->TypeID == TILE_TYPE_BLOCK ) {
+			if(tile != NULL && (tile->TypeID == TILE_TYPE_BLOCK
+				|| tile->TypeID == TILE_TYPE_BLOCK_BREAKABLE)) {
 				
  				if (CheckTileCollision(tile, iX, iY)) {
 					OnCollision(tile); // Call on collision

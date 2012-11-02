@@ -39,7 +39,7 @@ bool CArea::OnLoad(char* File) {
 		fscanf(FileHandle, "%s ", MapFile);
 
 		// Load map's tileset into map's Tilelist
-		CMap tempMap;
+		CMap tempMap(X);
 		if(tempMap.OnLoad(MapFile) == false) {
 			fclose(FileHandle);
 			debug("Error: Couldn't load tilset for map.");
@@ -114,3 +114,12 @@ CTile* CArea::GetTile(int X, int Y) {
 }
 
 //=============================================================================
+
+void CArea::RestoreBrokenTiles() {
+	for (unsigned int i = 0; i < BrokenTiles.size(); ++i) {
+		CTile* brokenTile = BrokenTiles.at(i);
+		brokenTile->TypeID = brokenTile->oldTypeID;
+	}
+
+	BrokenTiles.clear();
+}

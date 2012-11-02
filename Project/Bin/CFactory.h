@@ -16,9 +16,20 @@ enum ExplType {
 	EXPLOSION_TILE
 };
 
+enum {
+	DURATION_500MS = 500,
+	DURATION_1S = 1000,
+	DURATION_2S = 2000
+};
+
 class CFactory {
 	public:
 		static CFactory Factory;
+
+		int SlowMotionStartMoment;
+		int SlowMotionDuration;
+		
+		int LastEnemyKillMoment;
 
     public:
         CFactory();

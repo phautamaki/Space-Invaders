@@ -7,6 +7,9 @@ CFactory CFactory::Factory;
 
 //==============================================================================
 CFactory::CFactory() {
+	SlowMotionStartMoment = 0;
+	SlowMotionDuration = 0;
+	LastEnemyKillMoment = 0;
 }
 
 //------------------------------------------------------------------------------
@@ -16,9 +19,30 @@ bool CFactory::OnInit() {
 
 //------------------------------------------------------------------------------
 void CFactory::OnLoop() {
+	
+	if (SDL_GetTicks() > SlowMotionStartMoment + SlowMotionDuration) {
+		CFPS::FPSControl.SetSlowMo(LEVEL_NORMAL);
+	}
+	
+
 	std::vector<CEntity*>::iterator it = CEntity::EntityList.begin();
 	while( it != CEntity::EntityList.end() ) {
 		if( (*it)->Dead ) {
+
+			// Create slow motion effect if 2 enemies die within
+			// one second. TODO: make better way to create these,
+			// because now even if player doesn't kill these enemies
+			// the effect might go on if they die other ways (collision etc)
+			if ((*it)->Type == ENTITY_TYPE_ENEMY) {
+				if (SDL_GetTicks() - LastEnemyKillMoment < 1000) {
+					CFPS::FPSControl.SetSlowMo(LEVEL_SLOWMO_8X);
+					SlowMotionDuration = 2000; // <- effect lasts 2 seconds
+					SlowMotionStartMoment = SDL_GetTicks();
+				}
+				LastEnemyKillMoment = SDL_GetTicks();
+			}
+
+
 			(*it)->OnCleanup();
 			delete (*it);
 			(*it) = 0;

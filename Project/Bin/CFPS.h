@@ -6,6 +6,13 @@
 
 #include <SDL.h>
 
+enum SlowMotionLevel {
+	LEVEL_NORMAL = 0,
+	LEVEL_SLOWMO_2X,
+	LEVEL_SLOWMO_4X,
+	LEVEL_SLOWMO_8X
+};
+
 //==============================================================================
 class CFPS {
 	public:
@@ -20,6 +27,8 @@ class CFPS {
 		int		NumFrames;
 		int     Frames;
 
+		SlowMotionLevel Level;
+
 	public:
 		CFPS();
 
@@ -29,6 +38,8 @@ class CFPS {
 		int     GetFPS();
 
 		float   GetSpeedFactor();
+
+		void	SetSlowMo(SlowMotionLevel level);
 };
 
 //==============================================================================

@@ -15,6 +15,8 @@ CFPS::CFPS() {
 
 	Frames      = 0;
 	NumFrames   = 0;
+
+	Level = LEVEL_NORMAL;
 }
 
 //=============================================================================
@@ -28,6 +30,16 @@ void CFPS::OnLoop() {
 	}
 
 	SpeedFactor = ((SDL_GetTicks() - LastTime) / 1000.0f) * 32.0f;
+	
+	if (Level == LEVEL_SLOWMO_2X) {
+		SpeedFactor = SpeedFactor / 2.0f;
+	}
+	else if (Level == LEVEL_SLOWMO_4X) {
+		SpeedFactor = SpeedFactor / 4.0f;
+	}
+	else if (Level == LEVEL_SLOWMO_8X) {
+		SpeedFactor = SpeedFactor / 8.0f;
+	}
 
 	LastTime = SDL_GetTicks();
 
@@ -45,3 +57,7 @@ float CFPS::GetSpeedFactor() {
 }
 
 //==============================================================================
+
+void CFPS::SetSlowMo(SlowMotionLevel level) {
+	Level = level;
+}

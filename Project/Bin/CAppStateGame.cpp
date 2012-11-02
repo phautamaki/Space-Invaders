@@ -46,11 +46,22 @@ void CAppStateGame::OnActivate() {
 
 	// TODO: Player2 not needed yet. Make the game support co-op later
 
+	//We would like to start from the first level.
+	CurrentLevelNumber = 1;
+
+	//This is mainly for testing purpose in here (of course we usually start from the first level).
+	std::string LevelInfoFile = "level"+IntToString(CurrentLevelNumber)+"info.txt";
+
 	//Loading of level information. Level changing feature should be implemented.
-	Level = GetCurrentLevelInfo ("level1info.txt");
+	Level = GetCurrentLevelInfo (LevelInfoFile);
 
 	//We start from the first item in the vector
 	LevelInfoIndex = 0;
+
+	//Sets the point where the level should be changed (Information is in the last line of the level info file).
+	LevelEndingPoint = Level.back().ActiveXPosition;
+
+	debug("Levelendingpoint: "+IntToString(LevelEndingPoint));
 
 	debug("All entities loaded successfully", 1);
 
@@ -68,14 +79,55 @@ void CAppStateGame::OnActivate() {
 	CCamera::CameraControl.TargetMode = TARGET_MODE_NORMAL;
 	debug("Camera set", 1);
 
+	std::string LevelMusicID = IntToString(CurrentLevelNumber);
+	std::string LevelMusicFile = "level" + IntToString(CurrentLevelNumber) + "music.ogg";
+
 	//Loads the level music TODO: Music!
-	//CSoundBank::SoundControl.OnLoad(CSoundBank::MUSIC, "FirstLevelMusic", PATH_MUSIC "darkness.ogg");
+	//CSoundBank::SoundControl.OnLoad(CSoundBank::MUSIC, LevelMusicID, PATH_MUSIC "level1music.ogg");
 
 	//Plays the music
-	//CSoundBank::SoundControl.Play(CSoundBank::MUSIC, "FirstLevelMusic");
+	//CSoundBank::SoundControl.Play(CSoundBank::MUSIC, LevelMusicID);
 
 	debug("Game initialization successful");
 }
+
+//-----------------------------------------------------------------------------
+
+//TODO: This function still lacks the functionality to set the camera to the correct place when level changes (or however the levels are implemented)
+void CAppStateGame::OnLevelChange() {
+
+	CurrentLevelNumber++;
+
+	//If we have survived the last level (TODO:next state should be end credits or something?)
+	if(CurrentLevelNumber > 2) {
+		NextState = APPSTATE_MAINMENU;
+		CAppStateManager::SetActiveAppState(NextState);
+		return;
+	}
+
+	std::string LevelInfoFile = "level"+IntToString(CurrentLevelNumber)+"info.txt";
+	
+	//Loading of new level information
+	Level = GetCurrentLevelInfo (LevelInfoFile);
+
+	debug("Changed to level" + IntToString(CurrentLevelNumber));
+
+	//Let's set the new level ending point
+	LevelEndingPoint = Level.back().ActiveXPosition;
+
+	std::string LevelMusicID = IntToString(CurrentLevelNumber);
+	std::string LevelMusicFile = "level"+IntToString(CurrentLevelNumber) + "music.ogg";
+
+	//Loads the level music TODO: Music!
+	//CSoundBank::SoundControl.OnLoad(CSoundBank::MUSIC, LevelMusicID, PATH_MUSIC "level2music.ogg");
+
+	//Plays the music
+	//CSoundBank::SoundControl.Play(CSoundBank::MUSIC, LevelMusicID);
+
+	ResetLevel();
+
+}
+//-----------------------------------------------------------------------------
 
 //-----------------------------------------------------------------------------
 void CAppStateGame::OnDeactivate() {
@@ -83,12 +135,20 @@ void CAppStateGame::OnDeactivate() {
 
 	// Empty entities
 	CFactory::Factory.OnCleanup();
+
+	//CSoundBank::SoundControl.OnCleanup();
 }
 
 //-----------------------------------------------------------------------------
 void CAppStateGame::OnLoop() {
+
+	//If the level should change
+	if( CCamera::CameraControl.GetX() >= LevelEndingPoint ) {
+		OnLevelChange();
+	}
+
 	// Spawn new entities
-	if( LevelInfoIndex < Level.size() && CCamera::CameraControl.GetX() >= Level.at(LevelInfoIndex).ActiveXPosition) {
+	else if( LevelInfoIndex < Level.size() && CCamera::CameraControl.GetX() >= Level.at(LevelInfoIndex).ActiveXPosition) {
 
 		CAppStateGame::LevelInfo TmpInfo = Level.at(LevelInfoIndex);
 		

@@ -27,13 +27,6 @@ CPlayer::CPlayer() {
 	!CSoundBank::SoundControl.OnLoad(CSoundBank::EFFECT, "ShootingSoundBig", PATH_EFFECTS FILENAME_SHOOTING_BIG) ? debug("Shit hit the fan when loading ShootingSoundBig.") : debug("Loading ShootingSoundBig was a great success!");
 	!CSoundBank::SoundControl.OnLoad(CSoundBank::EFFECT, "PlayerCrashingSound", PATH_EFFECTS FILENAME_PLAYER_CRASHING) ? debug("Shit hit the fan when loading PlayerCrashingSound.") : debug("Loading PlayerCrashingSound was a great success!");
 	
-	//ShootingSoundBasic = Mix_LoadWAV(PATH_EFFECTS FILENAME_SHOOTING_BASIC);
-	//ShootingSoundBig = Mix_LoadWAV(PATH_EFFECTS FILENAME_SHOOTING_BIG);
-	//PlayerCrashingSound = Mix_LoadWAV(PATH_EFFECTS FILENAME_PLAYER_CRASHING);
-
-	//ShootingSoundBasic == NULL ? debug("Shit hit the fan when loading ShootingSoundBasic.") : debug("Loading ShootingSoundBasic was a great success!");
-	//ShootingSoundBig  == NULL ? debug("Shit hit the fan when loading ShootingSoundBig.") : debug("Loading ShootingSoundBig was a great success!");
-	//PlayerCrashingSound == NULL ? debug("Shit hit the fan when loading PlayerCrashingSound.") : debug("Loading PlayerCrashingSound was a great success!");
 }
 
 //=============================================================================

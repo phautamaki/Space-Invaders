@@ -20,7 +20,6 @@ bool CSoundBank::OnLoad(SoundType type, std::string ID, char* File) {
 
 	case EFFECT:
 		
-
 		if((TempSound = Mix_LoadWAV(File)) == NULL) {
 			return false;
 		}
@@ -84,6 +83,7 @@ void CSoundBank::OnCleanup() {
 	}
 
 	Mix_AllocateChannels(0);
+	Mix_HaltMusic();
     SoundList.clear();
 	MusicList.clear();
 
@@ -111,12 +111,21 @@ void CSoundBank::Play(SoundType type, std::string ID) {
 	
 	case MUSIC:
 		if(MusicList[ID] == NULL) return;
-		//Music playing test
-		if(Mix_PlayingMusic() == 0) {
-			Mix_PlayMusic(MusicList[ID], -1);
-		}		
+
+		//Stops the current music playback
+		Mix_HaltMusic();
+			
+		//Plays the new music
+		Mix_PlayMusic(MusicList[ID], -1);
+		
 		break;
 	}
+}
+
+void CSoundBank::StopMusic() {
+
+	Mix_HaltMusic();
+
 }
 
 //==============================================================================

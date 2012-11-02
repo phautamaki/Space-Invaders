@@ -33,6 +33,8 @@ class CSoundBank {
 
 	public:
 		void Play(SoundType type, std::string ID);
+
+		void StopMusic();
 };
 
 //==============================================================================

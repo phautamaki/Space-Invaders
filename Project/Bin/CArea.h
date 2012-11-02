@@ -11,6 +11,7 @@ class CArea {
 
     public:
         std::vector<CMap>       MapList;
+		std::vector<CTile*>		BrokenTiles;
 
     private:
         SDL_Surface*			Surf_Tileset;
@@ -28,6 +29,8 @@ class CArea {
         CMap*	GetMap(int X, int Y);
 
 		CTile*	GetTile(int X, int Y);
+
+		void	RestoreBrokenTiles();
 };
 
 //=============================================================================

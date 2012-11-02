@@ -3,6 +3,7 @@
 #include "Paths.h"
 
 #include "functions.h"
+#include "CFactory.h"
 
 //=============================================================================
 CBullet::CBullet() {
@@ -58,8 +59,9 @@ bool CBullet::OnLoad(int nType) {
 
 //------------------------------------------------------------------------------
 bool CBullet::OnCollision(CEntity* Entity) {
+
 	// Prevent multiple handlings for same collissions
-	if( Entity->Dead ) return false;
+	if( Dead ) return false;
 
 	int whatHitMe = Entity->Type;
 
@@ -68,6 +70,10 @@ bool CBullet::OnCollision(CEntity* Entity) {
 			Dead = true;
 			break;
 		case ENTITY_TYPE_ENEMY: 
+			if (SubType == ENTITY_SUBTYPE_BULLET_NORMAL || SubType == ENTITY_SUBTYPE_NONE) {
+				Dead = true;
+			}
+			
 			break;
 		case ENTITY_TYPE_ITEM:
 			break;
@@ -82,9 +88,21 @@ bool CBullet::OnCollision(CEntity* Entity) {
 bool CBullet::OnCollision(CTile* Tile) {
 	bool PassThrough = false;
 
+	// Prevent multiple handlings for same collissions
+	if( Dead ) return false;
+
 	switch( Tile->TypeID ){
 		case TILE_TYPE_BLOCK:
 			Dead = true;
+			break;
+		case TILE_TYPE_BLOCK_BREAKABLE:
+			CFactory::Factory.CreateExplosion(Tile->X-8,Tile->Y-8, EXPLOSION_TILE);
+			Tile->TypeID = TILE_TYPE_NONE;
+			CArea::AreaControl.BrokenTiles.push_back(Tile);
+
+			if (SubType == ENTITY_SUBTYPE_BULLET_NORMAL || SubType == ENTITY_SUBTYPE_NONE) {
+				Dead = true;
+			}
 			break;
 		default:
 			PassThrough = true;

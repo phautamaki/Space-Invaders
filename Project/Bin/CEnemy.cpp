@@ -31,7 +31,7 @@ bool CEnemy::OnCollision(CEntity* Entity) {
 
 	switch( Entity->Type ) {
 		case ENTITY_TYPE_BULLET:
-			CFactory::Factory.CreateExplosion(X-130,Y-200);
+			CFactory::Factory.CreateExplosion(X-130,Y-200, EXPLOSION_ENEMY);
 			Dead = true;
 			break;
 		default:

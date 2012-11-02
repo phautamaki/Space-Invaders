@@ -7,8 +7,8 @@
 //==============================================================================
 enum {
     TILE_TYPE_NONE = 0,
-
-    TILE_TYPE_BLOCK
+    TILE_TYPE_BLOCK,
+	TILE_TYPE_BLOCK_BREAKABLE
 };
 
 //==============================================================================
@@ -16,6 +16,11 @@ class CTile {
     public:
         int     TileID;
         int     TypeID;
+
+		int X;
+		int Y;
+
+		int oldTypeID;
 
     public:
         CTile();

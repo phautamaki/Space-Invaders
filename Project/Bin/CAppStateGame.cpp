@@ -276,6 +276,9 @@ CAppStateGame* CAppStateGame::GetInstance() {
 
 //=============================================================================
 void CAppStateGame::ResetLevel(){
+	// Reset camera starting position
+	CCamera::CameraControl.SetPos(0,0);
+
 	if( Player->Lives == 0 ) {
 		NextState = APPSTATE_MAINMENU;
 		CAppStateManager::SetActiveAppState(NextState);
@@ -287,13 +290,14 @@ void CAppStateGame::ResetLevel(){
 		Player->Y = 290+GUI_HEIGHT;
 		Player->SpeedX = Player->SpeedY = Player->AccelX = Player->AccelY = 0;
 
-		CCamera::CameraControl.SetPos(0,0);
-		
 		//Let's set spawner index back to the start
 		LevelInfoIndex = 0;
 
 		//And kill everything except player 
 		CFactory::Factory.FlagNonPlayerEntities();
+
+		// Restore already broken breakable tiles
+		CArea::AreaControl.RestoreBrokenTiles();
 	}
 }
 

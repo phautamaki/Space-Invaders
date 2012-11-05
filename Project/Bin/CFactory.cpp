@@ -34,12 +34,14 @@ void CFactory::OnLoop() {
 			// because now even if player doesn't kill these enemies
 			// the effect might go on if they die other ways (collision etc)
 			if ((*it)->Type == ENTITY_TYPE_ENEMY) {
+				/*
 				if (SDL_GetTicks() - LastEnemyKillMoment < 1000) {
 					CFPS::FPSControl.SetSlowMo(LEVEL_SLOWMO_8X);
 					SlowMotionDuration = 2000; // <- effect lasts 2 seconds
 					SlowMotionStartMoment = SDL_GetTicks();
 				}
 				LastEnemyKillMoment = SDL_GetTicks();
+				*/
 			}
 
 
@@ -102,6 +104,7 @@ bool CFactory::CreateEnemyShip(int type, int nX, int nY) {
 			tmp->OnLoad( PATH_IMAGES PATH_ENEMIES "ship1.png",ENEMY_SHIP_1_SPRITE_WIDTH, ENEMY_SHIP_1_SPRITE_HEIGHT, ENEMY_SHIP_1_MAX_FRAMES);
 			tmp->X = static_cast<float>(nX);
 			tmp->Y = static_cast<float>(nY+GUI_HEIGHT);
+			tmp->HP = ENEMY_SHIP_1_HP;
 			break;
 		default:
 			return false;
@@ -132,11 +135,6 @@ bool CFactory::CreateItem(int type, int nX, int nY) {
 
 //------------------------------------------------------------------------------
 bool CFactory::CreateBullet(int type, int nX, int nY) {
-	if( type != ENTITY_SUBTYPE_BULLET_NORMAL &&
-		type != ENTITY_SUBTYPE_BULLET_CHARGE1 ) {
-		return false;
-	}
-
 	CBullet* tmp = new CBullet;
 	bool EntityOK = true;
 

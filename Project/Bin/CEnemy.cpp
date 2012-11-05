@@ -4,6 +4,7 @@
 
 //=============================================================================
 CEnemy::CEnemy() {
+	HP = 1;
 }
 
 //=============================================================================
@@ -27,18 +28,22 @@ void CEnemy::OnLoop() {
 
 //-----------------------------------------------------------------------------
 bool CEnemy::OnCollision(CEntity* Entity) {
-	if( Dead ) return false;
+	if( !IsActive() || !Entity->IsActive() ) return false;
 
 	switch( Entity->Type ) {
 		case ENTITY_TYPE_BULLET:
-			CFactory::Factory.CreateExplosion(X-130,Y-200, EXPLOSION_ENEMY);
-			Dead = true;
+			HP--;
+			if( HP <= 0 ){
+				// Need to substract bullet life, since it won't check collission when enemy dies from hit
+				Entity->HP--;
+				CFactory::Factory.CreateExplosion(X-130,Y-200, EXPLOSION_ENEMY);
+			}
 			break;
 		default:
-			break;
+			return false;
 	}
 
-    return true;
+	return true;
 }
 
 //=============================================================================

@@ -6,6 +6,11 @@
 #include <SDL_mixer.h>
 
 //=============================================================================
+enum GunTypes {
+	GUN_NORMAL = 0,
+	GUN_BEAM
+};
+//=============================================================================
 class CPlayer : public CEntity {
 	// Custom
     public:
@@ -50,8 +55,10 @@ class CPlayer : public CEntity {
 		bool TookHit;
 
 	private:
-		int ChargeStart;
-		int LastShot;
+		int GunType;
+		unsigned int GunLevel;
+		unsigned int ChargeStart;
+		unsigned int LastShot;
 
 };
 

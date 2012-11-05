@@ -19,6 +19,8 @@ CPlayer::CPlayer() {
 	MaxSpeedX = PLAYER_MAX_SPEED_X;
 	MaxSpeedY = PLAYER_MAX_SPEED_Y;
 
+	GunType = GUN_NORMAL;
+	GunLevel = 1;
 	ChargeLevel = 0;
 	ChargeStart = 0;
 	LastShot	= 0;
@@ -78,18 +80,32 @@ void CPlayer::ChargeGun() {
 
 //------------------------------------------------------------------------------
 void CPlayer::Shoot() {
-	// Can't shoot too fast
-	if( LastShot + PLAYER_SHOOT_DELAY < SDL_GetTicks() ) {
-		if( ChargeLevel < 10 ) {
-			CFactory::Factory.CreateBullet(ENTITY_SUBTYPE_BULLET_NORMAL, X + PLAYER_SPRITE_WIDTH + 5, Y + PLAYER_SPRITE_HEIGHT / 2);
-			CSoundBank::SoundControl.Play(CSoundBank::EFFECT, "ShootingSoundBasic");
-		}
-		else if( ChargeLevel >= 10 ) {
-			CFactory::Factory.CreateBullet(ENTITY_SUBTYPE_BULLET_CHARGE1, X + PLAYER_SPRITE_WIDTH + 5, Y + PLAYER_SPRITE_HEIGHT / 2);
-			CSoundBank::SoundControl.Play(CSoundBank::EFFECT, "ShootingSoundBig");
-		}
-
-		LastShot = SDL_GetTicks();
+	switch( GunType ) {
+		case GUN_NORMAL:
+			// Can't shoot too fast
+			if( LastShot + PLAYER_SHOOT_DELAY < SDL_GetTicks() ) {
+				int CurrentBulletType = 0;
+				if( ChargeLevel < 10 ) {
+					CurrentBulletType = ENTITY_SUBTYPE_BULLET_NORMAL;
+					if( GunLevel != 0 ) {
+						CFactory::Factory.CreateBullet(ENTITY_SUBTYPE_BULLET_SMALL_45U, static_cast<int>(X) + PLAYER_SPRITE_WIDTH + 5, static_cast<int>(Y) + PLAYER_SPRITE_HEIGHT / 2 -5);
+						CFactory::Factory.CreateBullet(ENTITY_SUBTYPE_BULLET_SMALL_45D, static_cast<int>(X) + PLAYER_SPRITE_WIDTH + 5, static_cast<int>(Y) + PLAYER_SPRITE_HEIGHT / 2 +5);
+					}
+					CSoundBank::SoundControl.Play(CSoundBank::EFFECT, "ShootingSoundBasic");
+				}
+				else if( ChargeLevel >= 10 ) {
+					CurrentBulletType = ENTITY_SUBTYPE_BULLET_CHARGE1;
+					CSoundBank::SoundControl.Play(CSoundBank::EFFECT, "ShootingSoundBig");
+				}
+				CFactory::Factory.CreateBullet(CurrentBulletType, static_cast<int>(X) + PLAYER_SPRITE_WIDTH + 5, static_cast<int>(Y) + PLAYER_SPRITE_HEIGHT / 2);
+				LastShot = SDL_GetTicks();
+			}
+			break;
+		case GUN_BEAM:
+			CFactory::Factory.CreateBullet(ENTITY_SUBTYPE_BULLET_BEAM, static_cast<int>(X) + PLAYER_SPRITE_WIDTH + 5, static_cast<int>(Y) + PLAYER_SPRITE_HEIGHT / 2);
+			break;
+		default:
+			break;
 	}
 }
 
@@ -268,6 +284,9 @@ void CPlayer::OnKeyDown(SDLKey sym, SDLMod mod, Uint16 unicode) {
 		case SDLK_SPACE: {
 			if( ChargeStart == 0 ) {
 				ChargeStart = SDL_GetTicks();
+			}
+			if( GunType == GUN_BEAM ) {
+				Shoot();
 			}
 		    break;
 		}

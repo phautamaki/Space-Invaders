@@ -38,6 +38,8 @@ CEntity::CEntity() {
 	Dead = false;
 	Flags = ENTITY_FLAG_NONE;
 
+	HP = 1;
+
 	SpeedX = 0;
 	SpeedY = 0;
 
@@ -76,6 +78,12 @@ bool CEntity::OnLoad(char* File, int Width, int Height, int MaxFrames) {
 //------------------------------------------------------------------------------
 void CEntity::OnLoop() {
 	if( Dead ) return;
+	
+	// Check HP
+	if( HP <= 0 ) {
+		Dead = true;
+		return;
+	}
 
 	// Kill entities that move too far out of screen
 	if( X < CCamera::CameraControl.GetX() - ENTITY_KILLDISTANCE ) {
@@ -190,6 +198,13 @@ bool CEntity::OnCollision(CEntity* Entity) {
 //------------------------------------------------------------------------------
 bool CEntity::OnCollision(CTile* Tile) {
     return false;
+}
+//==============================================================================
+bool CEntity::IsActive() {
+	if( Dead ||HP <= 0 ) {
+		return false;
+	}
+	return true;
 }
 
 //==============================================================================
@@ -564,4 +579,4 @@ bool CEntity::GetAlphaXYTile(SDL_Surface* tileset, int x, int y)
  
     return alpha > 10;
 }
-
+//------------------------------------------------------------------------------

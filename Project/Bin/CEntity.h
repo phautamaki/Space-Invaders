@@ -23,7 +23,10 @@ enum Types {
 enum SubTypes {
 	ENTITY_SUBTYPE_NONE = 0,
 	ENTITY_SUBTYPE_BULLET_NORMAL,
+	ENTITY_SUBTYPE_BULLET_SMALL_45U,
+	ENTITY_SUBTYPE_BULLET_SMALL_45D,
 	ENTITY_SUBTYPE_BULLET_CHARGE1,
+	ENTITY_SUBTYPE_BULLET_BEAM,
 	ENITTY_SUBTYPE_ENEMY_1
 };
 
@@ -48,6 +51,7 @@ class CEntity {
 		SDL_Surface*    Surf_Entity;
 
 	public:
+		/* Movement and positioning */
 		float	X;
 		float	Y;
 		float	originX;
@@ -64,25 +68,28 @@ class CEntity {
 		int		Angle;
 		int		TargetAngle;
 
-	public:
-		int		Type;
-		int		SubType;
-
-		bool	Dead;
-		int		Flags;
-
-	public:
+		/* Speed */
 		float	SpeedX;
 		float	SpeedY;
 
 		float	AccelX;
 		float	AccelY;
 
-	public:
 		float	MaxSpeedX;
 		float	MaxSpeedY;
 
+		/* Flags */
+		int		Type;
+		int		SubType;
+
+		bool	Dead;
+		int		Flags;
+
+		/* misc */
+		int HP;
+
 	protected:
+		/* Animaton */
 		int		CurrentFrameCol;
 		int		CurrentFrameRow;
 
@@ -91,7 +98,7 @@ class CEntity {
 
 		virtual ~CEntity();
 
-	public:
+		/* Event handlers */
 		virtual bool OnLoad(char* File, int Width, int Height, int MaxFrames);
 
 		virtual void OnLoop();
@@ -106,12 +113,12 @@ class CEntity {
 
 		virtual bool OnCollision(CTile* Tile);
 
-	public:
+		/* Movement */
 		void    OnMove(float MoveX, float MoveY);
 
 		void 	StopMove();
 
-	public:
+		/* Collission */
 		SDL_Rect GetBounds();
 		SDL_Rect GetFrameBounds();
 		SDL_Rect NormalizeBounds(const SDL_Rect& rect);
@@ -122,7 +129,11 @@ class CEntity {
 
 		bool    Collides(int oX, int oY, int oW, int oH);
 
+		/* Misc */
+		bool	IsActive();
+
 	private:
+		/* Collission */
 		void	CheckCollisions(int NewX, int NewY);
 
 		void 	QueuePossibleEntityCollision(CEntity* Entity, int NewX, int NewY);

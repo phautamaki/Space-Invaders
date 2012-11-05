@@ -24,6 +24,31 @@ bool CBullet::OnLoad(int nType) {
 			MaxFrames = 1;
 
 			MaxSpeedX = SpeedX = PLAYER_BULLET_NORMAL_SPEED;
+			HP = 1;
+
+			break;
+		case ENTITY_SUBTYPE_BULLET_SMALL_45U: 
+			File = PATH_IMAGES PATH_ITEMS "bullet_small.png";
+			Width = 10;
+			Height = 7;
+			MaxFrames = 1;
+
+			MaxSpeedX = SpeedX = PLAYER_BULLET_NORMAL_SPEED;
+			SpeedY = -5;
+			MoveUp = true;
+			HP = 1;
+
+			break;
+		case ENTITY_SUBTYPE_BULLET_SMALL_45D: 
+			File = PATH_IMAGES PATH_ITEMS "bullet_small.png";
+			Width = 10;
+			Height = 7;
+			MaxFrames = 1;
+
+			MaxSpeedX = SpeedX = PLAYER_BULLET_NORMAL_SPEED;
+			SpeedY = 5;
+			MoveDown = true;
+			HP = 1;
 
 			break;
 		case ENTITY_SUBTYPE_BULLET_CHARGE1:
@@ -33,6 +58,17 @@ bool CBullet::OnLoad(int nType) {
 			MaxFrames = 1;
 
 			MaxSpeedX = SpeedX = PLAYER_BULLET_CHARGE1_SPEED;
+			HP = 3;
+
+			break;
+		case ENTITY_SUBTYPE_BULLET_BEAM:
+			File = PATH_IMAGES PATH_ITEMS "bullet_beam.png";
+			Width = 15;
+			Height = 4;
+			MaxFrames = 1;
+
+			MaxSpeedX = SpeedX = PLAYER_BULLET_BEAM_SPEED;
+			HP = 1;
 
 			break;
 		default:
@@ -59,26 +95,23 @@ bool CBullet::OnLoad(int nType) {
 
 //------------------------------------------------------------------------------
 bool CBullet::OnCollision(CEntity* Entity) {
-
 	// Prevent multiple handlings for same collissions
-	if( Dead ) return false;
+	if( !IsActive() || !Entity->IsActive() ) return false;
 
-	int whatHitMe = Entity->Type;
-
-	switch(whatHitMe) {
+	switch(Entity->Type) {
 		case ENTITY_TYPE_GENERIC:
 			Dead = true;
 			break;
 		case ENTITY_TYPE_ENEMY: 
-			if (SubType == ENTITY_SUBTYPE_BULLET_NORMAL || SubType == ENTITY_SUBTYPE_NONE) {
-				Dead = true;
+			HP--;
+			if( HP <= 0 ){
+				Entity->HP--;
 			}
-			
 			break;
 		case ENTITY_TYPE_ITEM:
 			break;
 		default: 
-			break;
+			return false;
 	}
 
     return true;
@@ -89,7 +122,7 @@ bool CBullet::OnCollision(CTile* Tile) {
 	bool PassThrough = false;
 
 	// Prevent multiple handlings for same collissions
-	if( Dead ) return false;
+	if( !IsActive() ) return false;
 
 	switch( Tile->TypeID ){
 		case TILE_TYPE_BLOCK:
@@ -100,9 +133,7 @@ bool CBullet::OnCollision(CTile* Tile) {
 			Tile->TypeID = TILE_TYPE_NONE;
 			CArea::AreaControl.BrokenTiles.push_back(Tile);
 
-			if (SubType == ENTITY_SUBTYPE_BULLET_NORMAL || SubType == ENTITY_SUBTYPE_NONE) {
-				Dead = true;
-			}
+			Dead = true;
 			break;
 		default:
 			PassThrough = true;

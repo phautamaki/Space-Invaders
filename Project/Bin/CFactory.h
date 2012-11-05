@@ -26,10 +26,10 @@ class CFactory {
 	public:
 		static CFactory Factory;
 
-		int SlowMotionStartMoment;
-		int SlowMotionDuration;
+		unsigned int SlowMotionStartMoment;
+		unsigned int SlowMotionDuration;
 		
-		int LastEnemyKillMoment;
+		unsigned int LastEnemyKillMoment;
 
     public:
         CFactory();
@@ -40,7 +40,6 @@ class CFactory {
 
         void OnCleanup();
 
-	public:
 		// Flag non-player entities as dead
 		void FlagNonPlayerEntities();
 		

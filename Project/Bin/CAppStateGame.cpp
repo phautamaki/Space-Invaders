@@ -208,7 +208,7 @@ void CAppStateGame::OnLoop() {
 	float moveX = CAMERA_SPEED * CFPS::FPSControl.GetSpeedFactor();
 	CCamera::CameraControl.OnMove(moveX, static_cast<float>(CCamera::CameraControl.GetY()));
 	// Update BG offset
-	BG_offset = static_cast<int>(BG_offset - BG_SPEED * CFPS::FPSControl.GetSpeedFactor());
+	BG_offset = BG_offset - BG_SPEED * CFPS::FPSControl.GetSpeedFactor();
 	if( BG_offset <= 0 ) {
 		BG_offset = BG_WIDTH;
 	}

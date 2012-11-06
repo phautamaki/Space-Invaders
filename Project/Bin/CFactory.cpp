@@ -125,6 +125,11 @@ bool CFactory::CreateItem(int type, int nX, int nY) {
 			tmp->X = static_cast<float>(nX);
 			tmp->Y = static_cast<float>(nY+GUI_HEIGHT);
 			break;
+		case SPECIAL_EFFECT:
+			tmp->OnLoad( PATH_IMAGES PATH_ITEMS "special_effect_item",16, 16, 1);
+			tmp->X = static_cast<float>(nX);
+			tmp->Y = static_cast<float>(nY+GUI_HEIGHT);
+			break;
 		default:
 			return false;
 	}
@@ -147,7 +152,7 @@ bool CFactory::CreateBullet(int type, int nX, int nY) {
 	return EntityOK;
 }
 
-//==============================================================================
+//------------------------------------------------------------------------------
 bool CFactory::CreateExplosion(int nX, int nY, ExplType explosion){
 	CSpecialEffect* tmp = new CSpecialEffect;
 
@@ -169,4 +174,23 @@ bool CFactory::CreateExplosion(int nX, int nY, ExplType explosion){
 	return true;
 }
 
+//------------------------------------------------------------------------------
+void CFactory::FreezeEnemies(int duration_ms, SlowMotionLevel level) {
+	return; // TODO: make
+}
+
+//------------------------------------------------------------------------------
+// TODO: seems to be very unstable
+void CFactory::KillEnemiesOnScreen() {
+	std::vector<CEntity*>::iterator it = CEntity::EntityList.begin();
+	while( it != CEntity::EntityList.end() ) {
+		if ((*it)->Type == ENTITY_TYPE_ENEMY && !((*it)->Dead) && (*it)->IsActive()) {
+			this->CreateExplosion((int)((*it)->X-130), (int)((*it)->Y-200), EXPLOSION_ENEMY);
+			(*it)->Dead = true;
+		}
+		++it;
+	}
+
+	return;
+}
 //==============================================================================

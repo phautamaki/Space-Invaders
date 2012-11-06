@@ -36,7 +36,7 @@ class CAppStateGame : public CAppState {
 
 		// Scrolling space background
 		SDL_Surface*	SpaceBG;
-		int				BG_offset;
+		float			BG_offset;
 
 		//Holds the information about what is our current level we are playing
 		int CurrentLevelNumber;

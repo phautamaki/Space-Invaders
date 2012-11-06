@@ -52,6 +52,10 @@ class CFactory {
 		// Create effects
 		bool CreateExplosion(int nX, int nY, ExplType explosion);
 
+		// Create special effects (acquired from s-box)
+		void FreezeEnemies(int duration_ms, SlowMotionLevel level);
+		void KillEnemiesOnScreen();
+
 	private:
 		std::vector<CPlayer*> Players;
 };

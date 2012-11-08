@@ -30,6 +30,8 @@ class CAppStateGame : public CAppState {
 		static CAppStateGame Instance;
 
         CPlayer*		Player;
+		bool			MakeDeathScene;
+		int				DeathMoment;
 
 		// GUI
 		SDL_Surface*	IconLife;

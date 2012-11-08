@@ -17,6 +17,7 @@ CAppStateGame CAppStateGame::Instance;
 
 //=============================================================================
 CAppStateGame::CAppStateGame() {
+	MakeDeathScene = false;
 }
 
 //=============================================================================
@@ -213,8 +214,20 @@ void CAppStateGame::OnLoop() {
 		BG_offset = BG_WIDTH;
 	}
 
-	// Player died -> Reset level
-	if( Player->TookHit ) {
+	// Player died -> make death scene
+	if( Player->TookHit) {
+		if (!MakeDeathScene) {
+			DeathMoment = SDL_GetTicks();
+			CFactory::Factory.CreateSlowMotion(SlowMotionLevel::LEVEL_SLOWMO_8X, 3000);
+			CFactory::Factory.CreateExplosion(Player->X, Player->Y-200, ExplType::EXPLOSION_ENEMY);
+		}
+
+		MakeDeathScene = true;
+	}
+
+	// Reset level after death scene is complete
+	if ( MakeDeathScene && (SDL_GetTicks() > (DeathMoment + 3000)) ) {
+		MakeDeathScene = false;
 		ResetLevel();
 	}
 }

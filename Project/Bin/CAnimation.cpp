@@ -7,7 +7,7 @@ CAnimation::CAnimation() {
     MaxFrames       = 0;
     FrameInc        = 1;
 
-    FrameRate       = 100; //Milliseconds
+    FrameRate       = ANIMATION_FRAMERATE_MS; //Milliseconds
     OldTime         = 0;
 
     Oscillate       = false;
@@ -17,6 +17,8 @@ CAnimation::CAnimation() {
 
 //------------------------------------------------------------------------------
 void CAnimation::OnAnimate() {
+	SetSMFrameRate();
+
     if(OldTime + FrameRate > SDL_GetTicks()) {
         return;
     }
@@ -58,6 +60,29 @@ void CAnimation::SetCurrentFrame(int Frame) {
 //------------------------------------------------------------------------------
 int CAnimation::GetCurrentFrame() {
     return CurrentFrame;
+}
+
+//------------------------------------------------------------------------------
+
+void CAnimation::SetSMFrameRate() {
+	SlowMotionLevel level = CFPS::FPSControl.GetSMLevel();
+	if (level == LEVEL_NORMAL) {
+		FrameRate = ANIMATION_FRAMERATE_MS;
+	}
+	else if (level == LEVEL_SLOWMO_2X) {
+		FrameRate = ANIMATION_FRAMERATE_MS * LEVEL_SLOWMO_2X;
+	}
+	else if (level == LEVEL_SLOWMO_4X) {
+		FrameRate = ANIMATION_FRAMERATE_MS * LEVEL_SLOWMO_4X;
+	}
+	else if (level == LEVEL_SLOWMO_8X) {
+		FrameRate = ANIMATION_FRAMERATE_MS * LEVEL_SLOWMO_8X;
+	}
+	else if (level == LEVEL_FREEZE) {
+		FrameRate = ANIMATION_FRAMERATE_MS * LEVEL_FREEZE;
+	}
+
+	return;
 }
 
 //==============================================================================

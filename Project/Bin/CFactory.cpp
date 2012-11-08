@@ -7,8 +7,9 @@ CFactory CFactory::Factory;
 
 //==============================================================================
 CFactory::CFactory() {
-	SlowMotionStartMoment = 0;
-	SlowMotionDuration = 0;
+	SMStartMoment = 0;
+	SMDuration = 0;
+	SMLevel = LEVEL_NORMAL;
 	LastEnemyKillMoment = 0;
 }
 
@@ -20,8 +21,11 @@ bool CFactory::OnInit() {
 //------------------------------------------------------------------------------
 void CFactory::OnLoop() {
 	
-	if (SDL_GetTicks() > SlowMotionStartMoment + SlowMotionDuration) {
+	if (SDL_GetTicks() > SMStartMoment + SMDuration) {
 		CFPS::FPSControl.SetSlowMo(LEVEL_NORMAL);
+	}
+	else {
+		CFPS::FPSControl.SetSlowMo(SMLevel);
 	}
 	
 
@@ -174,8 +178,16 @@ bool CFactory::CreateExplosion(int nX, int nY, ExplType explosion){
 	return true;
 }
 
+
 //------------------------------------------------------------------------------
-void CFactory::FreezeEnemies(int duration_ms, SlowMotionLevel level) {
+void CFactory::CreateSlowMotion(SlowMotionLevel level, int duration_ms) {
+	SMStartMoment = SDL_GetTicks();
+	SMDuration = duration_ms;
+	SMLevel = level;
+}
+
+//------------------------------------------------------------------------------
+void CFactory::FreezeEnemies(SlowMotionLevel level, int duration_ms) {
 	return; // TODO: make
 }
 

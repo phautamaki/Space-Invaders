@@ -8,10 +8,10 @@
 
 enum SlowMotionLevel {
 	LEVEL_NORMAL = 0,
-	LEVEL_SLOWMO_2X,
-	LEVEL_SLOWMO_4X,
-	LEVEL_SLOWMO_8X,
-	LEVEL_FREEZE
+	LEVEL_SLOWMO_2X = 2,
+	LEVEL_SLOWMO_4X = 4,
+	LEVEL_SLOWMO_8X = 8,
+	LEVEL_FREEZE = 10000
 };
 
 //==============================================================================
@@ -41,6 +41,7 @@ class CFPS {
 		float   GetSpeedFactor();
 
 		void	SetSlowMo(SlowMotionLevel level);
+		SlowMotionLevel GetSMLevel();
 };
 
 //==============================================================================

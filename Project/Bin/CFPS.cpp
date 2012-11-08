@@ -61,3 +61,7 @@ float CFPS::GetSpeedFactor() {
 void CFPS::SetSlowMo(SlowMotionLevel level) {
 	Level = level;
 }
+
+SlowMotionLevel CFPS::GetSMLevel() {
+	return Level;
+}

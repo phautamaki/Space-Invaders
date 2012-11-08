@@ -202,6 +202,7 @@ void CPlayer::OnLoop() {
 
 //-----------------------------------------------------------------------------
 void CPlayer::OnRender(SDL_Surface* Surf_Display) {
+	if (!TookHit)
 	CEntity::OnRender(Surf_Display);
 }
 
@@ -232,7 +233,8 @@ bool CPlayer::OnCollision(CEntity* Entity) {
 			Die();
 			break;
 		case ENTITY_TYPE_ITEM: 
-			Entity->Dead = true;	
+			Die();
+			//Entity->Dead = true;	
 			break;
 		default: 
 			// Unknown collision

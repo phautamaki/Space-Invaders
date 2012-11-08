@@ -16,21 +16,20 @@ enum ExplType {
 	EXPLOSION_TILE
 };
 
-enum {
-	DURATION_500MS = 500,
-	DURATION_1S = 1000,
-	DURATION_2S = 2000
-};
+
 
 class CFactory {
-	public:
-		static CFactory Factory;
+	private:
+		unsigned int SMStartMoment;
+		unsigned int SMDuration;
+		SlowMotionLevel SMLevel;
 
-		unsigned int SlowMotionStartMoment;
-		unsigned int SlowMotionDuration;
-		
 		unsigned int LastEnemyKillMoment;
 
+	public:
+
+		static CFactory Factory;
+		
     public:
         CFactory();
 
@@ -51,9 +50,10 @@ class CFactory {
 
 		// Create effects
 		bool CreateExplosion(int nX, int nY, ExplType explosion);
+		void CreateSlowMotion(SlowMotionLevel level, int duration_ms);
 
 		// Create special effects (acquired from s-box)
-		void FreezeEnemies(int duration_ms, SlowMotionLevel level);
+		void FreezeEnemies(SlowMotionLevel level, int duration_ms);
 		void KillEnemiesOnScreen();
 
 	private:

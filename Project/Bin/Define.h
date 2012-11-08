@@ -16,12 +16,12 @@
 
 //-----------------------------------------------------------------------------
 /* Background specific settings */
-#define BG_SPEED 2
+#define BG_SPEED 5
 #define BG_WIDTH 960
 
 //-----------------------------------------------------------------------------
 /* Camera specific settings */
-#define CAMERA_SPEED 2 // Camera speed in pixels per second
+#define CAMERA_SPEED 5 // Camera speed in pixels per second
 
 //-----------------------------------------------------------------------------
 /* Common settings for all entities */
@@ -61,6 +61,9 @@
 /* Bullet strengths */
 #define BULLET_NORMAL_STR	1
 #define BULLET_CHARGE1_STR	3
+
+
+#define ANIMATION_FRAMERATE_MS 100 // 100 milliseconds per frame
 
 //=============================================================================
 #endif

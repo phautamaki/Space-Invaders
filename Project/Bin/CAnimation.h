@@ -5,6 +5,8 @@
     #define _CANIMATION_H_
 
 #include <SDL.h>
+#include "CFPS.h"
+#include "Define.h"
 
 //==============================================================================
 class CAnimation {
@@ -14,6 +16,8 @@ class CAnimation {
 
         int     FrameRate; //Milliseconds
 		long    OldTime;
+
+		void	SetSMFrameRate();
 
 	public:
         int	    MaxFrames;

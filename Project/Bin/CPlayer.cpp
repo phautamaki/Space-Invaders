@@ -248,7 +248,9 @@ bool CPlayer::OnCollision(CEntity* Entity) {
 bool CPlayer::OnCollision(CTile* Tile){
 	bool PassThrough = false;
 
-	switch( Tile->TypeID ){
+	if (!TookHit) {
+
+		switch( Tile->TypeID ){
 		case TILE_TYPE_BLOCK:
 			Die();
 			break;
@@ -257,6 +259,8 @@ bool CPlayer::OnCollision(CTile* Tile){
 			break;
 		default:
 			break;
+		}
+
 	}
 	return PassThrough;
 }

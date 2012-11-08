@@ -218,7 +218,7 @@ void CAppStateGame::OnLoop() {
 	if( Player->TookHit) {
 		if (!MakeDeathScene) {
 			DeathMoment = SDL_GetTicks();
-			CFactory::Factory.CreateSlowMotion(SlowMotionLevel::LEVEL_SLOWMO_8X, 3000);
+			CFactory::Factory.CreateSlowMotion(SlowMotionLevel::LEVEL_SLOWMO_8X, 2300);
 			CFactory::Factory.CreateExplosion(Player->X, Player->Y-200, ExplType::EXPLOSION_ENEMY);
 		}
 
@@ -226,7 +226,7 @@ void CAppStateGame::OnLoop() {
 	}
 
 	// Reset level after death scene is complete
-	if ( MakeDeathScene && (SDL_GetTicks() > (DeathMoment + 3000)) ) {
+	if ( MakeDeathScene && (SDL_GetTicks() > (DeathMoment + 2300)) ) {
 		MakeDeathScene = false;
 		ResetLevel();
 	}
@@ -278,8 +278,6 @@ void CAppStateGame::OnRender(SDL_Surface* Surf_Display) {
 	for(unsigned int i = 0; i < Player->Lives; i++ ){
 		CSurface::OnDraw(Surf_Display, IconLife, 50 + (i*30), 30);
 	}
-
-	//CFont::FontControl.Write(Surf_Display, "test", 50, 50);
 }
 
 //=============================================================================
@@ -289,6 +287,7 @@ CAppStateGame* CAppStateGame::GetInstance() {
 
 //=============================================================================
 void CAppStateGame::ResetLevel(){
+
 	// Reset camera starting position
 	CCamera::CameraControl.SetPos(0,0);
 

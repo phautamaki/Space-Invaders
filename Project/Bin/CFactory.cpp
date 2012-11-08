@@ -1,6 +1,7 @@
 //==============================================================================
 #include "CFactory.h"
 #include "Paths.h"
+#include "functions.h"
 
 //==============================================================================
 CFactory CFactory::Factory;
@@ -174,7 +175,6 @@ bool CFactory::CreateExplosion(int nX, int nY, ExplType explosion){
 	tmp->X = static_cast<float>(nX);
 	tmp->Y = static_cast<float>(nY+GUI_HEIGHT);
 	CEntity::EntityList.push_back(tmp);
-
 	return true;
 }
 
@@ -196,8 +196,10 @@ void CFactory::FreezeEnemies(SlowMotionLevel level, int duration_ms) {
 void CFactory::KillEnemiesOnScreen() {
 	std::vector<CEntity*>::iterator it = CEntity::EntityList.begin();
 	while( it != CEntity::EntityList.end() ) {
-		if ((*it)->Type == ENTITY_TYPE_ENEMY && !((*it)->Dead) && (*it)->IsActive()) {
-			this->CreateExplosion((int)((*it)->X-130), (int)((*it)->Y-200), EXPLOSION_ENEMY);
+		if ((*it) != NULL && (*it)->Type == ENTITY_TYPE_ENEMY && !((*it)->Dead)) {
+			int x = (*it)->X;
+			int y = (*it)->Y;
+			//CreateExplosion(x, y, EXPLOSION_ENEMY);
 			(*it)->Dead = true;
 		}
 		++it;

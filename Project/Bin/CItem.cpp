@@ -85,8 +85,9 @@ void CItem::OnAnimate() {
 }
 
 //------------------------------------------------------------------------------
-bool CItem::OnCollision(CEntity* Entity) {
-    return true;
+void CItem::OnCollision(CEntity* Entity) {
+	// TODO:
+    return;
 }
 
 //=============================================================================

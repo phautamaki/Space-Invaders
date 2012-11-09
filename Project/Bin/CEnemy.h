@@ -13,7 +13,7 @@ class CEnemy : public CManouvarableEntity {
 
         void OnLoop();
 
-        bool OnCollision(CEntity* Entity);
+        void OnCollision(CEntity* Entity);
 };
 
 //=============================================================================

@@ -5,6 +5,8 @@
 #include "functions.h"
 #include "Paths.h"
 
+#include "CAppStateGame.h"
+
 //=============================================================================
 CPlayer::CPlayer() {
 	Type = ENTITY_TYPE_PLAYER;
@@ -15,6 +17,9 @@ CPlayer::CPlayer() {
 	MoveUp		= false;
 	MoveDown	= false;
 	TookHit		= false;
+
+	MakeDeathScene = false;
+	DeathMoment = 0;
 
 	MaxSpeedX = PLAYER_MAX_SPEED_X;
 	MaxSpeedY = PLAYER_MAX_SPEED_Y;
@@ -198,6 +203,13 @@ void CPlayer::OnLoop() {
 		// Might also want to check player X won't get off screen (level objects can "push" player)
 		OnMove(CAMERA_SPEED, SpeedY);
 	}
+
+
+	// Reset level after death scene is complete
+	if ( MakeDeathScene && (SDL_GetTicks() > (DeathMoment + 3000)) ) {
+		MakeDeathScene = false;
+		CAppStateGame::Instance.ResetLevelNow();
+	}
 }
 
 //-----------------------------------------------------------------------------
@@ -223,10 +235,10 @@ void CPlayer::OnAnimate() {
 }
 
 //------------------------------------------------------------------------------
-bool CPlayer::OnCollision(CEntity* Entity) {
+void CPlayer::OnCollision(CEntity* Entity) {
 	
 	// Prevent multiple handlings for same collissions
-	if( Dead || Entity->Dead ) return false;
+	if( Dead || Entity->Dead ) return;
 
 	switch(Entity->Type) {
 		case ENTITY_TYPE_ENEMY: 
@@ -241,12 +253,11 @@ bool CPlayer::OnCollision(CEntity* Entity) {
 			break;
 	}
 	
-    return true; 
+    return; 
 }
 
 //------------------------------------------------------------------------------
-bool CPlayer::OnCollision(CTile* Tile){
-	bool PassThrough = false;
+void CPlayer::OnCollision(CTile* Tile){
 
 	if (!TookHit) {
 
@@ -258,11 +269,11 @@ bool CPlayer::OnCollision(CTile* Tile){
 			Die();
 			break;
 		default:
+			return;
 			break;
 		}
-
 	}
-	return PassThrough;
+	return;
 }
 
 //------------------------------------------------------------------------------
@@ -340,6 +351,12 @@ void CPlayer::OnKeyUp(SDLKey sym, SDLMod mod, Uint16 unicode) {
 void CPlayer::Die() {
 	// There might be multiple collission events from a single hit
 	if(!TookHit){
+		CFactory::Factory.CreateExplosion(X, Y-200, ExplType::EXPLOSION_ENEMY);
+		CFactory::Factory.CreateSlowMotion(SlowMotionLevel::LEVEL_SLOWMO_8X, 3000);
+		
+		DeathMoment = SDL_GetTicks();
+		MakeDeathScene = true;
+
 		// Play explosion sound of player's death
 		CSoundBank::SoundControl.Play(CSoundBank::EFFECT, "PlayerCrashingSound");
 

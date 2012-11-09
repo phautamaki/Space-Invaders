@@ -25,12 +25,12 @@ class CFactory {
 		SlowMotionLevel SMLevel;
 
 		unsigned int LastEnemyKillMoment;
+		std::vector<CPlayer*> Players;
 
 	public:
 
 		static CFactory Factory;
 		
-    public:
         CFactory();
 
 		bool OnInit();
@@ -56,8 +56,6 @@ class CFactory {
 		void FreezeEnemies(SlowMotionLevel level, int duration_ms);
 		void KillEnemiesOnScreen();
 
-	private:
-		std::vector<CPlayer*> Players;
 };
 
 //=============================================================================

@@ -165,11 +165,13 @@ bool CFactory::CreateExplosion(int nX, int nY, ExplType explosion){
 		if(!tmp->OnLoad( PATH_IMAGES PATH_SPECIALEFFECTS "explosion.png",256, 150, 5)){
 			return false;
 		}
+		tmp->Anim_Control.AnimateOnce = true;
 	}
 	else if (explosion == EXPLOSION_TILE) {
 		if(!tmp->OnLoad( PATH_IMAGES PATH_SPECIALEFFECTS "explosion_tile.png",32, 32, 4)){
 			return false;
 		}
+		tmp->Anim_Control.AnimateOnce = true;
 	}
 
 	tmp->X = static_cast<float>(nX);

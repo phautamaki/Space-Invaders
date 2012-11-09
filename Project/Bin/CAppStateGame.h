@@ -26,12 +26,13 @@ class CAppStateGame : public CAppState {
 
 		};
 	
-	private:
 		static CAppStateGame Instance;
+		
 
+	private:
+		
+		bool ResetCurrentLevel;
         CPlayer*		Player;
-		bool			MakeDeathScene;
-		int				DeathMoment;
 
 		// GUI
 		SDL_Surface*	IconLife;
@@ -77,7 +78,9 @@ class CAppStateGame : public CAppState {
 	public:
 		static CAppStateGame* GetInstance();
 
-	private:
+		void ResetLevelNow();
+
+private:
 		void ResetLevel();
 };
 

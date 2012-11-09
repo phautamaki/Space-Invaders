@@ -26,7 +26,7 @@ class CItem : public CManouvarableEntity {
 
         void OnAnimate();
 
-        bool OnCollision(CEntity* Entity);
+        void OnCollision(CEntity* Entity);
 
 		void OnMove(float MoveX, float MoveY);
 };

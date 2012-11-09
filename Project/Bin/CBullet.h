@@ -11,9 +11,9 @@ class CBullet : public CManouvarableEntity {
 
 		bool OnLoad(int nType);
 
-		bool OnCollision(CEntity* Entity);
+		void OnCollision(CEntity* Entity);
 
-		bool OnCollision(CTile* Tile);
+		void OnCollision(CTile* Tile);
 };
 
 //=============================================================================

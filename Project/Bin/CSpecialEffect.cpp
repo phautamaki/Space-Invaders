@@ -9,8 +9,8 @@ CSpecialEffect::CSpecialEffect() {
 
 //=============================================================================
 void CSpecialEffect::OnLoop() {
-	if( Anim_Control.LoopCount > 1 ) {
-		Dead = true;
+	if(!Anim_Control.KeepAnimating) {
+		Die();
 	}
 
 	CEntity::OnLoop();

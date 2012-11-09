@@ -19,8 +19,6 @@ CEntity::CEntity() {
 
 	X = 0;
 	Y = 0;
-	originX = 0;
-	originY = 0;
 
 	Width 	= 0;
 	Height 	= 0;
@@ -67,8 +65,6 @@ bool CEntity::OnLoad(char* File, int Width, int Height, int MaxFrames) {
 
 	this->Width = Width;
 	this->Height = Height;
-	this->originX = Width / 2.0f;
-	this->originY = Height / 2.0f;
 
 	Anim_Control.MaxFrames = MaxFrames;
 
@@ -173,7 +169,9 @@ void CEntity::OnLoop() {
 void CEntity::OnRender(SDL_Surface* Surf_Display) {
     if(Surf_Entity == NULL || Surf_Display == NULL) return;
 
-    CSurface::OnDraw(Surf_Display, Surf_Entity, X - CCamera::CameraControl.GetX(), Y - CCamera::CameraControl.GetY(), CurrentFrameCol * Width, (CurrentFrameRow + Anim_Control.GetCurrentFrame()) * Height, Width, Height);
+	if (Anim_Control.KeepAnimating) {
+		CSurface::OnDraw(Surf_Display, Surf_Entity, X - CCamera::CameraControl.GetX(), Y - CCamera::CameraControl.GetY(), 0, Anim_Control.GetCurrentFrame() * Height, Width, Height);
+	}
 }
 
 //------------------------------------------------------------------------------
@@ -191,13 +189,13 @@ void CEntity::OnAnimate() {
 }
 
 //==============================================================================
-bool CEntity::OnCollision(CEntity* Entity) {
-    return true;
+void CEntity::OnCollision(CEntity* Entity) {
+    return;
 }
 
 //------------------------------------------------------------------------------
-bool CEntity::OnCollision(CTile* Tile) {
-    return false;
+void CEntity::OnCollision(CTile* Tile) {
+    return;
 }
 //==============================================================================
 bool CEntity::IsActive() {
@@ -578,5 +576,14 @@ bool CEntity::GetAlphaXYTile(SDL_Surface* tileset, int x, int y)
     SDL_GetRGBA(pixelColor, tileset->format, &red, &green, &blue, &alpha);
  
     return alpha > 10;
+}
+//------------------------------------------------------------------------------
+
+void CEntity::Die() {
+	Dead = true;
+}
+
+bool CEntity::IsDead() {
+	return Dead;
 }
 //------------------------------------------------------------------------------

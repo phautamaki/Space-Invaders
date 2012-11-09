@@ -11,31 +11,21 @@
 //==============================================================================
 class CAnimation {
 	private:
-		int	    CurrentFrame;
-		int     FrameInc;
+		int	CurrentFrame;
+        int FrameRate; //Milliseconds
+		long OldTime;
 
-        int     FrameRate; //Milliseconds
-		long    OldTime;
-
-		void	SetSMFrameRate();
+		void SetSMFrameRate();
 
 	public:
-        int	    MaxFrames;
+        int MaxFrames;
+		bool KeepAnimating;
+		bool AnimateOnce;
 
-		bool	Oscillate;
-
-		unsigned int LoopCount;
-
-	public:
 		CAnimation();
-
 		void OnAnimate();
-
-	public:
         void SetFrameRate(int Rate);
-
 		void SetCurrentFrame(int Frame);
-
 		int GetCurrentFrame();
 };
 

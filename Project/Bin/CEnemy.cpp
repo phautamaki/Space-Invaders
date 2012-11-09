@@ -27,8 +27,8 @@ void CEnemy::OnLoop() {
 }
 
 //-----------------------------------------------------------------------------
-bool CEnemy::OnCollision(CEntity* Entity) {
-	if( !IsActive() || !Entity->IsActive() ) return false;
+void CEnemy::OnCollision(CEntity* Entity) {
+	if( !IsActive() || !Entity->IsActive() ) return;
 
 	switch( Entity->Type ) {
 		case ENTITY_TYPE_BULLET:
@@ -46,10 +46,10 @@ bool CEnemy::OnCollision(CEntity* Entity) {
 				CFactory::Factory.CreateExplosion(X-130,Y-200, EXPLOSION_ENEMY);
 			}
 		default:
-			return false;
+			return;
 	}
 
-	return true;
+	return;
 }
 
 //=============================================================================

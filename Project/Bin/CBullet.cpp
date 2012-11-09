@@ -94,9 +94,9 @@ bool CBullet::OnLoad(int nType) {
 }
 
 //------------------------------------------------------------------------------
-bool CBullet::OnCollision(CEntity* Entity) {
+void CBullet::OnCollision(CEntity* Entity) {
 	// Prevent multiple handlings for same collissions
-	if( !IsActive() || !Entity->IsActive() ) return false;
+	if( !IsActive() || !Entity->IsActive() ) return;
 
 	switch(Entity->Type) {
 		case ENTITY_TYPE_GENERIC:
@@ -111,18 +111,17 @@ bool CBullet::OnCollision(CEntity* Entity) {
 		case ENTITY_TYPE_ITEM:
 			break;
 		default: 
-			return false;
+			return;
 	}
 
-    return true;
+    return;
 }
 
 //------------------------------------------------------------------------------
-bool CBullet::OnCollision(CTile* Tile) {
-	bool PassThrough = false;
+void CBullet::OnCollision(CTile* Tile) {
 
 	// Prevent multiple handlings for same collissions
-	if( !IsActive() ) return false;
+	if( !IsActive() ) return;
 
 	switch( Tile->TypeID ){
 		case TILE_TYPE_BLOCK:
@@ -136,10 +135,10 @@ bool CBullet::OnCollision(CTile* Tile) {
 			Dead = true;
 			break;
 		default:
-			PassThrough = true;
+			return;
 			break;
 	}
-	return PassThrough;
+	return;
 }
 
 //=============================================================================

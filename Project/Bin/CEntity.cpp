@@ -88,6 +88,7 @@ void CEntity::OnLoop() {
 	else if( X > CCamera::CameraControl.GetX() + WWIDTH + ENTITY_KILLDISTANCE && Type != ENTITY_TYPE_GENERIC ) {
 		Dead = true;
 	}
+
 	
 	if( TargetAngle == 999 ) {
 		//We're not Moving
@@ -199,7 +200,7 @@ void CEntity::OnCollision(CTile* Tile) {
 }
 //==============================================================================
 bool CEntity::IsActive() {
-	if( Dead ||HP <= 0 ) {
+	if( Dead || HP <= 0 ) {
 		return false;
 	}
 	return true;
@@ -249,8 +250,10 @@ void CEntity::OnMove(float MoveX, float MoveY) {
 			X += static_cast<float>(NewX);
 
 			// If entity's new location is inside top and bottom 
-			// edge of the screen
-			if (newLocY > GUI_HEIGHT && (newLocY+PLAYER_SPRITE_HEIGHT) < WHEIGHT) {
+			// edge of the screen. Bullets are allowed to exit screen vertically
+			if ( (newLocY > GUI_HEIGHT && 
+				(newLocY+Surf_Entity->h) < WHEIGHT) ||
+				Type & ENTITY_TYPE_BULLET) {
 				Y += static_cast<float>(NewY);
 			}
 			else {

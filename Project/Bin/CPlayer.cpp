@@ -235,6 +235,9 @@ void CPlayer::OnAnimate() {
 }
 
 //------------------------------------------------------------------------------
+
+// NOTE: Let enemy entities call player's Die(), that's probably
+// easiest way to keep everything in sync
 void CPlayer::OnCollision(CEntity* Entity) {
 	
 	// Prevent multiple handlings for same collissions
@@ -242,11 +245,10 @@ void CPlayer::OnCollision(CEntity* Entity) {
 
 	switch(Entity->Type) {
 		case ENTITY_TYPE_ENEMY: 
-			Die();
+			//Die();
 			break;
 		case ENTITY_TYPE_ITEM: 
-			Die();
-			//Entity->Dead = true;	
+			// TODO: collect powers from item
 			break;
 		default: 
 			// Unknown collision
@@ -263,9 +265,14 @@ void CPlayer::OnCollision(CTile* Tile){
 
 		switch( Tile->TypeID ){
 		case TILE_TYPE_BLOCK:
+			//HP = -1;
 			Die();
 			break;
 		case TILE_TYPE_BLOCK_BREAKABLE:
+			//HP = -1;
+			CFactory::Factory.CreateExplosion(Tile->X-8,Tile->Y-8, EXPLOSION_TILE);
+			Tile->TypeID = TILE_TYPE_NONE;
+			CArea::AreaControl.BrokenTiles.push_back(Tile);
 			Die();
 			break;
 		default:
@@ -278,6 +285,16 @@ void CPlayer::OnCollision(CTile* Tile){
 
 //------------------------------------------------------------------------------
 void CPlayer::OnKeyDown(SDLKey sym, SDLMod mod, Uint16 unicode) {
+	if (!IsActive()) {
+		MoveLeft = false;
+		MoveRight = false;
+		MoveUp = false;
+		MoveDown = false;
+		ChargeStart = 0;
+		ChargeLevel = 0;
+		return;
+	}
+
 	switch(sym) {
 		// Movement
 		case SDLK_LEFT: {
@@ -315,6 +332,17 @@ void CPlayer::OnKeyDown(SDLKey sym, SDLMod mod, Uint16 unicode) {
 
 //------------------------------------------------------------------------------
 void CPlayer::OnKeyUp(SDLKey sym, SDLMod mod, Uint16 unicode) {
+	if (!IsActive()) {
+		MoveLeft = false;
+		MoveRight = false;
+		MoveUp = false;
+		MoveDown = false;
+		ChargeStart = 0;
+		ChargeLevel = 0;
+		return;
+	}
+
+
 	switch(sym) {
 		// Movement
 		case SDLK_LEFT: {
@@ -356,6 +384,7 @@ void CPlayer::Die() {
 		
 		DeathMoment = SDL_GetTicks();
 		MakeDeathScene = true;
+		HP = -1;
 
 		// Play explosion sound of player's death
 		CSoundBank::SoundControl.Play(CSoundBank::EFFECT, "PlayerCrashingSound");

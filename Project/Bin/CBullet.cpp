@@ -93,6 +93,16 @@ bool CBullet::OnLoad(int nType) {
     return true;
 }
 
+void CBullet::OnRender(SDL_Surface* Surf_Display) {
+	if (Y > GUI_HEIGHT && 
+		Y < WHEIGHT) {
+		CEntity::OnRender(Surf_Display);
+	}
+	else {
+		Die();
+	}
+}
+
 //------------------------------------------------------------------------------
 void CBullet::OnCollision(CEntity* Entity) {
 	// Prevent multiple handlings for same collissions

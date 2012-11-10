@@ -32,7 +32,7 @@ void CFactory::OnLoop() {
 
 	std::vector<CEntity*>::iterator it = CEntity::EntityList.begin();
 	while( it != CEntity::EntityList.end() ) {
-		if( (*it)->Dead ) {
+		if( (*it)->IsDead() ) {
 
 			// Create slow motion effect if 2 enemies die within
 			// one second. TODO: make better way to create these,

@@ -111,7 +111,7 @@ public:
 	/* Misc */
 	bool IsActive();
 	virtual void Die();
-	bool IsDead();
+	virtual bool IsDead();
 
 private:
 	int	Width;

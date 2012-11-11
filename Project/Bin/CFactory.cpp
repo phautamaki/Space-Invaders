@@ -105,7 +105,7 @@ bool CFactory::CreateEnemyShip(int type, int nX, int nY) {
 	CEnemyShip* tmp = new CEnemyShip;
 
 	switch( type ) {
-		case ENITTY_SUBTYPE_ENEMY_1:
+		case ENTITY_SUBTYPE_ENEMY_1:
 			tmp->OnLoad( PATH_IMAGES PATH_ENEMIES "ship1.png",ENEMY_SHIP_1_SPRITE_WIDTH, ENEMY_SHIP_1_SPRITE_HEIGHT, ENEMY_SHIP_1_MAX_FRAMES);
 			tmp->X = static_cast<float>(nX);
 			tmp->Y = static_cast<float>(nY+GUI_HEIGHT);
@@ -125,13 +125,13 @@ bool CFactory::CreateItem(int type, int nX, int nY) {
 	CItem* tmp = new CItem;
 
 	switch( type ) {
-		case ITEM_1:
+		case ENTITY_SUBTYPE_ITEM_1:
 			tmp->OnLoad( PATH_IMAGES PATH_ITEMS "star.png",15, 16, 1);
 			tmp->X = static_cast<float>(nX);
 			tmp->Y = static_cast<float>(nY+GUI_HEIGHT);
 			break;
-		case SPECIAL_EFFECT:
-			tmp->OnLoad( PATH_IMAGES PATH_ITEMS "special_effect_item",16, 16, 1);
+		case ENTITY_SUBTYPE_ITEM_2:
+			tmp->OnLoad( PATH_IMAGES PATH_ITEMS "special_item_1.png",16, 16, 1);
 			tmp->X = static_cast<float>(nX);
 			tmp->Y = static_cast<float>(nY+GUI_HEIGHT);
 			break;
@@ -167,8 +167,22 @@ bool CFactory::CreateExplosion(int nX, int nY, ExplType explosion){
 		}
 		tmp->Anim_Control.AnimateOnce = true;
 	}
-	else if (explosion == EXPLOSION_TILE) {
-		if(!tmp->OnLoad( PATH_IMAGES PATH_SPECIALEFFECTS "explosion_tile.png",32, 32, 4)){
+	else if (explosion == EXPLOSION_TILE_1) {
+		if(!tmp->OnLoad( PATH_IMAGES PATH_SPECIALEFFECTS "breakable_tile_1_break.png",32, 32, 4)){
+			return false;
+		}
+		tmp->Anim_Control.AnimateOnce = true;
+	}
+	// TODO: own explosion .png
+	else if (explosion == EXPLOSION_TILE_2) {
+		if(!tmp->OnLoad( PATH_IMAGES PATH_SPECIALEFFECTS "breakable_tile_1_break.png",32, 32, 4)){
+			return false;
+		}
+		tmp->Anim_Control.AnimateOnce = true;
+	}
+	// TODO: own explosion .png
+	else if (explosion == EXPLOSION_TILE_2) {
+		if(!tmp->OnLoad( PATH_IMAGES PATH_SPECIALEFFECTS "breakable_tile_1_break.png",32, 32, 4)){
 			return false;
 		}
 		tmp->Anim_Control.AnimateOnce = true;

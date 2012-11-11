@@ -13,7 +13,9 @@
 //=============================================================================
 enum ExplType {
 	EXPLOSION_ENEMY = 0,
-	EXPLOSION_TILE
+	EXPLOSION_TILE_1,
+	EXPLOSION_TILE_2,
+	EXPLOSION_TILE_3
 };
 
 

@@ -138,7 +138,12 @@ void CBullet::OnCollision(CTile* Tile) {
 			Dead = true;
 			break;
 		case TILE_TYPE_BLOCK_BREAKABLE:
-			CFactory::Factory.CreateExplosion(Tile->X-8,Tile->Y-8, EXPLOSION_TILE);
+			ExplType explosionType;
+			if (Tile->TileID == 1) explosionType = EXPLOSION_TILE_1;
+			if (Tile->TileID == 2) explosionType = EXPLOSION_TILE_2;
+			if (Tile->TileID == 3) explosionType = EXPLOSION_TILE_3;
+
+			CFactory::Factory.CreateExplosion(Tile->X-8,Tile->Y-8, explosionType);
 			Tile->TypeID = TILE_TYPE_NONE;
 			CArea::AreaControl.BrokenTiles.push_back(Tile);
 

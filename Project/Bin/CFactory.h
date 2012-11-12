@@ -11,14 +11,12 @@
 #include "CSpecialEffect.h"
 
 //=============================================================================
-enum ExplType {
+enum ExplType {			// TODO: move this code to SpecialEffect.h
 	EXPLOSION_ENEMY = 0,
 	EXPLOSION_TILE_1,
 	EXPLOSION_TILE_2,
 	EXPLOSION_TILE_3
 };
-
-
 
 class CFactory {
 	private:
@@ -42,6 +40,16 @@ class CFactory {
         void OnCleanup();
 
 		CPlayer* GetPlayer(unsigned int PlayerNumber = 1) const;
+
+		/* Parameters:
+		X = Searcher's X coordinate
+		Y = Searcher's Y coordinate
+		TargetType = Entity type of object to be searched (-1 = any)
+		Frontal = Ignore Entities behind X
+		HorizontalSearch = Limit search in Y direction by Offset
+		Offset = Limits search +/- from Y
+		*/
+		CEntity* GetClosest(int X, int Y, int TargetType = -1, bool Frontal = false, bool HorizontalSearch = false, int Offset = 0) const;
 
 		// Flag non-player entities as dead
 		void FlagNonPlayerEntities();

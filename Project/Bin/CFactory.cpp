@@ -2,6 +2,7 @@
 #include "CFactory.h"
 #include "Paths.h"
 #include "functions.h"
+#include <cmath>
 
 //==============================================================================
 CFactory CFactory::Factory;
@@ -84,6 +85,36 @@ CPlayer* CFactory::GetPlayer(unsigned int PlayerNumber) const {
 	}
 }
 
+//------------------------------------------------------------------------------
+CEntity* CFactory::GetClosest(int X, int Y, int TargetType, bool Frontal, bool HorizontalSearch, int Offset ) const {
+	CEntity* Closest = 0;
+	int Distance = 0;
+	for(unsigned int i = 0;i < CEntity::EntityList.size();i++) {
+		// Only check enemies
+		if( TargetType == -1 || CEntity::EntityList.at(i)->Type == TargetType ) {
+			CEntity* Candidate = CEntity::EntityList.at(i);
+			// In frontal search we skip objects that are left from X
+			if( Frontal && Candidate->X < X ) {
+				continue;
+			}
+			// In horizontal search we skip objects farther than offset in Y direction
+			if( HorizontalSearch && abs(Y - Candidate->Y) > Offset ) {
+				continue;
+			}
+
+			// Get first enemy
+			if( Closest == 0 ) {
+				Closest = Candidate;
+				Distance = sqrt( pow( X - Closest->X, 2 ) + pow( Y - Closest->Y, 2 ) );
+			}
+			// Calculate distance
+			else if( Distance > sqrt( pow( X - Candidate->X, 2 ) + pow( Y - Candidate->Y, 2 ) ) ) {
+					Closest = Candidate;
+			}
+		}
+	}
+	return Closest;
+}
 //------------------------------------------------------------------------------
 void CFactory::FlagNonPlayerEntities() {
 	for(unsigned int i = 0;i < CEntity::EntityList.size();i++) {

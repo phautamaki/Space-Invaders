@@ -21,6 +21,7 @@ class CGun {
 		void OnCleanup();
 
 		void ChangeType(int nType);
+		void Reset();
 
 		void Activate();
 		void Deactivate();
@@ -40,6 +41,8 @@ class CGun {
 		unsigned int ChargeStart;
 		unsigned int ChargeLevel;
 		unsigned int LastShot;
+
+		bool		 BeamOn;
 };
 
 //=============================================================================

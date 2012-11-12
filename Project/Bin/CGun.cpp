@@ -4,6 +4,7 @@
 #include "CEntity.h"
 #include "CFactory.h"
 #include "CSoundBank.h"
+#include "CCamera.h"
 
 //=============================================================================
 CGun::CGun() {
@@ -12,13 +13,13 @@ CGun::CGun() {
 	ChargeLevel = 0;
 	ChargeStart = 0;
 	LastShot	= 0;
+	BeamOn		= false;
 }
 
 //=============================================================================
 bool CGun::OnLoad() {
 	// Default gun and level
-	Type = GUN_NORMAL;
-	Level = 0;
+	Reset();
 
     return true;
 }
@@ -46,6 +47,25 @@ void CGun::OnRender(SDL_Surface* Surf_Display) {
 
 	SDL_FillRect(Surf_Display, &RectGray, SDL_MapRGB(Surf_Display->format, 211, 211, 211));
 	SDL_FillRect(Surf_Display, &RectRed, SDL_MapRGB(Surf_Display->format, 255, 0, 0));
+
+	if( BeamOn ) {
+		int X = CFactory::Factory.GetPlayer()->X;
+		int Y = CFactory::Factory.GetPlayer()->Y + (PLAYER_SPRITE_HEIGHT / 2);
+
+		CEntity* Closest = CFactory::Factory.GetClosest(X, Y, ENTITY_TYPE_ENEMY, true, true, 40);
+		int BeamWidth = WWIDTH;
+		if( Closest != NULL && Closest->X > X ) {
+			BeamWidth = Closest->X - X;
+		}
+
+		SDL_Rect LaserBeam;
+		LaserBeam.x = X-CCamera::CameraControl.GetX() + PLAYER_SPRITE_WIDTH;
+		LaserBeam.y = Y;
+		LaserBeam.w = BeamWidth - PLAYER_SPRITE_WIDTH;
+		LaserBeam.h = 20;
+
+		SDL_FillRect(Surf_Display, &LaserBeam, SDL_MapRGB(Surf_Display->format, 211, 211, 211));
+	}
 }
 
 //-----------------------------------------------------------------------------
@@ -66,6 +86,13 @@ void CGun::ChangeType(int nType) {
 }
 
 //-----------------------------------------------------------------------------
+void CGun::Reset() {
+	Type   = GUN_BEAM;
+	Level  = 0;
+	BeamOn = false;
+}
+
+//-----------------------------------------------------------------------------
 void CGun::Activate() {
 	if( Type == GUN_BEAM ) {
 		Shoot();
@@ -80,6 +107,7 @@ void CGun::Deactivate() {
 	Shoot();
 	ChargeStart = 0;
 	ChargeLevel = 0;
+	BeamOn = false;
 }
 
 void CGun::Shoot() {
@@ -108,7 +136,8 @@ void CGun::Shoot() {
 			}
 			break;
 		case GUN_BEAM:
-			CFactory::Factory.CreateBullet(ENTITY_SUBTYPE_BULLET_BEAM, static_cast<int>(X) + PLAYER_SPRITE_WIDTH + 5, static_cast<int>(Y) + PLAYER_SPRITE_HEIGHT / 2);
+			BeamOn = true;
+			//CFactory::Factory.CreateBullet(ENTITY_SUBTYPE_BULLET_BEAM, static_cast<int>(X) + PLAYER_SPRITE_WIDTH + 5, static_cast<int>(Y) + PLAYER_SPRITE_HEIGHT / 2);
 			break;
 		default:
 			break;

@@ -328,6 +328,8 @@ void CPlayer::OnKeyUp(SDLKey sym, SDLMod mod, Uint16 unicode) {
 void CPlayer::Die() {
 	// There might be multiple collission events from a single hit
 	if(!TookHit){
+		Gun.Reset();
+
 		CFactory::Factory.CreateExplosion(X, Y-200, ExplType::EXPLOSION_ENEMY);
 		CFactory::Factory.CreateSlowMotion(SlowMotionLevel::LEVEL_SLOWMO_8X, 3000);
 		

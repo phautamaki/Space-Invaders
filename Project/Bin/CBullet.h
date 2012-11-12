@@ -13,6 +13,9 @@ class CBullet : public CManouvarableEntity {
 		void OnRender(SDL_Surface* Surf_Display);
 		void OnCollision(CEntity* Entity);
 		void OnCollision(CTile* Tile);
+
+	private:
+		unsigned int DamageOutput;
 };
 
 //=============================================================================

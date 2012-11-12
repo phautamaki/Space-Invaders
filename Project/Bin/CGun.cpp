@@ -101,9 +101,9 @@ void CGun::ChangeType(int nType) {
 
 //-----------------------------------------------------------------------------
 void CGun::Reset() {
-	//Type   = GUN_NORMAL;
-	Type   = GUN_BEAM;
-	Level  = 0;
+	Type   = GUN_NORMAL;
+	//Type   = GUN_BEAM;
+	Level  = 1;
 	BeamOn = false;
 }
 

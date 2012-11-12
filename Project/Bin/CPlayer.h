@@ -3,13 +3,8 @@
     #define _CPLAYER_H_
 
 #include "CEntity.h"
-#include <SDL_mixer.h>
+#include "CGun.h"
 
-//=============================================================================
-enum GunTypes {
-	GUN_NORMAL = 0,
-	GUN_BEAM
-};
 //=============================================================================
 class CPlayer : public CEntity {
 	// Custom
@@ -18,9 +13,6 @@ class CPlayer : public CEntity {
 
 		void StopMoveX();
 		void StopMoveY();
-
-		void ChargeGun();
-		void Shoot();
 
 	// Events
 	public:
@@ -55,11 +47,7 @@ class CPlayer : public CEntity {
 		bool TookHit;
 
 	private:
-		int GunType;
-		unsigned int GunLevel;
-		unsigned int ChargeStart;
-		unsigned int LastShot;
-
+		CGun	Gun;
 };
 
 //=============================================================================

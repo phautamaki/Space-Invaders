@@ -19,11 +19,7 @@ CPlayer::CPlayer() {
 	MaxSpeedX = PLAYER_MAX_SPEED_X;
 	MaxSpeedY = PLAYER_MAX_SPEED_Y;
 
-	GunType = GUN_NORMAL;
-	GunLevel = 1;
-	ChargeLevel = 0;
-	ChargeStart = 0;
-	LastShot	= 0;
+	Gun = CGun();
 
 	!CSoundBank::SoundControl.OnLoad(CSoundBank::EFFECT, "ShootingSoundBasic", PATH_EFFECTS FILENAME_SHOOTING_BASIC) ? debug("Shit hit the fan when loading ShootingSoundBasic.") : debug("Loading ShootingSoundBasic was a great success!");
 	!CSoundBank::SoundControl.OnLoad(CSoundBank::EFFECT, "ShootingSoundBig", PATH_EFFECTS FILENAME_SHOOTING_BIG) ? debug("Shit hit the fan when loading ShootingSoundBig.") : debug("Loading ShootingSoundBig was a great success!");
@@ -68,59 +64,18 @@ void CPlayer::StopMoveY() {
 	}
 }
 
-//------------------------------------------------------------------------------
-void CPlayer::ChargeGun() {
-	if(static_cast<unsigned int>(ChargeStart + 100) < SDL_GetTicks()) {
-		if( ChargeLevel != 10 ) {
-			ChargeLevel++;
-		}
-		ChargeStart = SDL_GetTicks();
-	}
-}
-
-//------------------------------------------------------------------------------
-void CPlayer::Shoot() {
-	switch( GunType ) {
-		case GUN_NORMAL:
-			// Can't shoot too fast
-			if( LastShot + PLAYER_SHOOT_DELAY < SDL_GetTicks() ) {
-				int CurrentBulletType = 0;
-				if( ChargeLevel < 10 ) {
-					CurrentBulletType = ENTITY_SUBTYPE_BULLET_NORMAL;
-					if( GunLevel != 0 ) {
-						CFactory::Factory.CreateBullet(ENTITY_SUBTYPE_BULLET_SMALL_45U, static_cast<int>(X) + PLAYER_SPRITE_WIDTH + 5, static_cast<int>(Y) + PLAYER_SPRITE_HEIGHT / 2 -5);
-						CFactory::Factory.CreateBullet(ENTITY_SUBTYPE_BULLET_SMALL_45D, static_cast<int>(X) + PLAYER_SPRITE_WIDTH + 5, static_cast<int>(Y) + PLAYER_SPRITE_HEIGHT / 2 +5);
-					}
-					CSoundBank::SoundControl.Play(CSoundBank::EFFECT, "ShootingSoundBasic");
-				}
-				else if( ChargeLevel >= 10 ) {
-					CurrentBulletType = ENTITY_SUBTYPE_BULLET_CHARGE1;
-					CSoundBank::SoundControl.Play(CSoundBank::EFFECT, "ShootingSoundBig");
-				}
-				CFactory::Factory.CreateBullet(CurrentBulletType, static_cast<int>(X) + PLAYER_SPRITE_WIDTH + 5, static_cast<int>(Y) + PLAYER_SPRITE_HEIGHT / 2);
-				LastShot = SDL_GetTicks();
-			}
-			break;
-		case GUN_BEAM:
-			CFactory::Factory.CreateBullet(ENTITY_SUBTYPE_BULLET_BEAM, static_cast<int>(X) + PLAYER_SPRITE_WIDTH + 5, static_cast<int>(Y) + PLAYER_SPRITE_HEIGHT / 2);
-			break;
-		default:
-			break;
-	}
-}
-
 //=============================================================================
 bool CPlayer::OnLoad(char* File, int Width, int Height, int MaxFrames) {
     if(CEntity::OnLoad(File, Width, Height, MaxFrames) == false) {
         return false;
     }
+	Gun.OnLoad();
 
     return true;
 }
 
 //-----------------------------------------------------------------------------
 void CPlayer::OnLoop() {
-
 	// If left or right button is not pressed anymore, stop player movement
 	if(MoveLeft == false && MoveRight == false) {
 		StopMoveX();
@@ -173,10 +128,6 @@ void CPlayer::OnLoop() {
 	if(SpeedY > MaxSpeedY)  SpeedY =  MaxSpeedY;
 	if(SpeedY < -MaxSpeedY) SpeedY = -MaxSpeedY;
 
-	if( ChargeStart > 0 ) {
-		ChargeGun();
-	}
-
 	// Do player's animations
 	OnAnimate();
 
@@ -198,16 +149,23 @@ void CPlayer::OnLoop() {
 		// Might also want to check player X won't get off screen (level objects can "push" player)
 		OnMove(CAMERA_SPEED, SpeedY);
 	}
+
+	/* After has been moved */
+	Gun.OnLoop();
 }
 
 //-----------------------------------------------------------------------------
 void CPlayer::OnRender(SDL_Surface* Surf_Display) {
-	if (!TookHit)
-	CEntity::OnRender(Surf_Display);
+	if (!TookHit) {
+		CEntity::OnRender(Surf_Display);
+	}
+
+	Gun.OnRender(Surf_Display);
 }
 
 //------------------------------------------------------------------------------
 void CPlayer::OnCleanup() {
+	Gun.OnCleanup();
 	CEntity::OnCleanup();
 }
 
@@ -282,14 +240,8 @@ void CPlayer::OnKeyDown(SDLKey sym, SDLMod mod, Uint16 unicode) {
             break;
         }
 
-		// Start charging gun
 		case SDLK_SPACE: {
-			if( ChargeStart == 0 ) {
-				ChargeStart = SDL_GetTicks();
-			}
-			if( GunType == GUN_BEAM ) {
-				Shoot();
-			}
+			Gun.Activate();
 		    break;
 		}
 
@@ -319,11 +271,8 @@ void CPlayer::OnKeyUp(SDLKey sym, SDLMod mod, Uint16 unicode) {
             break;
         }
 
-		// Start charging gun
 		case SDLK_SPACE: {
-			Shoot();
-			ChargeStart = 0;
-			ChargeLevel = 0;
+			Gun.Deactivate();
 		    break;
 		}
 

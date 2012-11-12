@@ -74,6 +74,16 @@ void CFactory::OnCleanup() {
 }
 
 //==============================================================================
+CPlayer* CFactory::GetPlayer(unsigned int PlayerNumber) const {
+	if( PlayerNumber == 0 || PlayerNumber > Players.size() ) {
+		return NULL;
+	}
+	else {
+		return Players.at(PlayerNumber-1);
+	}
+}
+
+//------------------------------------------------------------------------------
 void CFactory::FlagNonPlayerEntities() {
 	for(unsigned int i = 0;i < CEntity::EntityList.size();i++) {
 		if(!CEntity::EntityList[i] || CEntity::EntityList[i]->Type == ENTITY_TYPE_PLAYER) continue;

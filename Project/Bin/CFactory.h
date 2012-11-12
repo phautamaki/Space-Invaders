@@ -39,6 +39,8 @@ class CFactory {
 
         void OnCleanup();
 
+		CPlayer* GetPlayer(unsigned int PlayerNumber = 1) const;
+
 		// Flag non-player entities as dead
 		void FlagNonPlayerEntities();
 		

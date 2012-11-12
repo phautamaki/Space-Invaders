@@ -258,28 +258,11 @@ void CAppStateGame::OnRender(SDL_Surface* Surf_Display) {
 	//--------------------------------------------------------------------------
     // UI
     //--------------------------------------------------------------------------
-	// Player ChargeBar
-	int BarStart = WWIDTH/2 - 50;
-	SDL_Rect RectRed;
-	RectRed.x = BarStart;
-	RectRed.y = 30;
-	RectRed.w = Player->ChargeLevel * 10;
-	RectRed.h = 10;
-	SDL_Rect RectGray;
-	RectGray.x = BarStart;
-	RectGray.y = 30;
-	RectGray.w = 100;
-	RectGray.h = 10;
-
-	SDL_FillRect(Surf_Display, &RectGray, SDL_MapRGB(Surf_Display->format, 211, 211, 211));
-	SDL_FillRect(Surf_Display, &RectRed, SDL_MapRGB(Surf_Display->format, 255, 0, 0));
 
 	// Life icons
 	for(unsigned int i = 0; i < Player->Lives; i++ ){
 		CSurface::OnDraw(Surf_Display, IconLife, 50 + (i*30), 30);
 	}
-
-	//CFont::FontControl.Write(Surf_Display, "test", 50, 50);
 }
 
 //=============================================================================

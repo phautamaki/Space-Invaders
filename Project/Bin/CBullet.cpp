@@ -22,6 +22,7 @@ bool CBullet::OnLoad(int nType) {
 			Width = 22;
 			Height = 11;
 			MaxFrames = 1;
+			DamageOutput = BULLET_NORMAL_STR;
 
 			MaxSpeedX = SpeedX = PLAYER_BULLET_NORMAL_SPEED;
 			HP = 1;
@@ -32,6 +33,7 @@ bool CBullet::OnLoad(int nType) {
 			Width = 10;
 			Height = 7;
 			MaxFrames = 1;
+			DamageOutput = BULLET_SMALL_STR;
 
 			MaxSpeedX = SpeedX = PLAYER_BULLET_NORMAL_SPEED;
 			SpeedY = -5;
@@ -44,6 +46,7 @@ bool CBullet::OnLoad(int nType) {
 			Width = 10;
 			Height = 7;
 			MaxFrames = 1;
+			DamageOutput = BULLET_SMALL_STR;
 
 			MaxSpeedX = SpeedX = PLAYER_BULLET_NORMAL_SPEED;
 			SpeedY = 5;
@@ -56,6 +59,7 @@ bool CBullet::OnLoad(int nType) {
 			Width = 44;
 			Height = 22;
 			MaxFrames = 1;
+			DamageOutput = BULLET_CHARGE1_STR;
 
 			MaxSpeedX = SpeedX = PLAYER_BULLET_CHARGE1_SPEED;
 			HP = 3;
@@ -115,7 +119,7 @@ void CBullet::OnCollision(CEntity* Entity) {
 		case ENTITY_TYPE_ENEMY: 
 			HP--;
 			if( HP <= 0 ){
-				Entity->HP--;
+				Entity->HP = Entity->HP - DamageOutput;
 			}
 			break;
 		case ENTITY_TYPE_ITEM:

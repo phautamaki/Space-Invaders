@@ -32,7 +32,16 @@ void CEnemy::OnCollision(CEntity* Entity) {
 
 	switch( Entity->Type ) {
 		case ENTITY_TYPE_BULLET:
-			HP--;
+			if( Entity->SubType == ENTITY_SUBTYPE_BULLET_NORMAL ) {
+				HP = HP - BULLET_NORMAL_STR;
+			}
+			else if( Entity->SubType == ENTITY_SUBTYPE_BULLET_SMALL_45U || Entity->SubType == ENTITY_SUBTYPE_BULLET_SMALL_45D) {
+				HP = HP - BULLET_SMALL_STR;
+			}
+			else if( Entity->SubType == ENTITY_SUBTYPE_BULLET_CHARGE1 ) {
+				HP = HP - BULLET_CHARGE1_STR;
+			}
+
 			if( HP <= 0 ){
 				// Need to substract bullet life, since it won't check collission when enemy dies from hit
 				Entity->HP--;

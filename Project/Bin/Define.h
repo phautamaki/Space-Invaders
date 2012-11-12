@@ -60,6 +60,7 @@
 //-----------------------------------------------------------------------------
 /* Bullet strengths */
 #define BULLET_NORMAL_STR	100
+#define BULLET_SMALL_STR	50
 #define BULLET_CHARGE1_STR	300
 #define BULLET_BEAM_STR		1
 

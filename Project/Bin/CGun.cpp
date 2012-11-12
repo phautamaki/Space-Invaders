@@ -5,6 +5,9 @@
 #include "CFactory.h"
 #include "CSoundBank.h"
 #include "CCamera.h"
+#include "CArea.h"
+
+#include "functions.h"
 
 //=============================================================================
 CGun::CGun() {
@@ -18,7 +21,7 @@ CGun::CGun() {
 
 //=============================================================================
 bool CGun::OnLoad() {
-	// Default gun and level
+	// Set to default gun and level
 	Reset();
 
     return true;
@@ -49,15 +52,26 @@ void CGun::OnRender(SDL_Surface* Surf_Display) {
 	SDL_FillRect(Surf_Display, &RectRed, SDL_MapRGB(Surf_Display->format, 255, 0, 0));
 
 	if( BeamOn ) {
+		// Beam start
 		int X = CFactory::Factory.GetPlayer()->X;
 		int Y = CFactory::Factory.GetPlayer()->Y + (PLAYER_SPRITE_HEIGHT / 2);
 
-		CEntity* Closest = CFactory::Factory.GetClosest(X, Y, ENTITY_TYPE_ENEMY, true, true, 40);
-		int BeamWidth = WWIDTH;
-		if( Closest != NULL && Closest->X > X ) {
-			BeamWidth = Closest->X - X;
+		// Find closest Entity or Tile
+		CEntity* ClosestEntity = CFactory::Factory.GetClosest(X, Y, ENTITY_TYPE_ENEMY, true, true, 40);
+		CTile*	 ClosestTile   = CArea::AreaControl.GetNextHorizontalTile(X,Y);
+		int ClosestX = ClosestTile->X;
+		if( ClosestEntity != NULL && ClosestEntity->X < ClosestX ) {
+			ClosestX = ClosestEntity->X;
+			ClosestEntity->HP = ClosestEntity->HP - BULLET_BEAM_STR;
 		}
 
+		// Beam width
+		int BeamWidth = WWIDTH;
+		if( ClosestX > X ) {
+			BeamWidth = ClosestX - X;
+		}
+
+		// Graphic
 		SDL_Rect LaserBeam;
 		LaserBeam.x = X-CCamera::CameraControl.GetX() + PLAYER_SPRITE_WIDTH;
 		LaserBeam.y = Y;
@@ -87,7 +101,8 @@ void CGun::ChangeType(int nType) {
 
 //-----------------------------------------------------------------------------
 void CGun::Reset() {
-	Type   = GUN_NORMAL;
+	//Type   = GUN_NORMAL;
+	Type   = GUN_BEAM;
 	Level  = 0;
 	BeamOn = false;
 }

@@ -55,12 +55,13 @@
 #define ENEMY_SHIP_1_SPRITE_WIDTH	33
 #define ENEMY_SHIP_1_SPRITE_HEIGHT	39
 #define ENEMY_SHIP_1_MAX_FRAMES		3
-#define ENEMY_SHIP_1_HP				1
+#define ENEMY_SHIP_1_HP				100
 
 //-----------------------------------------------------------------------------
 /* Bullet strengths */
-#define BULLET_NORMAL_STR	1
-#define BULLET_CHARGE1_STR	3
+#define BULLET_NORMAL_STR	100
+#define BULLET_CHARGE1_STR	300
+#define BULLET_BEAM_STR		1
 
 
 #define ANIMATION_FRAMERATE_MS 100 // 100 milliseconds per frame

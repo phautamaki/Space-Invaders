@@ -27,8 +27,9 @@ class CArea {
 
     public:
         CMap*	GetMap(int X, int Y);
-
 		CTile*	GetTile(int X, int Y);
+
+		CTile*	GetNextHorizontalTile(int X, int Y);
 
 		void	RestoreBrokenTiles();
 };

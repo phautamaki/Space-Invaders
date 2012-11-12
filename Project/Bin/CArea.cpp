@@ -113,8 +113,23 @@ CTile* CArea::GetTile(int X, int Y) {
     return Map->GetTile(X, Y);
 }
 
-//=============================================================================
+//-----------------------------------------------------------------------------
+CTile* CArea::GetNextHorizontalTile(int X, int Y) {
+	unsigned int i = 0;
+	CTile* RightMost = 0;
 
+	while( i < MAP_WIDTH ) {
+		RightMost = this->GetTile(X + (TILE_SIZE*i) ,Y);
+		if( RightMost->TypeID != TILE_TYPE_NONE ) {
+			break;
+		}
+		i++;
+	}
+
+	return RightMost;
+}
+
+//=============================================================================
 void CArea::RestoreBrokenTiles() {
 	for (unsigned int i = 0; i < BrokenTiles.size(); ++i) {
 		CTile* brokenTile = BrokenTiles.at(i);
@@ -123,3 +138,5 @@ void CArea::RestoreBrokenTiles() {
 
 	BrokenTiles.clear();
 }
+
+//=============================================================================

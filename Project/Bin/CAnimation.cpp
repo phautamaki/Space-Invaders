@@ -3,16 +3,14 @@
 
 //==============================================================================
 CAnimation::CAnimation() {
-    CurrentFrame    = 0;
+    CurrentFrame    = -1;
     MaxFrames       = 0;
-    FrameInc        = 1;
 
     FrameRate       = ANIMATION_FRAMERATE_MS; //Milliseconds
     OldTime         = 0;
 
-    Oscillate       = false;
-
-	LoopCount		= 0;
+	KeepAnimating = true;
+	AnimateOnce = false;
 }
 
 //------------------------------------------------------------------------------
@@ -25,24 +23,15 @@ void CAnimation::OnAnimate() {
 
     OldTime = SDL_GetTicks();
 
-    CurrentFrame += FrameInc;
+	++CurrentFrame; // Get next frame
 
-    if(Oscillate) {
-        if(FrameInc > 0) {
-            if(CurrentFrame >= MaxFrames - 1) {
-                FrameInc = -FrameInc;
-            }
-        }else{
-            if(CurrentFrame <= 0) {
-                FrameInc = -FrameInc;
-            }
-        }
-    }else{
-        if(CurrentFrame >= MaxFrames - 1) {
-            CurrentFrame = 0;
-			LoopCount++;
-        }
-    }
+	if(CurrentFrame >= MaxFrames - 1) {
+		CurrentFrame = 0;
+		
+		if (AnimateOnce) {
+		KeepAnimating = false;
+		}
+	}
 }
 
 //==============================================================================

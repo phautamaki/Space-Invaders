@@ -17,7 +17,7 @@ CAppStateGame CAppStateGame::Instance;
 
 //=============================================================================
 CAppStateGame::CAppStateGame() {
-	MakeDeathScene = false;
+	ResetCurrentLevel = false;
 }
 
 //=============================================================================
@@ -143,6 +143,7 @@ void CAppStateGame::OnDeactivate() {
 //-----------------------------------------------------------------------------
 void CAppStateGame::OnLoop() {
 
+
 	//If the level should change
 	if( CCamera::CameraControl.GetX() >= LevelEndingPoint ) {
 		OnLevelChange();
@@ -156,11 +157,12 @@ void CAppStateGame::OnLoop() {
 		switch(TmpInfo.Type) {
 			case ENTITY_TYPE_ENEMY:
 				// Enemy Ship
-				CFactory::Factory.CreateEnemyShip(ENITTY_SUBTYPE_ENEMY_1, CCamera::CameraControl.GetX()+1000, TmpInfo.YPosition);
+				CFactory::Factory.CreateEnemyShip(TmpInfo.SubType, CCamera::CameraControl.GetX()+1000, TmpInfo.YPosition);
+				
 				break;
 			case ENTITY_TYPE_ITEM:
 				// Item
-				CFactory::Factory.CreateItem(ITEM_1, CCamera::CameraControl.GetX()+1000, TmpInfo.YPosition);
+				CFactory::Factory.CreateItem(TmpInfo.SubType, CCamera::CameraControl.GetX()+1000, TmpInfo.YPosition);
 				break;
 			default:
 				break;
@@ -214,20 +216,7 @@ void CAppStateGame::OnLoop() {
 		BG_offset = BG_WIDTH;
 	}
 
-	// Player died -> make death scene
-	if( Player->TookHit) {
-		if (!MakeDeathScene) {
-			DeathMoment = SDL_GetTicks();
-			CFactory::Factory.CreateSlowMotion(SlowMotionLevel::LEVEL_SLOWMO_8X, 3000);
-			CFactory::Factory.CreateExplosion(Player->X, Player->Y-200, ExplType::EXPLOSION_ENEMY);
-		}
-
-		MakeDeathScene = true;
-	}
-
-	// Reset level after death scene is complete
-	if ( MakeDeathScene && (SDL_GetTicks() > (DeathMoment + 3000)) ) {
-		MakeDeathScene = false;
+	if (ResetCurrentLevel) {
 		ResetLevel();
 	}
 }
@@ -272,16 +261,19 @@ CAppStateGame* CAppStateGame::GetInstance() {
 
 //=============================================================================
 void CAppStateGame::ResetLevel(){
+
+	ResetCurrentLevel = false;
+
 	// Reset camera starting position
 	CCamera::CameraControl.SetPos(0,0);
-
+	
 	if( Player->Lives == 0 ) {
 		NextState = APPSTATE_MAINMENU;
 		CAppStateManager::SetActiveAppState(NextState);
 	}
 	else {
 		Player->TookHit = false;
-
+		Player->HP = 1;
 		Player->X = 400;
 		Player->Y = 290+GUI_HEIGHT;
 		Player->SpeedX = Player->SpeedY = Player->AccelX = Player->AccelY = 0;
@@ -345,3 +337,7 @@ std::vector<CAppStateGame::LevelInfo> CAppStateGame::GetCurrentLevelInfo(const s
 }
 
 //=============================================================================
+
+void CAppStateGame::ResetLevelNow() {
+	ResetCurrentLevel = true;
+}

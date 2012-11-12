@@ -13,7 +13,9 @@
 //=============================================================================
 enum ExplType {
 	EXPLOSION_ENEMY = 0,
-	EXPLOSION_TILE
+	EXPLOSION_TILE_1,
+	EXPLOSION_TILE_2,
+	EXPLOSION_TILE_3
 };
 
 
@@ -25,12 +27,12 @@ class CFactory {
 		SlowMotionLevel SMLevel;
 
 		unsigned int LastEnemyKillMoment;
+		std::vector<CPlayer*> Players;
 
 	public:
 
 		static CFactory Factory;
 		
-    public:
         CFactory();
 
 		bool OnInit();
@@ -58,8 +60,6 @@ class CFactory {
 		void FreezeEnemies(SlowMotionLevel level, int duration_ms);
 		void KillEnemiesOnScreen();
 
-	private:
-		std::vector<CPlayer*> Players;
 };
 
 //=============================================================================

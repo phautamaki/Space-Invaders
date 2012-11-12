@@ -8,7 +8,6 @@
 // Could do some kind of sub typing with these (Item -> HP+) or sth like that
 enum {
 	ITEM_1 = 0,
-	SPECIAL_EFFECT
 };
 
 //=============================================================================
@@ -26,7 +25,7 @@ class CItem : public CManouvarableEntity {
 
         void OnAnimate();
 
-        bool OnCollision(CEntity* Entity);
+        void OnCollision(CEntity* Entity);
 
 		void OnMove(float MoveX, float MoveY);
 };

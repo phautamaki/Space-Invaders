@@ -93,10 +93,20 @@ bool CBullet::OnLoad(int nType) {
     return true;
 }
 
+void CBullet::OnRender(SDL_Surface* Surf_Display) {
+	if (Y > GUI_HEIGHT && 
+		Y < WHEIGHT) {
+		CEntity::OnRender(Surf_Display);
+	}
+	else {
+		Die();
+	}
+}
+
 //------------------------------------------------------------------------------
-bool CBullet::OnCollision(CEntity* Entity) {
+void CBullet::OnCollision(CEntity* Entity) {
 	// Prevent multiple handlings for same collissions
-	if( !IsActive() || !Entity->IsActive() ) return false;
+	if( !IsActive() || !Entity->IsActive() ) return;
 
 	switch(Entity->Type) {
 		case ENTITY_TYPE_GENERIC:
@@ -111,35 +121,39 @@ bool CBullet::OnCollision(CEntity* Entity) {
 		case ENTITY_TYPE_ITEM:
 			break;
 		default: 
-			return false;
+			return;
 	}
 
-    return true;
+    return;
 }
 
 //------------------------------------------------------------------------------
-bool CBullet::OnCollision(CTile* Tile) {
-	bool PassThrough = false;
+void CBullet::OnCollision(CTile* Tile) {
 
 	// Prevent multiple handlings for same collissions
-	if( !IsActive() ) return false;
+	if( !IsActive() ) return;
 
 	switch( Tile->TypeID ){
 		case TILE_TYPE_BLOCK:
 			Dead = true;
 			break;
 		case TILE_TYPE_BLOCK_BREAKABLE:
-			CFactory::Factory.CreateExplosion(Tile->X-8,Tile->Y-8, EXPLOSION_TILE);
+			ExplType explosionType;
+			if (Tile->TileID == 1) explosionType = EXPLOSION_TILE_1;
+			if (Tile->TileID == 2) explosionType = EXPLOSION_TILE_2;
+			if (Tile->TileID == 3) explosionType = EXPLOSION_TILE_3;
+
+			CFactory::Factory.CreateExplosion(Tile->X-8,Tile->Y-8, explosionType);
 			Tile->TypeID = TILE_TYPE_NONE;
 			CArea::AreaControl.BrokenTiles.push_back(Tile);
 
 			Dead = true;
 			break;
 		default:
-			PassThrough = true;
+			return;
 			break;
 	}
-	return PassThrough;
+	return;
 }
 
 //=============================================================================

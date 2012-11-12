@@ -14,8 +14,10 @@ class CPlayer : public CEntity {
 		void StopMoveX();
 		void StopMoveY();
 
+		bool			MakeDeathScene;
+		int				DeathMoment;
+
 	// Events
-	public:
 		bool OnLoad(char* File, int Width, int Height, int MaxFrames);
 
         void OnLoop();
@@ -26,9 +28,9 @@ class CPlayer : public CEntity {
 
         void OnAnimate();
 
-        bool OnCollision(CEntity* Entity);
+        void OnCollision(CEntity* Entity);
 
-		bool OnCollision(CTile* Tile);
+		void OnCollision(CTile* Tile);
 
 		void OnKeyDown(SDLKey sym, SDLMod mod, Uint16 unicode);
 
@@ -41,8 +43,6 @@ class CPlayer : public CEntity {
 		unsigned int Lives;
 
 		unsigned int Points;
-
-		unsigned int ChargeLevel;
 
 		bool TookHit;
 

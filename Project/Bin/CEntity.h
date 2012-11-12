@@ -1,6 +1,6 @@
 //==============================================================================
 #ifndef _CENTITY_H_
-    #define _CENTITY_H_
+#define _CENTITY_H_
 
 #include <vector>
 
@@ -14,20 +14,29 @@
 // All the different types should be added here
 enum Types {
 	ENTITY_TYPE_GENERIC = 0,
-	ENTITY_TYPE_PLAYER,
-	ENTITY_TYPE_ENEMY,
-	ENTITY_TYPE_ITEM,
-	ENTITY_TYPE_BULLET,
-	ENTITY_TYPE_SPECIAL_EFFECT
+	ENTITY_TYPE_PLAYER = 1,
+	ENTITY_TYPE_ENEMY = 2,
+	ENTITY_TYPE_ITEM = 3,
+	ENTITY_TYPE_BULLET = 4,
+	ENTITY_TYPE_SPECIAL_EFFECT = 5
 };
 enum SubTypes {
 	ENTITY_SUBTYPE_NONE = 0,
-	ENTITY_SUBTYPE_BULLET_NORMAL,
-	ENTITY_SUBTYPE_BULLET_SMALL_45U,
-	ENTITY_SUBTYPE_BULLET_SMALL_45D,
-	ENTITY_SUBTYPE_BULLET_CHARGE1,
-	ENTITY_SUBTYPE_BULLET_BEAM,
-	ENITTY_SUBTYPE_ENEMY_1
+
+	ENTITY_SUBTYPE_BULLET_NORMAL = 1,
+	ENTITY_SUBTYPE_BULLET_SMALL_45U = 2,
+	ENTITY_SUBTYPE_BULLET_SMALL_45D = 3,
+	ENTITY_SUBTYPE_BULLET_CHARGE1 = 4,
+	ENTITY_SUBTYPE_BULLET_BEAM = 5,
+
+	ENTITY_SUBTYPE_ENEMY_1 = 100,
+	//ENTITY_SUBTYPE_ENEMY_2 = 101,
+	//ENTITY_SUBTYPE_ENEMY_3 = 102,
+
+	ENTITY_SUBTYPE_ITEM_1 = 1000,
+	ENTITY_SUBTYPE_ITEM_2 = 1001
+	//ENTITY_SUBTYPE_ITEM_3 = 1002
+
 };
 
 //==============================================================================
@@ -42,116 +51,107 @@ enum {
 
 //==============================================================================
 class CEntity {
-	public:
-		static std::vector<CEntity*>    EntityList;
 
-	protected:
-		CAnimation      Anim_Control;
+protected:
+	
+	SDL_Surface*    Surf_Entity;
 
-		SDL_Surface*    Surf_Entity;
+public:
+	static std::vector<CEntity*>    EntityList;
 
-	public:
-		/* Movement and positioning */
-		float	X;
-		float	Y;
-		float	originX;
-		float	originY;
+	CAnimation      Anim_Control;
 
-		int		Width;
-		int		Height;
+	/* Movement and positioning */
 
-		bool	MoveLeft;
-		bool	MoveRight;
-		bool	MoveUp;
-        bool	MoveDown;
+	// Top left corner coordinate of the entity
+	float X;
+	float Y;
 
-		int		Angle;
-		int		TargetAngle;
+	bool MoveLeft;
+	bool MoveRight;
+	bool MoveUp;
+	bool MoveDown;
 
-		/* Speed */
-		float	SpeedX;
-		float	SpeedY;
+	int Angle;
+	int TargetAngle;
 
-		float	AccelX;
-		float	AccelY;
+	/* Speed */
+	float SpeedX;
+	float SpeedY;
 
-		float	MaxSpeedX;
-		float	MaxSpeedY;
+	float AccelX;
+	float AccelY;
 
-		/* Flags */
-		int		Type;
-		int		SubType;
+	float MaxSpeedX;
+	float MaxSpeedY;
 
-		bool	Dead;
-		int		Flags;
+	/* Flags */
+	int	Type;
+	int	SubType;
 
-		/* misc */
-		int HP;
+	bool Dead; // TODO: Change this to private and make isDead()
+	int	Flags;
 
-	protected:
-		/* Animaton */
-		int		CurrentFrameCol;
-		int		CurrentFrameRow;
+	/* misc */
+	int	HP;
 
-	public:
-		CEntity();
+public:
+	CEntity();
+	virtual ~CEntity();
 
-		virtual ~CEntity();
+	/* Event handlers */
+	virtual bool OnLoad(char* File, int Width, int Height, int MaxFrames);
+	virtual void OnLoop();
+	virtual void OnRender(SDL_Surface* Surf_Display);
+	virtual void OnCleanup();
+	virtual void OnAnimate();
+	virtual void OnCollision(CEntity* Entity);
+	virtual void OnCollision(CTile* Tile);
 
-		/* Event handlers */
-		virtual bool OnLoad(char* File, int Width, int Height, int MaxFrames);
+	/* Movement */
+	void OnMove(float MoveX, float MoveY);
+	void StopMove();
 
-		virtual void OnLoop();
+	/* Collission */
+	SDL_Rect GetBounds();
+	static SDL_Rect Intersection(const SDL_Rect& boundsA, const SDL_Rect& boundsB);
+	static bool CheckCollision(CEntity* entityA, CEntity* entityB);
 
-		virtual void OnRender(SDL_Surface* Surf_Display);
+	/* Misc */
+	bool IsActive();
+	virtual void Die();
+	virtual bool IsDead();
 
-		virtual void OnCleanup();
+private:
+	int	Width;
+	int	Height;
 
-		virtual void OnAnimate();
+	/* Animation */
+	int	CurrentFrameCol;
+	int	CurrentFrameRow;
 
-		virtual bool OnCollision(CEntity* Entity);
+	/* Collission */
+	SDL_Rect GetFrameBounds();
+	SDL_Rect NormalizeBounds(const SDL_Rect& rect);
+	static bool GetAlphaXY(CEntity* entity, int x, int y);
+	bool GetAlphaXYTile(SDL_Surface* tileset, int x, int y);
+	bool Collides(int oX, int oY, int oW, int oH);
+	void CheckCollisions(int NewX, int NewY);
 
-		virtual bool OnCollision(CTile* Tile);
-
-		/* Movement */
-		void    OnMove(float MoveX, float MoveY);
-
-		void 	StopMove();
-
-		/* Collission */
-		SDL_Rect GetBounds();
-		SDL_Rect GetFrameBounds();
-		SDL_Rect NormalizeBounds(const SDL_Rect& rect);
-        static SDL_Rect Intersection(const SDL_Rect& boundsA, const SDL_Rect& boundsB);
-        static bool CheckCollision(CEntity* entityA, CEntity* entityB);
-        static bool GetAlphaXY(CEntity* entity, int x, int y);
-		bool GetAlphaXYTile(SDL_Surface* tileset, int x, int y);
-
-		bool    Collides(int oX, int oY, int oW, int oH);
-
-		/* Misc */
-		bool	IsActive();
-
-	private:
-		/* Collission */
-		void	CheckCollisions(int NewX, int NewY);
-
-		void 	QueuePossibleEntityCollision(CEntity* Entity, int NewX, int NewY);
-		void    CheckPossibleTileCollision(int NewX, int NewY);
-		bool	CheckTileCollision(CTile* tile, int tileX, int tileY);
+	void QueuePossibleEntityCollision(CEntity* Entity, int NewX, int NewY);
+	void CheckPossibleTileCollision(int NewX, int NewY);
+	bool CheckTileCollision(CTile* tile, int tileX, int tileY);
 };
 
 //==============================================================================
 class CEntityCol {
-    public:
-        static std::vector<CEntityCol>	EntityColList;
+public:
+	static std::vector<CEntityCol> EntityColList;
 
-	public:
-		CEntity* EntityA;
-		CEntity* EntityB;
+	CEntity* EntityA;
+	CEntity* EntityB;
 
-	public:
-		CEntityCol();
+	CEntityCol();
 };
 
 //==============================================================================

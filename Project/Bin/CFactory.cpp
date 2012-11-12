@@ -1,6 +1,7 @@
 //==============================================================================
 #include "CFactory.h"
 #include "Paths.h"
+#include "functions.h"
 
 //==============================================================================
 CFactory CFactory::Factory;
@@ -31,7 +32,7 @@ void CFactory::OnLoop() {
 
 	std::vector<CEntity*>::iterator it = CEntity::EntityList.begin();
 	while( it != CEntity::EntityList.end() ) {
-		if( (*it)->Dead ) {
+		if( (*it)->IsDead() ) {
 
 			// Create slow motion effect if 2 enemies die within
 			// one second. TODO: make better way to create these,
@@ -114,7 +115,7 @@ bool CFactory::CreateEnemyShip(int type, int nX, int nY) {
 	CEnemyShip* tmp = new CEnemyShip;
 
 	switch( type ) {
-		case ENITTY_SUBTYPE_ENEMY_1:
+		case ENTITY_SUBTYPE_ENEMY_1:
 			tmp->OnLoad( PATH_IMAGES PATH_ENEMIES "ship1.png",ENEMY_SHIP_1_SPRITE_WIDTH, ENEMY_SHIP_1_SPRITE_HEIGHT, ENEMY_SHIP_1_MAX_FRAMES);
 			tmp->X = static_cast<float>(nX);
 			tmp->Y = static_cast<float>(nY+GUI_HEIGHT);
@@ -134,13 +135,13 @@ bool CFactory::CreateItem(int type, int nX, int nY) {
 	CItem* tmp = new CItem;
 
 	switch( type ) {
-		case ITEM_1:
+		case ENTITY_SUBTYPE_ITEM_1:
 			tmp->OnLoad( PATH_IMAGES PATH_ITEMS "star.png",15, 16, 1);
 			tmp->X = static_cast<float>(nX);
 			tmp->Y = static_cast<float>(nY+GUI_HEIGHT);
 			break;
-		case SPECIAL_EFFECT:
-			tmp->OnLoad( PATH_IMAGES PATH_ITEMS "special_effect_item",16, 16, 1);
+		case ENTITY_SUBTYPE_ITEM_2:
+			tmp->OnLoad( PATH_IMAGES PATH_ITEMS "special_item_1.png",16, 16, 1);
 			tmp->X = static_cast<float>(nX);
 			tmp->Y = static_cast<float>(nY+GUI_HEIGHT);
 			break;
@@ -174,17 +175,32 @@ bool CFactory::CreateExplosion(int nX, int nY, ExplType explosion){
 		if(!tmp->OnLoad( PATH_IMAGES PATH_SPECIALEFFECTS "explosion.png",256, 150, 5)){
 			return false;
 		}
+		tmp->Anim_Control.AnimateOnce = true;
 	}
-	else if (explosion == EXPLOSION_TILE) {
-		if(!tmp->OnLoad( PATH_IMAGES PATH_SPECIALEFFECTS "explosion_tile.png",32, 32, 4)){
+	else if (explosion == EXPLOSION_TILE_1) {
+		if(!tmp->OnLoad( PATH_IMAGES PATH_SPECIALEFFECTS "breakable_tile_1_break.png",32, 32, 4)){
 			return false;
 		}
+		tmp->Anim_Control.AnimateOnce = true;
+	}
+	// TODO: own explosion .png
+	else if (explosion == EXPLOSION_TILE_2) {
+		if(!tmp->OnLoad( PATH_IMAGES PATH_SPECIALEFFECTS "breakable_tile_1_break.png",32, 32, 4)){
+			return false;
+		}
+		tmp->Anim_Control.AnimateOnce = true;
+	}
+	// TODO: own explosion .png
+	else if (explosion == EXPLOSION_TILE_2) {
+		if(!tmp->OnLoad( PATH_IMAGES PATH_SPECIALEFFECTS "breakable_tile_1_break.png",32, 32, 4)){
+			return false;
+		}
+		tmp->Anim_Control.AnimateOnce = true;
 	}
 
 	tmp->X = static_cast<float>(nX);
 	tmp->Y = static_cast<float>(nY+GUI_HEIGHT);
 	CEntity::EntityList.push_back(tmp);
-
 	return true;
 }
 
@@ -206,8 +222,10 @@ void CFactory::FreezeEnemies(SlowMotionLevel level, int duration_ms) {
 void CFactory::KillEnemiesOnScreen() {
 	std::vector<CEntity*>::iterator it = CEntity::EntityList.begin();
 	while( it != CEntity::EntityList.end() ) {
-		if ((*it)->Type == ENTITY_TYPE_ENEMY && !((*it)->Dead) && (*it)->IsActive()) {
-			this->CreateExplosion((int)((*it)->X-130), (int)((*it)->Y-200), EXPLOSION_ENEMY);
+		if ((*it) != NULL && (*it)->Type == ENTITY_TYPE_ENEMY && !((*it)->Dead)) {
+			int x = (*it)->X;
+			int y = (*it)->Y;
+			//CreateExplosion(x, y, EXPLOSION_ENEMY);
 			(*it)->Dead = true;
 		}
 		++it;

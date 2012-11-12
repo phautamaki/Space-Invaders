@@ -10,10 +10,9 @@ class CBullet : public CManouvarableEntity {
         CBullet();
 
 		bool OnLoad(int nType);
-
-		bool OnCollision(CEntity* Entity);
-
-		bool OnCollision(CTile* Tile);
+		void OnRender(SDL_Surface* Surf_Display);
+		void OnCollision(CEntity* Entity);
+		void OnCollision(CTile* Tile);
 };
 
 //=============================================================================

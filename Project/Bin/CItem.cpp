@@ -85,8 +85,23 @@ void CItem::OnAnimate() {
 }
 
 //------------------------------------------------------------------------------
-bool CItem::OnCollision(CEntity* Entity) {
-    return true;
+void CItem::OnCollision(CEntity* Entity) {
+	// Prevent multiple handlings for same collissions
+	if( Dead || Entity->Dead ) return;
+
+	switch(Entity->Type) {
+		case ENTITY_TYPE_PLAYER: 
+			Die();
+			break;
+		case ENTITY_TYPE_BULLET: 
+			Die();
+			break;
+		default: 
+			// Unknown collision
+			break;
+	}
+	
+    return; 
 }
 
 //=============================================================================

@@ -92,19 +92,21 @@ void CSoundBank::OnCleanup() {
 }
 
 //==============================================================================
-void CSoundBank::Play(SoundType type, std::string ID) {
+int CSoundBank::Play(SoundType type, std::string ID, bool loop) {
+
+	int channel = -1;
 	
 	switch(type) {
 	
 	case EFFECT:
-		if(SoundList[ID] == NULL) return;
+		if(SoundList[ID] == NULL) return channel;
  
-		Mix_PlayChannel(-1, SoundList[ID], 0);
+		loop ? channel = Mix_PlayChannel(-1, SoundList[ID], -1) : Mix_PlayChannel(-1, SoundList[ID], 0);
 		
 		break;
 	
 	case MUSIC:
-		if(MusicList[ID] == NULL) return;
+		if(MusicList[ID] == NULL) return channel;
 
 		//Stops the current music playback
 		Mix_HaltMusic();
@@ -114,6 +116,14 @@ void CSoundBank::Play(SoundType type, std::string ID) {
 		
 		break;
 	}
+
+	return channel;
+}
+
+void CSoundBank::StopChannel(int channel) {
+
+	Mix_HaltChannel(channel);
+
 }
 
 void CSoundBank::StopMusic() {

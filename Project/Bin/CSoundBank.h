@@ -32,7 +32,9 @@ class CSoundBank {
 		void OnCleanup();
 
 	public:
-		void Play(SoundType type, std::string ID);
+		int Play(SoundType type, std::string ID, bool loop = false);
+
+		void StopChannel(int channel);
 
 		void StopMusic();
 };

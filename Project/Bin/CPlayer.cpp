@@ -28,6 +28,7 @@ CPlayer::CPlayer() {
 
 	!CSoundBank::SoundControl.OnLoad(CSoundBank::EFFECT, "ShootingSoundBasic", PATH_EFFECTS FILENAME_SHOOTING_BASIC) ? debug("Shit hit the fan when loading ShootingSoundBasic.") : debug("Loading ShootingSoundBasic was a great success!");
 	!CSoundBank::SoundControl.OnLoad(CSoundBank::EFFECT, "ShootingSoundBig", PATH_EFFECTS FILENAME_SHOOTING_BIG) ? debug("Shit hit the fan when loading ShootingSoundBig.") : debug("Loading ShootingSoundBig was a great success!");
+	!CSoundBank::SoundControl.OnLoad(CSoundBank::EFFECT, "ShootingSoundBeam", PATH_EFFECTS FILENAME_SHOOTING_BEAM) ? debug("Shit hit the fan when loading ShootingSoundBeam.") : debug("Loading ShootingSoundBeam was a great success!");	
 	!CSoundBank::SoundControl.OnLoad(CSoundBank::EFFECT, "PlayerCrashingSound", PATH_EFFECTS FILENAME_PLAYER_CRASHING) ? debug("Shit hit the fan when loading PlayerCrashingSound.") : debug("Loading PlayerCrashingSound was a great success!");
 	
 }

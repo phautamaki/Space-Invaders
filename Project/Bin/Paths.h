@@ -30,6 +30,7 @@
 
 #define FILENAME_SHOOTING_BASIC "shoot_basic.wav"
 #define FILENAME_SHOOTING_BIG "shoot_big.wav"
+#define FILENAME_SHOOTING_BEAM "shoot_beam.wav"
 
 #define FILENAME_PLAYER_CRASHING "player_ship_crashing.wav"
 

@@ -41,6 +41,7 @@ class CGun {
 		unsigned int ChargeStart;
 		unsigned int ChargeLevel;
 		unsigned int LastShot;
+		int BeamChannel;
 
 		bool		 BeamOn;
 };

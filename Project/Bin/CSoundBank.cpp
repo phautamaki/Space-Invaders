@@ -98,23 +98,8 @@ void CSoundBank::Play(SoundType type, std::string ID) {
 	
 	case EFFECT:
 		if(SoundList[ID] == NULL) return;
-
-		int channel;
  
-		channel = Mix_PlayChannel(-1, SoundList[ID], 0);
-
-		/*
-
-		if(ID == "ShootingSoundBasic") {
-			Mix_PlayChannel(0, SoundList[ID], 0);
-		}
-		else if(ID == "ShootingSoundBig") {
-			Mix_PlayChannel(1, SoundList[ID], 0);
-		}
-		else{
-			Mix_PlayChannel(-1, SoundList[ID], 0);
-		}
-		*/
+		Mix_PlayChannel(-1, SoundList[ID], 0);
 		
 		break;
 	

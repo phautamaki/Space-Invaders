@@ -26,11 +26,11 @@ bool CSoundBank::OnLoad(SoundType type, std::string ID, char* File) {
 
 		SoundList.insert(make_pair(ID, TempSound));
 
-		if( SoundList.size() - 1 ){
+		if( SoundList.size() ){
 			std::string filename = File;
 			debug("Loaded sound " + filename, 2);
 		}
-		AllocateChannels(SoundList.size()-1);
+		AllocateChannels(SoundList.size());
 		return true;
 		break;
 
@@ -53,6 +53,7 @@ bool CSoundBank::OnLoad(SoundType type, std::string ID, char* File) {
 	}
 }
 
+
 int CSoundBank::AllocateChannels(int NumberOfChannels) {
 
 	//This unreserves everything in the beginning
@@ -62,12 +63,13 @@ int CSoundBank::AllocateChannels(int NumberOfChannels) {
 	reserved_count=Mix_AllocateChannels(NumberOfChannels);
 	if(reserved_count!=NumberOfChannels) {
 
-		debug(IntToString(NumberOfChannels) + " channels were not allocated!");
+		debug("All " + IntToString(NumberOfChannels) + " channels were not allocated!");
 	
 	}
 
 	return reserved_count;
 }
+
 
 //------------------------------------------------------------------------------
 void CSoundBank::OnCleanup() {
@@ -97,6 +99,12 @@ void CSoundBank::Play(SoundType type, std::string ID) {
 	case EFFECT:
 		if(SoundList[ID] == NULL) return;
 
+		int channel;
+ 
+		channel = Mix_PlayChannel(-1, SoundList[ID], 0);
+
+		/*
+
 		if(ID == "ShootingSoundBasic") {
 			Mix_PlayChannel(0, SoundList[ID], 0);
 		}
@@ -106,6 +114,7 @@ void CSoundBank::Play(SoundType type, std::string ID) {
 		else{
 			Mix_PlayChannel(-1, SoundList[ID], 0);
 		}
+		*/
 		
 		break;
 	

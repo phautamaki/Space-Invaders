@@ -39,4 +39,9 @@ int StringToInt(std::string Text) {
 	return number;
 }
 
+//------------------------------------------------------------------------------
+float DegreesToRadian(int Degree) {
+	return static_cast<float>(Degree) * (3.14159265/180.0);
+}
+
 //==============================================================================

@@ -9,4 +9,6 @@ std::string IntToString(int Value);
 
 int StringToInt(std::string Text);
 
+float DegreesToRadian(int Degree);
+
 #endif

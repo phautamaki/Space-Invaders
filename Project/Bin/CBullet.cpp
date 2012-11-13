@@ -16,6 +16,12 @@ bool CBullet::OnLoad(int nType) {
 	int Height	  = 0;
 	int MaxFrames = 0;
 
+	CManouver* tmpMan = 0;
+	tmpMan = new CManouver(this);
+	tmpMan->OnLoad(M_MOVE_RIGHT);
+	Manouvers.push_back(tmpMan);
+	CEntity* tmpEntity = 0;
+
 	switch( nType ) {
 		case ENTITY_SUBTYPE_BULLET_NORMAL: 
 			File = PATH_IMAGES PATH_ITEMS "bullet_normal.png";
@@ -75,6 +81,23 @@ bool CBullet::OnLoad(int nType) {
 			HP = 1;
 
 			break;
+		case ENTITY_SUBTYPE_BULLET_HOMING:
+			File = PATH_IMAGES PATH_ITEMS "bullet_charge1.png";
+			Width = 44;
+			Height = 22;
+			MaxFrames = 1;
+			DamageOutput = BULLET_HOMING_STR;
+
+			MaxSpeedX = SpeedX = PLAYER_BULLET_HOMING_SPEED;
+			HP = 1;
+			tmpEntity = CFactory::Factory.GetClosest(X,Y,ENTITY_TYPE_ENEMY);
+			tmpMan = new CManouver(this);
+			tmpMan->OnLoad(M_AIM);
+			tmpMan->TargetX = tmpEntity->X;
+			tmpMan->TargetY = tmpEntity->Y;
+			Manouvers.push_back(tmpMan);
+
+			break;
 		default:
 			return false;
 	}
@@ -88,10 +111,6 @@ bool CBullet::OnLoad(int nType) {
 	AccelX	= 1;
 
 	Angle = 0;
-	CManouver* tmpMan = 0;
-	tmpMan = new CManouver(this);
-	tmpMan->OnLoad(M_MOVE_RIGHT);
-	Manouvers.push_back(tmpMan);
 	CurrentManouver = Manouvers.begin();
 	
     return true;

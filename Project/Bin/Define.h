@@ -47,6 +47,7 @@
 #define PLAYER_BULLET_NORMAL_SPEED	25
 #define PLAYER_BULLET_CHARGE1_SPEED	20
 #define PLAYER_BULLET_BEAM_SPEED	30
+#define PLAYER_BULLET_HOMING_SPEED	10
 
 //-----------------------------------------------------------------------------
 /* Enemy specific settings */
@@ -63,6 +64,7 @@
 #define BULLET_SMALL_STR	50
 #define BULLET_CHARGE1_STR	300
 #define BULLET_BEAM_STR		1
+#define BULLET_HOMING_STR	100
 
 
 #define ANIMATION_FRAMERATE_MS 100 // 100 milliseconds per frame

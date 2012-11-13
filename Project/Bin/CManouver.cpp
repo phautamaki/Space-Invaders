@@ -1,5 +1,10 @@
 #include "CManouver.h"
 #include "sdl.h"
+#include "functions.h"
+#include <cmath>
+
+#include <iostream>
+#include <cstdlib>
 
 //=============================================================================
 CManouver::CManouver(CEntity* parent) {
@@ -121,6 +126,28 @@ bool CManouver::OnLoop() {
 			Parent->TargetAngle = 999;
 			return true;
 		}
+	}
+	else if( Type == M_AIM ) {
+		if( Parent->X == TargetX && Parent->Y == TargetY ) {
+			return true;
+		}
+
+		float Speed = Parent->MaxSpeedX;
+		int AngleToTarget = atan( static_cast<float>((TargetX - Parent->X)) / static_cast<float>((TargetY - Parent->Y)) ) * 100;
+
+		Parent->SpeedX = cos(DegreesToRadian(AngleToTarget)) * Speed;
+		Parent->SpeedY = sin(DegreesToRadian(AngleToTarget)) * Speed;
+	}
+	else if( Type == M_FOLLOW ) {
+		if( TargetEntity == NULL || (Parent->X == TargetEntity->X && Parent->Y == TargetEntity->Y) ) {
+			return true;
+		}
+
+		float Speed = Parent->MaxSpeedX;
+		int AngleToTarget = atan( (TargetEntity->X - Parent->X) / (TargetEntity->Y - Parent->Y) );
+
+		Parent->SpeedX = cos(DegreesToRadian(AngleToTarget)) * Speed;
+		Parent->SpeedY = sin(DegreesToRadian(AngleToTarget)) * Speed;
 	}
 	return false;
 }

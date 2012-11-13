@@ -101,8 +101,9 @@ void CGun::ChangeType(int nType) {
 
 //-----------------------------------------------------------------------------
 void CGun::Reset() {
-	//Type   = GUN_NORMAL;
-	Type   = GUN_BEAM;
+	Type   = GUN_NORMAL;
+	//Type   = GUN_BEAM;
+	//Type	 = GUN_MISSILES;
 	Level  = 1;
 	BeamOn = false;
 }
@@ -157,6 +158,11 @@ void CGun::Shoot() {
 			//BeamChannel = CSoundBank::SoundControl.Play(CSoundBank::EFFECT, "ShootingSoundBeam", true);
 			//CFactory::Factory.CreateBullet(ENTITY_SUBTYPE_BULLET_BEAM, static_cast<int>(X) + PLAYER_SPRITE_WIDTH + 5, static_cast<int>(Y) + PLAYER_SPRITE_HEIGHT / 2);
 			break;
+		case GUN_MISSILES:
+			// Can't shoot too fast
+			if( LastShot + PLAYER_SHOOT_DELAY < SDL_GetTicks() ) {
+				CFactory::Factory.CreateBullet(ENTITY_SUBTYPE_BULLET_HOMING, static_cast<int>(X) + PLAYER_SPRITE_WIDTH + 5, static_cast<int>(Y) + PLAYER_SPRITE_HEIGHT / 2);
+			}
 		default:
 			break;
 	}

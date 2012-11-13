@@ -4,6 +4,8 @@
 
 #include "CEntity.h"
 
+// This class should probably be created from a scratch...
+
 //==============================================================================
 // Turn left, turn right, speed up etc.
 enum {
@@ -13,7 +15,9 @@ enum {
 	M_MOVE_UP,
 	M_MOVE_DOWN,
 	M_STOP_MOVE,
-	M_TURN
+	M_TURN,
+	M_AIM,
+	M_FOLLOW
 };
 
 /* 
@@ -39,6 +43,12 @@ class CManouver {
 
         void OnCleanup();
 
+	public:
+		// For aim and follow
+		int TargetX;
+		int TargetY;
+		CEntity* TargetEntity;
+
 	private:
 		CEntity* Parent;
 
@@ -47,6 +57,7 @@ class CManouver {
 		int StartTime;
 		int Wait;
 
+		// For turns
 		int OriginalAngle;
 };
 

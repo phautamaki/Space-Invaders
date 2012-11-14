@@ -31,6 +31,8 @@ class CGun {
 		void Shoot();
 		void Charge();
 
+		int GetBeamWidth(int StartX, int StartY);
+
 	public:
 		int X;
 		int Y;

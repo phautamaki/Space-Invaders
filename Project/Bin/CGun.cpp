@@ -56,29 +56,17 @@ void CGun::OnRender(SDL_Surface* Surf_Display) {
 		int X = (int)CFactory::Factory.GetPlayer()->X;
 		int Y = (int)CFactory::Factory.GetPlayer()->Y + (PLAYER_SPRITE_HEIGHT / 2);
 
-		// Find closest Entity or Tile
-		CEntity* ClosestEntity = CFactory::Factory.GetClosest(X, Y, ENTITY_TYPE_ENEMY, true, true, 40);
-		CTile*	 ClosestTile   = CArea::AreaControl.GetNextHorizontalTile(X,Y);
-		int ClosestX = ClosestTile->X;
-		if( ClosestEntity != NULL && ClosestEntity->X < ClosestX ) {
-			ClosestX = (int)ClosestEntity->X;
-			ClosestEntity->HP = ClosestEntity->HP - BULLET_BEAM_STR;
+		int BeamWidth = GetBeamWidth(X, Y);
+		if( BeamWidth >= 0 ) {
+			// Graphic
+			SDL_Rect LaserBeam;
+			LaserBeam.x = X-CCamera::CameraControl.GetX() + PLAYER_SPRITE_WIDTH;
+			LaserBeam.y = Y;
+			LaserBeam.w = BeamWidth - PLAYER_SPRITE_WIDTH;
+			LaserBeam.h = 20;
+
+			SDL_FillRect(Surf_Display, &LaserBeam, SDL_MapRGB(Surf_Display->format, 211, 211, 211));
 		}
-
-		// Beam width
-		int BeamWidth = WWIDTH;
-		if( ClosestX > X ) {
-			BeamWidth = ClosestX - X;
-		}
-
-		// Graphic
-		SDL_Rect LaserBeam;
-		LaserBeam.x = X-CCamera::CameraControl.GetX() + PLAYER_SPRITE_WIDTH;
-		LaserBeam.y = Y;
-		LaserBeam.w = BeamWidth - PLAYER_SPRITE_WIDTH;
-		LaserBeam.h = 20;
-
-		SDL_FillRect(Surf_Display, &LaserBeam, SDL_MapRGB(Surf_Display->format, 211, 211, 211));
 	}
 }
 
@@ -101,8 +89,8 @@ void CGun::ChangeType(int nType) {
 
 //-----------------------------------------------------------------------------
 void CGun::Reset() {
-	Type   = GUN_NORMAL;
-	//Type   = GUN_BEAM;
+	//Type   = GUN_NORMAL;
+	Type   = GUN_BEAM;
 	//Type	 = GUN_MISSILES;
 	Level  = 1;
 	BeamOn = false;
@@ -177,6 +165,43 @@ void CGun::Charge() {
 		}
 		ChargeStart = SDL_GetTicks();
 	}
+}
+
+//-----------------------------------------------------------------------------
+int CGun::GetBeamWidth(int StartX, int StartY) {
+	if( StartX < 0 || StartY < 0 ) {
+		return -1;
+	}
+
+	int BeamWidth = WWIDTH*2;
+
+	// Find closest Entity or Tile
+	CEntity* ClosestEntity = CFactory::Factory.GetClosest(StartX, StartY, ENTITY_TYPE_ENEMY, true, true, 40);
+	CTile*	 ClosestTile   = CArea::AreaControl.GetNextHorizontalTile(StartX,StartY);
+	if( ClosestTile == NULL && ClosestEntity == NULL ){
+		return BeamWidth;
+	}
+	else {
+		// Need a big enough value in case we don't have tile
+		int ClosestX = X+WWIDTH*2;
+		if( ClosestTile != NULL ) {
+			ClosestX = ClosestTile->X;
+		}
+		if( ClosestEntity != NULL && ClosestEntity->X < ClosestX ) {
+			ClosestX = (int)ClosestEntity->X;
+			// Damage enemy (beam doesn't create collision events)
+			ClosestEntity->HP = ClosestEntity->HP - BULLET_BEAM_STR;
+		}
+		else if( ClosestTile != NULL ){
+			ClosestTile->Damage(BULLET_BEAM_STR);
+		}
+
+		// Final width
+		if( ClosestX > StartX ) {
+			BeamWidth = ClosestX - StartX;
+		}
+	}
+	return BeamWidth;
 }
 
 //=============================================================================

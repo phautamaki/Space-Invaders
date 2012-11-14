@@ -22,10 +22,16 @@ class CTile {
 
 		int oldTypeID;
 
+	private:
 		int HP;
 
     public:
         CTile();
+
+		// Cause damage to tile
+		void Damage(int amount);
+		// Replace old HP value with nHP
+		void SetHP(int nHP);
 };
 
 //==============================================================================

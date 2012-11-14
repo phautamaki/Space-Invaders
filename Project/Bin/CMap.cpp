@@ -32,7 +32,7 @@ bool CMap::OnLoad(char* File) {
 			tempTile.oldTypeID = tempTile.TypeID;
 
 			if (tempTile.TypeID == TILE_TYPE_BLOCK_BREAKABLE) {
-				tempTile.HP = 200;
+				tempTile.SetHP( 200 );
 			}
 
             TileList.push_back(tempTile);

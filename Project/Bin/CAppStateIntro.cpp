@@ -18,7 +18,7 @@ void CAppStateIntro::OnActivate() {
 	IntroLength = 3000;
 
 	// Load Simple Logo
-	Surf_Logo = CSurface::OnLoad(PATH_IMAGES "splash.png");
+	Surf_Logo = CSurface::OnLoad(PATH_IMAGES "spaceship_splash.png");
 
 	StartTime = SDL_GetTicks();
 }

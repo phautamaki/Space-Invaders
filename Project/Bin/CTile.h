@@ -22,6 +22,8 @@ class CTile {
 
 		int oldTypeID;
 
+		int HP;
+
     public:
         CTile();
 };

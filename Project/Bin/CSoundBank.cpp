@@ -36,7 +36,6 @@ bool CSoundBank::OnLoad(SoundType type, std::string ID, char* File) {
 
 	case MUSIC:
 		
-
 		if((TempMusic = Mix_LoadMUS(File)) == NULL) {
 			return false;
 		}
@@ -51,6 +50,8 @@ bool CSoundBank::OnLoad(SoundType type, std::string ID, char* File) {
 		return true;
 		break;
 	}
+
+	return false;
 }
 
 

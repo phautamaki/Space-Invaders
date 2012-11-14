@@ -11,6 +11,7 @@ CAnimation::CAnimation() {
 
 	KeepAnimating = true;
 	AnimateOnce = false;
+
 }
 
 //------------------------------------------------------------------------------
@@ -27,7 +28,7 @@ void CAnimation::OnAnimate() {
 
 	if(CurrentFrame >= MaxFrames - 1) {
 		CurrentFrame = 0;
-		
+
 		if (AnimateOnce) {
 		KeepAnimating = false;
 		}

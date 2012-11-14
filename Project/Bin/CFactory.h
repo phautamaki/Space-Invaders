@@ -15,7 +15,8 @@ enum ExplType {			// TODO: move this code to SpecialEffect.h
 	EXPLOSION_ENEMY = 0,
 	EXPLOSION_TILE_1,
 	EXPLOSION_TILE_2,
-	EXPLOSION_TILE_3
+	EXPLOSION_TILE_3,
+	EXPLOSION_TILE_DAMAGE
 };
 
 class CFactory {

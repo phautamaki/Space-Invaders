@@ -1,6 +1,6 @@
 //==============================================================================
 #ifndef _CCAMERA_H_
-    #define _CCAMERA_H_
+#define _CCAMERA_H_
 
 #include <SDL.h>
 
@@ -15,33 +15,22 @@ enum {
 
 //==============================================================================
 class CCamera {
-	public:
-		static CCamera CameraControl;
+public:
+	static CCamera CameraControl;
+	int TargetMode;
 
-	private:
-		float X;
-		float Y;
+	CCamera();
 
-		//float* TargetX;
-		//float* TargetY;
+	void OnMove(float MoveX, float MoveY);
 
-	public:
-		int TargetMode;
+	int GetX();
+	int GetY();
 
-	public:
-		CCamera();
+	void SetPos(int X, int Y);
 
-	public:
-		void OnMove(float MoveX, float MoveY);
-
-	public:
-		int GetX();
-		int GetY();
-
-	public:
-		void SetPos(int X, int Y);
-
-		//void SetTarget(float* X, float* Y);
+private:
+	float X;
+	float Y;
 };
 
 //==============================================================================

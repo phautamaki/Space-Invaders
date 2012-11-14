@@ -311,26 +311,29 @@ std::vector<CAppStateGame::LevelInfo> CAppStateGame::GetCurrentLevelInfo(const s
 		std::vector<int>values;
 		std::string value = "";
 		
-		//Then we get the separate values
-		while(istream >> value) {
-			values.push_back(StringToInt(value));
-		}
+		// Ignore comment lines and empty lines
+		if (istream.peek() != '#' && istream.peek() != 15 && line != "") {
 
-		//Lousy check to see if contets in the file are in correct format
-		if(values.size() == 4) {
-			CAppStateGame::LevelInfo info;
-			info.ActiveXPosition = values.at(0);
-			info.Type = values.at(1);
-			info.SubType = values.at(2);
-		    info.YPosition = values.at(3);
+			//Then we get the separate values
+			while(istream >> value) {
+				values.push_back(StringToInt(value));
+			}
 
-			tmp.push_back(info);
+			//Lousy check to see if contets in the file are in correct format
+			if(values.size() == 4) {
+				CAppStateGame::LevelInfo info;
+				info.ActiveXPosition = values.at(0);
+				info.Type = values.at(1);
+				info.SubType = values.at(2);
+				info.YPosition = values.at(3);
+
+				tmp.push_back(info);
+			}
+			else {
+				debug("There was some problems with the file. Could not read contents properly");
+				break;
+			}
 		}
-		else {
-			debug("There was some problems with the file. Could not read contents properly");
-			break;
-		}
-		
 	}
 
 	file.close();

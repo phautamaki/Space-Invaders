@@ -1,3 +1,19 @@
+# THIS IS A COMMENT LINE. CHARACTER '#' MUST BE THE FIRST
+# CHARACTER OF A COMMENT LINE
+
+# Input values are as following:
+# ActiveXPosition Type SubType YPosition
+
+# ActiveXPosition: 	position where trigger happens
+# Type: 		which type of entity is created
+# SubType: 		more accurate subtype of the entity
+# YPosition: 		spawning altitude
+
+
+
+
+# Start of level information...
+
 10 2 100 100
 150 3 1001 300
 320 2 100 261
@@ -6,4 +22,8 @@
 600 3 1000 178
 630 2 100 254
 840 2 100 214
+
+# The ending point of level 1
 2000 3 0 264
+
+# ...end of level information.

@@ -29,8 +29,12 @@ bool CMap::OnLoad(char* File) {
 			tempTile.Y = Y * TILE_SIZE;
 
             fscanf_s(FileHandle, "%d:%d ", &tempTile.TileID, &tempTile.TypeID);
-
 			tempTile.oldTypeID = tempTile.TypeID;
+
+			if (tempTile.TypeID == TILE_TYPE_BLOCK_BREAKABLE) {
+				tempTile.HP = 200;
+			}
+
             TileList.push_back(tempTile);
         }
         fscanf_s(FileHandle, "\n");

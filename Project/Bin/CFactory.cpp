@@ -222,8 +222,14 @@ bool CFactory::CreateExplosion(int nX, int nY, ExplType explosion){
 		tmp->Anim_Control.AnimateOnce = true;
 	}
 	// TODO: own explosion .png
-	else if (explosion == EXPLOSION_TILE_2) {
+	else if (explosion == EXPLOSION_TILE_3) {
 		if(!tmp->OnLoad( PATH_IMAGES PATH_SPECIALEFFECTS "breakable_tile_1_break.png",32, 32, 4)){
+			return false;
+		}
+		tmp->Anim_Control.AnimateOnce = true;
+	}
+	else if (explosion == EXPLOSION_TILE_DAMAGE) {
+		if(!tmp->OnLoad( PATH_IMAGES PATH_SPECIALEFFECTS "breakable_tile_damage.png",16, 16, 3)){
 			return false;
 		}
 		tmp->Anim_Control.AnimateOnce = true;

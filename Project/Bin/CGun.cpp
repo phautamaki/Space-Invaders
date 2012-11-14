@@ -53,15 +53,15 @@ void CGun::OnRender(SDL_Surface* Surf_Display) {
 
 	if( BeamOn ) {
 		// Beam start
-		int X = CFactory::Factory.GetPlayer()->X;
-		int Y = CFactory::Factory.GetPlayer()->Y + (PLAYER_SPRITE_HEIGHT / 2);
+		int X = (int)CFactory::Factory.GetPlayer()->X;
+		int Y = (int)CFactory::Factory.GetPlayer()->Y + (PLAYER_SPRITE_HEIGHT / 2);
 
 		// Find closest Entity or Tile
 		CEntity* ClosestEntity = CFactory::Factory.GetClosest(X, Y, ENTITY_TYPE_ENEMY, true, true, 40);
 		CTile*	 ClosestTile   = CArea::AreaControl.GetNextHorizontalTile(X,Y);
 		int ClosestX = ClosestTile->X;
 		if( ClosestEntity != NULL && ClosestEntity->X < ClosestX ) {
-			ClosestX = ClosestEntity->X;
+			ClosestX = (int)ClosestEntity->X;
 			ClosestEntity->HP = ClosestEntity->HP - BULLET_BEAM_STR;
 		}
 
@@ -129,8 +129,8 @@ void CGun::Deactivate() {
 }
 
 void CGun::Shoot() {
-	int X = CFactory::Factory.GetPlayer()->X;
-	int Y = CFactory::Factory.GetPlayer()->Y;
+	int X = (int)CFactory::Factory.GetPlayer()->X;
+	int Y = (int)CFactory::Factory.GetPlayer()->Y;
 
 	switch( Type ) {
 		case GUN_NORMAL:

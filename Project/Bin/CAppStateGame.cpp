@@ -150,7 +150,8 @@ void CAppStateGame::OnLoop() {
 	}
 
 	// Spawn new entities
-	else if( LevelInfoIndex < Level.size() && CCamera::CameraControl.GetX() >= Level.at(LevelInfoIndex).ActiveXPosition) {
+	else if( LevelInfoIndex < Level.size() && 
+		(unsigned int)CCamera::CameraControl.GetX() >= Level.at(LevelInfoIndex).ActiveXPosition) {
 
 		CAppStateGame::LevelInfo TmpInfo = Level.at(LevelInfoIndex);
 		
@@ -231,8 +232,8 @@ void CAppStateGame::OnRender(SDL_Surface* Surf_Display) {
 
 	SDL_FillRect(Surf_Display, &Rect, 0);
 
-	CSurface::OnDraw(Surf_Display, SpaceBG, BG_offset, GUI_HEIGHT);
-	CSurface::OnDraw(Surf_Display, SpaceBG, BG_offset-BG_WIDTH, GUI_HEIGHT);
+	CSurface::OnDraw(Surf_Display, SpaceBG, (int)BG_offset, GUI_HEIGHT);
+	CSurface::OnDraw(Surf_Display, SpaceBG, (int)(BG_offset-BG_WIDTH), GUI_HEIGHT);
 	CArea::AreaControl.OnRender(Surf_Display, -CCamera::CameraControl.GetX(), -CCamera::CameraControl.GetY());
 
     //--------------------------------------------------------------------------

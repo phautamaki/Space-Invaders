@@ -160,7 +160,7 @@ void CPlayer::OnLoop() {
 	Gun.OnLoop();
 
 	// Reset level after death scene is complete
-	if ( MakeDeathScene && (SDL_GetTicks() > (DeathMoment + 3000)) ) {
+	if ( MakeDeathScene && (SDL_GetTicks() > (unsigned int)(DeathMoment + 3000)) ) {
 		MakeDeathScene = false;
 		CAppStateGame::Instance.ResetLevelNow();
 	}
@@ -331,8 +331,8 @@ void CPlayer::Die() {
 	if(!TookHit){
 		Gun.Reset();
 
-		CFactory::Factory.CreateExplosion(X, Y-200, ExplType::EXPLOSION_ENEMY);
-		CFactory::Factory.CreateSlowMotion(SlowMotionLevel::LEVEL_SLOWMO_8X, 3000);
+		CFactory::Factory.CreateExplosion((int)X, (int)Y-200, EXPLOSION_ENEMY);
+		CFactory::Factory.CreateSlowMotion(LEVEL_SLOWMO_8X, 3000);
 		
 		DeathMoment = SDL_GetTicks();
 		MakeDeathScene = true;

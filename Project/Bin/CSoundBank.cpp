@@ -38,7 +38,7 @@ bool CSoundBank::OnLoad(SoundType type, std::string ID, char* File) {
 		
 
 		if((TempMusic = Mix_LoadMUS(File)) == NULL) {
-			return -1;
+			return false;
 		}
 
 		MusicList.insert(make_pair(ID, TempMusic));

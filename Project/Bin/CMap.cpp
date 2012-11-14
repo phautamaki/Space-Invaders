@@ -2,6 +2,9 @@
 #include "CMap.h"
 #include <string>
 #include "functions.h"
+#include <fstream>
+#include <iostream>
+#include <sstream>
 
 //=============================================================================
 CMap::CMap(int MapNumber): mapNumber(MapNumber) {
@@ -11,10 +14,11 @@ CMap::CMap(int MapNumber): mapNumber(MapNumber) {
 //=============================================================================
 bool CMap::OnLoad(char* File) {
     TileList.clear();
+	
+    FILE* FileHandle;
+	errno_t err = fopen_s(&FileHandle, File, "r");
 
-    FILE* FileHandle = fopen(File, "r");
-
-    if(FileHandle == NULL) {
+    if(FileHandle == NULL || err != 0) {
         return false;
     }
 
@@ -24,17 +28,18 @@ bool CMap::OnLoad(char* File) {
 			tempTile.X = X * TILE_SIZE + mapNumber*MAP_WIDTH*TILE_SIZE;
 			tempTile.Y = Y * TILE_SIZE;
 
-            fscanf(FileHandle, "%d:%d ", &tempTile.TileID, &tempTile.TypeID);
+            fscanf_s(FileHandle, "%d:%d ", &tempTile.TileID, &tempTile.TypeID);
 
 			tempTile.oldTypeID = tempTile.TypeID;
             TileList.push_back(tempTile);
         }
-        fscanf(FileHandle, "\n");
+        fscanf_s(FileHandle, "\n");
     }
 
     fclose(FileHandle);
 
 	std::string filename = File;
+	
 	debug("Loaded map " + filename, 2);
     return true;
 }
@@ -75,7 +80,7 @@ CTile* CMap::GetTile(int X, int Y) {
     ID = X / TILE_SIZE;
     ID = ID + (MAP_WIDTH * (Y / TILE_SIZE));
 
-    if(ID < 0 || ID >= TileList.size()) {
+    if(ID < 0 || (unsigned int)ID >= TileList.size()) {
     	return NULL;
     }
 

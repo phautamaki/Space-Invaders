@@ -17,7 +17,7 @@ CAnimation::CAnimation() {
 void CAnimation::OnAnimate() {
 	SetSMFrameRate();
 
-    if(OldTime + FrameRate > SDL_GetTicks()) {
+    if((unsigned int)(OldTime + FrameRate) > SDL_GetTicks()) {
         return;
     }
 

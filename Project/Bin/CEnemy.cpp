@@ -45,12 +45,12 @@ void CEnemy::OnCollision(CEntity* Entity) {
 			if( HP <= 0 ){
 				// Need to substract bullet life, since it won't check collission when enemy dies from hit
 				Entity->HP--;
-				CFactory::Factory.CreateExplosion(X-130,Y-200, EXPLOSION_ENEMY);
+				CFactory::Factory.CreateExplosion((int)X-130,(int)Y-200, EXPLOSION_ENEMY);
 			}
 			break;
 		case ENTITY_TYPE_PLAYER:
 			// Always die when colliding with player
-			CFactory::Factory.CreateExplosion(X-130,Y-200, EXPLOSION_ENEMY);
+			CFactory::Factory.CreateExplosion((int)X-130,(int)Y-200, EXPLOSION_ENEMY);
 			Entity->Die();
 			HP = -1;
 			Die();

@@ -13,16 +13,18 @@ CArea::CArea() {
 //=============================================================================
 bool CArea::OnLoad(char* File) {
     OnCleanup();
-    FILE* FileHandle = fopen(File, "r");
 
-    if(FileHandle == NULL) {
+	FILE* FileHandle;
+	errno_t err = fopen_s(&FileHandle, File, "r");
+
+    if(FileHandle == NULL || err != 0) {
 		debug("Error: Couldn't open area file.");
         return false;
     }
     char TilesetFile[255];
 
 	// Load tileset picture to a surface
-    fscanf(FileHandle, "%s\n", TilesetFile);
+    fscanf_s(FileHandle, "%s\n", TilesetFile);
     if((Surf_Tileset = CSurface::OnLoad(TilesetFile)) == false) {
         fclose(FileHandle);
 		debug("Error: Couldn't load tileset for area.");
@@ -31,12 +33,12 @@ bool CArea::OnLoad(char* File) {
 
 	// Load maps to CAreas MapList
 	int numberOfMaps;
-	fscanf(FileHandle, "%d\n", &numberOfMaps);
+	fscanf_s(FileHandle, "%d\n", &numberOfMaps);
 
 	for(int X = 0;X < numberOfMaps;X++) {
 		char MapFile[255];
 
-		fscanf(FileHandle, "%s ", MapFile);
+		fscanf_s(FileHandle, "%s ", MapFile);
 
 		// Load map's tileset into map's Tilelist
 		CMap tempMap(X);
@@ -48,7 +50,7 @@ bool CArea::OnLoad(char* File) {
 
 		tempMap.Surf_Tileset = Surf_Tileset;
 		MapList.push_back(tempMap);
-		fscanf(FileHandle, "\n");
+		fscanf_s(FileHandle, "\n");
 	}
 
     fclose(FileHandle);

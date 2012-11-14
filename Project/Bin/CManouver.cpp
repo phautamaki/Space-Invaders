@@ -133,7 +133,7 @@ bool CManouver::OnLoop() {
 		}
 
 		float Speed = Parent->MaxSpeedX;
-		int AngleToTarget = atan( static_cast<float>((TargetX - Parent->X)) / static_cast<float>((TargetY - Parent->Y)) ) * 100;
+		int AngleToTarget = (int)atan( static_cast<float>((TargetX - Parent->X)) / static_cast<float>((TargetY - Parent->Y)) ) * 100;
 
 		Parent->SpeedX = cos(DegreesToRadian(AngleToTarget)) * Speed;
 		Parent->SpeedY = sin(DegreesToRadian(AngleToTarget)) * Speed;
@@ -144,7 +144,7 @@ bool CManouver::OnLoop() {
 		}
 
 		float Speed = Parent->MaxSpeedX;
-		int AngleToTarget = atan( (TargetEntity->X - Parent->X) / (TargetEntity->Y - Parent->Y) );
+		int AngleToTarget = (int)atan( (TargetEntity->X - Parent->X) / (TargetEntity->Y - Parent->Y) );
 
 		Parent->SpeedX = cos(DegreesToRadian(AngleToTarget)) * Speed;
 		Parent->SpeedY = sin(DegreesToRadian(AngleToTarget)) * Speed;

@@ -90,11 +90,11 @@ bool CBullet::OnLoad(int nType) {
 
 			MaxSpeedX = SpeedX = PLAYER_BULLET_HOMING_SPEED;
 			HP = 1;
-			tmpEntity = CFactory::Factory.GetClosest(X,Y,ENTITY_TYPE_ENEMY);
+			tmpEntity = CFactory::Factory.GetClosest((int)X,(int)Y,ENTITY_TYPE_ENEMY);
 			tmpMan = new CManouver(this);
 			tmpMan->OnLoad(M_AIM);
-			tmpMan->TargetX = tmpEntity->X;
-			tmpMan->TargetY = tmpEntity->Y;
+			tmpMan->TargetX = (int)tmpEntity->X;
+			tmpMan->TargetY = (int)tmpEntity->Y;
 			Manouvers.push_back(tmpMan);
 
 			break;

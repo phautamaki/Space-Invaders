@@ -105,7 +105,7 @@ CEntity* CFactory::GetClosest(int X, int Y, int TargetType, bool Frontal, bool H
 			// Get first enemy
 			if( Closest == 0 ) {
 				Closest = Candidate;
-				Distance = sqrt( pow( X - Closest->X, 2 ) + pow( Y - Closest->Y, 2 ) );
+				Distance = (int)sqrt( pow( X - Closest->X, 2 ) + pow( Y - Closest->Y, 2 ) );
 			}
 			// Calculate distance
 			else if( Distance > sqrt( pow( X - Candidate->X, 2 ) + pow( Y - Candidate->Y, 2 ) ) ) {
@@ -254,8 +254,8 @@ void CFactory::KillEnemiesOnScreen() {
 	std::vector<CEntity*>::iterator it = CEntity::EntityList.begin();
 	while( it != CEntity::EntityList.end() ) {
 		if ((*it) != NULL && (*it)->Type == ENTITY_TYPE_ENEMY && !((*it)->Dead)) {
-			int x = (*it)->X;
-			int y = (*it)->Y;
+			int x = (int)((*it)->X);
+			int y = (int)((*it)->Y);
 			//CreateExplosion(x, y, EXPLOSION_ENEMY);
 			(*it)->Dead = true;
 		}

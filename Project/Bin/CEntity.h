@@ -94,7 +94,7 @@ public:
 	int	Flags;
 
 	/* misc */
-	int	HP;
+	int	HP;   // TODO: Change this to private and make Damage() etc
 
 public:
 	CEntity();

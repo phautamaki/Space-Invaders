@@ -98,8 +98,15 @@ CEntity* CFactory::GetClosest(int X, int Y, int TargetType, bool Frontal, bool H
 				continue;
 			}
 			// In horizontal search we skip objects farther than offset in Y direction
-			if( HorizontalSearch && abs(Y - Candidate->Y) > Offset ) {
+			/*if( HorizontalSearch && abs(Y - Candidate->Y) > Offset ) {
 				continue;
+			}*/
+			if( HorizontalSearch ) {
+				SDL_Rect Cbounds = Candidate->GetBounds();
+				// Point is within height range
+				if( ( Y+Offset < Cbounds.y ) || ( Y > Cbounds.y + Cbounds.h ) ) {
+					continue;
+				}
 			}
 
 			// Get first enemy

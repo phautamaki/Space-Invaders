@@ -1,13 +1,16 @@
 //=============================================================================
 #include "CGun.h"
-#include "define.h"
+
 #include "CEntity.h"
-#include "CFactory.h"
-#include "CSoundBank.h"
 #include "CCamera.h"
 #include "CArea.h"
 
+#include "CFactory.h"
+#include "CSoundBank.h"
+
 #include "functions.h"
+#include "define.h"
+#include "Paths.h"
 
 //=============================================================================
 CGun::CGun() {
@@ -17,12 +20,21 @@ CGun::CGun() {
 	ChargeStart = 0;
 	LastShot	= 0;
 	BeamOn		= false;
+	BeamWidth   = 0;
 }
 
 //=============================================================================
 bool CGun::OnLoad() {
 	// Set to default gun and level
 	Reset();
+
+	// Load laser beam sprite
+	if((LaserBody = CSurface::OnLoad(PATH_IMAGES PATH_ITEMS "bullet_beam.png")) == NULL) {
+		return false;
+	}
+	if((LaserEnd = CSurface::OnLoad(PATH_IMAGES PATH_ITEMS "bullet_beam_end.png")) == NULL) {
+		return false;
+	}
 
     return true;
 }
@@ -53,25 +65,41 @@ void CGun::OnRender(SDL_Surface* Surf_Display) {
 
 	if( BeamOn ) {
 		// Beam start
-		int X = (int)CFactory::Factory.GetPlayer()->X;
+		int X = (int)CFactory::Factory.GetPlayer()->X + PLAYER_SPRITE_WIDTH;
 		int Y = (int)CFactory::Factory.GetPlayer()->Y + (PLAYER_SPRITE_HEIGHT / 2);
 
-		int BeamWidth = GetBeamWidth(X, Y);
-		if( BeamWidth >= 0 ) {
-			// Graphic
-			SDL_Rect LaserBeam;
-			LaserBeam.x = X-CCamera::CameraControl.GetX() + PLAYER_SPRITE_WIDTH;
-			LaserBeam.y = Y;
-			LaserBeam.w = BeamWidth - PLAYER_SPRITE_WIDTH;
-			LaserBeam.h = 20;
+		UpdateBeamWidth(X, Y);
+		if( BeamWidth > 0 ) {
+			int BodyW = 20;
+			int BodyH = 9;
+			int EndW = 13;
+			int EndH = 11;
 
-			SDL_FillRect(Surf_Display, &LaserBeam, SDL_MapRGB(Surf_Display->format, 211, 211, 211));
+			int LastX = 0;
+			for( int i = 0; i < BeamWidth / BodyW; i++ ) {
+				LastX = X-CCamera::CameraControl.GetX() + i*BodyW;
+				if( LastX >= X-CCamera::CameraControl.GetX() ) {
+					CSurface::OnDraw(Surf_Display, LaserBody, LastX, Y, 0, 0, BodyW, BodyH);
+				}
+			}
+			int Extra = BeamWidth % BodyW;
+			if( Extra != 0 ) {
+				if( LastX+BodyW > X-CCamera::CameraControl.GetX() ) {
+					CSurface::OnDraw(Surf_Display, LaserBody, LastX+BodyW, Y, 0, 0, Extra, BodyH);
+				}
+			}
+			if( X-CCamera::CameraControl.GetX() + BeamWidth - EndW > X-CCamera::CameraControl.GetX() ) {
+				CSurface::OnDraw(Surf_Display, LaserEnd, X-CCamera::CameraControl.GetX() + BeamWidth - EndW, Y-1, 0, 0, Extra, BodyH);
+			}
+			 
 		}
 	}
 }
 
 //-----------------------------------------------------------------------------
 void CGun::OnCleanup() {
+	SDL_FreeSurface(LaserBody);
+	SDL_FreeSurface(LaserEnd);
 }
 
 //=============================================================================
@@ -92,7 +120,7 @@ void CGun::Reset() {
 	//Type   = GUN_NORMAL;
 	Type   = GUN_BEAM;
 	//Type	 = GUN_MISSILES;
-	Level  = 1;
+	Level  = 0;
 	BeamOn = false;
 }
 
@@ -112,7 +140,10 @@ void CGun::Deactivate() {
 	ChargeStart = 0;
 	ChargeLevel = 0;
 	BeamOn = false;
-	if(BeamChannel) CSoundBank::SoundControl.StopChannel(BeamChannel);
+	BeamWidth = 0;
+	if(BeamChannel) {
+		CSoundBank::SoundControl.StopChannel(BeamChannel);
+	}
 	BeamChannel = -1;
 }
 
@@ -168,20 +199,19 @@ void CGun::Charge() {
 }
 
 //-----------------------------------------------------------------------------
-int CGun::GetBeamWidth(int StartX, int StartY) {
-	if( StartX < 0 || StartY < 0 ) {
-		return -1;
-	}
+int CGun::UpdateBeamWidth(int StartX, int StartY) {
+	int  MaxWidth   = WWIDTH*2;
+	bool FoundTile  = false;
+	bool FoundEnemy = false;
 
-	int BeamWidth = WWIDTH*2;
+	if( StartX < 0 || StartY < 0 ) {
+		return MaxWidth;
+	}
 
 	// Find closest Entity or Tile
-	CEntity* ClosestEntity = CFactory::Factory.GetClosest(StartX, StartY, ENTITY_TYPE_ENEMY, true, true, 40);
+	CEntity* ClosestEntity = CFactory::Factory.GetClosest(StartX, StartY, ENTITY_TYPE_ENEMY, true, true, 13);
 	CTile*	 ClosestTile   = CArea::AreaControl.GetNextHorizontalTile(StartX,StartY);
-	if( ClosestTile == NULL && ClosestEntity == NULL ){
-		return BeamWidth;
-	}
-	else {
+	if( ClosestTile != NULL || ClosestEntity != NULL ){
 		// Need a big enough value in case we don't have tile
 		int ClosestX = X+WWIDTH*2;
 		if( ClosestTile != NULL ) {
@@ -189,19 +219,36 @@ int CGun::GetBeamWidth(int StartX, int StartY) {
 		}
 		if( ClosestEntity != NULL && ClosestEntity->X < ClosestX ) {
 			ClosestX = (int)ClosestEntity->X;
-			// Damage enemy (beam doesn't create collision events)
-			ClosestEntity->HP = ClosestEntity->HP - BULLET_BEAM_STR;
+			FoundEnemy = true;
 		}
 		else if( ClosestTile != NULL ){
-			ClosestTile->Damage(BULLET_BEAM_STR);
+			FoundTile = true;
 		}
 
 		// Final width
 		if( ClosestX > StartX ) {
-			BeamWidth = ClosestX - StartX;
+			MaxWidth = ClosestX - StartX;
 		}
 	}
-	return BeamWidth;
+	
+	// BWidth now contains maximum width for beam
+	// Let's calculate correct width based on our current beam length
+	if( MaxWidth <= BeamWidth ) {
+		BeamWidth = MaxWidth;
+
+		// Damage
+		if( FoundTile ){
+			ClosestTile->Damage(BULLET_BEAM_STR);
+		}
+		else if( FoundEnemy ) {
+			ClosestEntity->HP = ClosestEntity->HP - BULLET_BEAM_STR;
+		}
+	}
+	else {
+		BeamWidth = BeamWidth + PLAYER_BULLET_BEAM_SPEED;
+	}
+
+	return MaxWidth;
 }
 
 //=============================================================================

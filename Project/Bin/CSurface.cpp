@@ -11,8 +11,10 @@ CSurface::CSurface() {
 SDL_Surface* CSurface::OnLoad(char* File) {
 	SDL_Surface* Surf_Temp = NULL;
 	SDL_Surface* Surf_Return = NULL;
+	std::string filename = File;
 
 	if((Surf_Temp = IMG_Load(File)) == NULL) {
+		error("Failed loading image " + filename);
 		return NULL;
 	}
 
@@ -20,7 +22,6 @@ SDL_Surface* CSurface::OnLoad(char* File) {
 	SDL_FreeSurface(Surf_Temp);
 
 	if( Surf_Return ){
-		std::string filename = File;
 		debug("Loaded image " + filename, 2);
 	}
 	return Surf_Return;

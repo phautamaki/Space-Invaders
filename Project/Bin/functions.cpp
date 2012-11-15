@@ -18,6 +18,22 @@ void debug( std::string message, int tabs ) {
 	std::cout << SDL_GetTicks() << ": " << message << std::endl;
 }
 
+//------------------------------------------------------------------------------
+void debug( int value, int tabs ) {
+	int counter = 0;
+	while( counter < tabs )
+	{
+		std::cout << '\t';
+		counter++;
+	}
+	std::cout << SDL_GetTicks() << ": " << value << std::endl;
+}
+
+//------------------------------------------------------------------------------
+void error( std::string message ) {
+	std::cerr << SDL_GetTicks() << ": " << message << std::endl;
+}
+
 //==============================================================================
 std::string IntToString(int Value) {
 	std::stringstream ss;

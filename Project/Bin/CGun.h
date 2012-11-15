@@ -31,7 +31,11 @@ class CGun {
 		void Shoot();
 		void Charge();
 
-		int GetBeamWidth(int StartX, int StartY);
+		// Returns maximum beam width
+		int UpdateBeamWidth(int StartX, int StartY);
+
+		SDL_Surface* LaserBody;
+		SDL_Surface* LaserEnd;
 
 	public:
 		int X;
@@ -44,9 +48,11 @@ class CGun {
 		unsigned int ChargeStart;
 		unsigned int ChargeLevel;
 		unsigned int LastShot;
-		int BeamChannel;
 
-		bool		 BeamOn;
+		int  BeamChannel;
+		bool BeamOn;
+		int  BeamWidth;
+
 };
 
 //=============================================================================

@@ -46,7 +46,7 @@
 #define PLAYER_SHOOT_DELAY			300
 #define PLAYER_BULLET_NORMAL_SPEED	25
 #define PLAYER_BULLET_CHARGE1_SPEED	20
-#define PLAYER_BULLET_BEAM_SPEED	30
+#define PLAYER_BULLET_BEAM_SPEED	3
 #define PLAYER_BULLET_HOMING_SPEED	10
 
 //-----------------------------------------------------------------------------

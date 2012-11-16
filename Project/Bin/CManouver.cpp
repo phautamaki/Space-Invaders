@@ -162,9 +162,6 @@ bool CManouver::OnLoop() {
 			Parent->SpeedY = sin(DegreesToRadian(AngleToTarget)) * Speed;
 
 		}
-		else {
-			Type = M_MOVE_RIGHT;
-		}
 	}
 	return false;
 }
@@ -173,6 +170,12 @@ bool CManouver::OnLoop() {
 void CManouver::OnCleanup() {
 	// Do NOT delete Parent
 	Parent = 0;
+}
+
+int CManouver::GetType() {
+
+	return Type;
+
 }
 
 //=============================================================================

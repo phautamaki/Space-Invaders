@@ -123,7 +123,7 @@ void CBullet::OnLoop() {
 	CManouvarableEntity::OnLoop();
 
 	for(unsigned int i = 0; i < Manouvers.size(); i++) {
-		if(Manouvers.at(i)->Type == M_FOLLOW) {
+		if(Manouvers.at(i)->GetType() == M_FOLLOW) {
 
 			CEntity* tmpEntity = CFactory::Factory.GetClosest((int)X, (int)Y, ENTITY_TYPE_ENEMY);
 			Manouvers.at(i)->TargetX = tmpEntity != 0 ? (int)tmpEntity->X : -1;

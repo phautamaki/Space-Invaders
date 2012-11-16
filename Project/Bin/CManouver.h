@@ -45,19 +45,21 @@ class CManouver {
 
         void OnCleanup();
 
+		int GetType();
+
 	public:
 		// For aim and follow
 		int TargetX;
 		int TargetY;
 		bool Aim_Set;			//Is the aim set already?
 		CEntity* TargetEntity;
-		int Type;
 
 	private:
 		CEntity* Parent;		
 
 		int StartTime;
 		int Wait;
+		int Type;
 
 		// For turns
 		int OriginalAngle;

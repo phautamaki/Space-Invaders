@@ -90,7 +90,6 @@ public:
 	int	Type;
 	int	SubType;
 
-	bool Dead; // TODO: Change this to private and make isDead()
 	int	Flags;
 
 	/* misc */
@@ -122,6 +121,11 @@ public:
 	bool IsActive();
 	virtual void Die();
 	virtual bool IsDead();
+
+	void Kill(); // Sets Dead = true
+
+protected:
+	bool Dead;
 
 private:
 	int	Width;

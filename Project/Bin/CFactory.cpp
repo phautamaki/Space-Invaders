@@ -127,7 +127,7 @@ void CFactory::FlagNonPlayerEntities() {
 	for(unsigned int i = 0;i < CEntity::EntityList.size();i++) {
 		if(!CEntity::EntityList[i] || CEntity::EntityList[i]->Type == ENTITY_TYPE_PLAYER) continue;
 
-		CEntity::EntityList[i]->Dead = true;
+		CEntity::EntityList[i]->Kill();
     }
 }
 
@@ -266,11 +266,11 @@ void CFactory::FreezeEnemies(SlowMotionLevel level, int duration_ms) {
 void CFactory::KillEnemiesOnScreen() {
 	std::vector<CEntity*>::iterator it = CEntity::EntityList.begin();
 	while( it != CEntity::EntityList.end() ) {
-		if ((*it) != NULL && (*it)->Type == ENTITY_TYPE_ENEMY && !((*it)->Dead)) {
+		if ((*it) != NULL && (*it)->Type == ENTITY_TYPE_ENEMY && !((*it)->IsDead())) {
 			int x = (int)((*it)->X);
 			int y = (int)((*it)->Y);
 			//CreateExplosion(x, y, EXPLOSION_ENEMY);
-			(*it)->Dead = true;
+			(*it)->Kill();
 		}
 		++it;
 	}

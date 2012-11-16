@@ -87,7 +87,7 @@ void CItem::OnAnimate() {
 //------------------------------------------------------------------------------
 void CItem::OnCollision(CEntity* Entity) {
 	// Prevent multiple handlings for same collissions
-	if( Dead || Entity->Dead ) return;
+	if( IsDead() || Entity->IsDead() ) return;
 
 	switch(Entity->Type) {
 		case ENTITY_TYPE_PLAYER: 

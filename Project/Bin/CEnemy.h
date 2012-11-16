@@ -14,6 +14,8 @@ class CEnemy : public CManouvarableEntity {
         void OnLoop();
 
         void OnCollision(CEntity* Entity);
+
+		void Die();
 };
 
 //=============================================================================

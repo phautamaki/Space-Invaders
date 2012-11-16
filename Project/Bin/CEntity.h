@@ -34,9 +34,10 @@ enum SubTypes {
 	//ENTITY_SUBTYPE_ENEMY_2 = 101,
 	//ENTITY_SUBTYPE_ENEMY_3 = 102,
 
-	ENTITY_SUBTYPE_ITEM_1 = 1000,
-	ENTITY_SUBTYPE_ITEM_2 = 1001
-	//ENTITY_SUBTYPE_ITEM_3 = 1002
+	ENTITY_SUBTYPE_ITEM_WPN_NORMAL = 1000,
+	ENTITY_SUBTYPE_ITEM_WPN_BEAM = 1001,
+	ENTITY_SUBTYPE_ITEM_WPN_MISSILE = 1002,
+	ENTITY_SUBTYPE_ITEM_POINTS = 1003
 
 };
 
@@ -126,9 +127,10 @@ protected:
 	bool	Dead;
 	int		HP;
 
-private:
 	int	Width;
 	int	Height;
+
+private:
 
 	/* Animation */
 	int	CurrentFrameCol;

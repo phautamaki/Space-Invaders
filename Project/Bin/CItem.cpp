@@ -94,7 +94,6 @@ void CItem::OnCollision(CEntity* Entity) {
 			Die();
 			break;
 		case ENTITY_TYPE_BULLET: 
-			Die();
 			break;
 		default: 
 			// Unknown collision

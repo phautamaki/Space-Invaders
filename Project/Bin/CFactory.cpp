@@ -2,6 +2,7 @@
 #include "CFactory.h"
 #include "Paths.h"
 #include "functions.h"
+#include <algorithm>
 #include <cmath>
 
 //==============================================================================
@@ -167,25 +168,51 @@ bool CFactory::CreateEnemyShip(int type, int nX, int nY) {
 
 	return true;
 }
+//------------------------------------------------------------------------------
+bool CFactory::CreateRandomItem(int nX, int nY) {
+	int RandomizedType = 0;
+	static const int candidates[] = {
+		ENTITY_SUBTYPE_ITEM_WPN_NORMAL,
+		ENTITY_SUBTYPE_ITEM_WPN_BEAM,
+		ENTITY_SUBTYPE_ITEM_WPN_MISSILE
+	};
+	std::vector<int> pool (candidates, candidates + sizeof(candidates) / sizeof(candidates[0]) );
+	random_shuffle( pool.begin(), pool.end() );
+	RandomizedType = pool.at(0);
+
+	if( RandomizedType > 0 ) {
+		CreateItem(RandomizedType,nX,nY);
+		return true;
+	}
+	return false;
+}
 
 //------------------------------------------------------------------------------
 bool CFactory::CreateItem(int type, int nX, int nY) {
-	CItem* tmp = new CItem;
+	CItem* tmp = 0;
 
 	switch( type ) {
-		case ENTITY_SUBTYPE_ITEM_1:
-			tmp->OnLoad( PATH_IMAGES PATH_ITEMS "star.png",15, 16, 1);
-			tmp->X = static_cast<float>(nX);
-			tmp->Y = static_cast<float>(nY+GUI_HEIGHT);
+		case ENTITY_SUBTYPE_ITEM_WPN_NORMAL:
+			tmp = new CItem;
+			tmp->OnLoad( PATH_IMAGES PATH_ITEMS FILENAME_ITEM_WPN_NORMAL, 20, 21, 1);
 			break;
-		case ENTITY_SUBTYPE_ITEM_2:
-			tmp->OnLoad( PATH_IMAGES PATH_ITEMS "special_item_1.png",16, 16, 1);
-			tmp->X = static_cast<float>(nX);
-			tmp->Y = static_cast<float>(nY+GUI_HEIGHT);
+		case ENTITY_SUBTYPE_ITEM_WPN_BEAM:
+			tmp = new CItem;
+			tmp->OnLoad( PATH_IMAGES PATH_ITEMS FILENAME_ITEM_WPN_BEAM, 20, 21, 1);
+			break;
+		case ENTITY_SUBTYPE_ITEM_WPN_MISSILE:
+			tmp = new CItem;
+			tmp->OnLoad( PATH_IMAGES PATH_ITEMS FILENAME_ITEM_WPN_MISSILES, 20, 21, 1);
+			break;
+		case ENTITY_SUBTYPE_ITEM_POINTS:
+			tmp = new CItem;
+			tmp->OnLoad( PATH_IMAGES PATH_ITEMS "star.png",15, 16, 1);
 			break;
 		default:
 			return false;
 	}
+	tmp->X = static_cast<float>(nX);
+	tmp->Y = static_cast<float>(nY);
 	CEntity::EntityList.push_back(tmp);
 
 	return true;

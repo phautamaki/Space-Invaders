@@ -4,12 +4,6 @@
 
 #include "CManouvarableEntity.h"
 
-//==============================================================================
-// Could do some kind of sub typing with these (Item -> HP+) or sth like that
-enum {
-	ITEM_1 = 0,
-};
-
 //=============================================================================
 class CItem : public CManouvarableEntity {
     public:

@@ -26,6 +26,10 @@
 #define FILENAME_PLAYER		"ship.png"
 #define FILENAME_SPACE_BG_1 "space_bg.png"
 
+#define FILENAME_ITEM_WPN_NORMAL	"item_wpn_normal.png"
+#define FILENAME_ITEM_WPN_BEAM		"item_wpn_beam.png"
+#define FILENAME_ITEM_WPN_MISSILES	"item_wpn_missiles.png"
+
 #define FILENAME_BUTTON_CLICK "button_click.wav"
 
 #define FILENAME_SHOOTING_BASIC "shoot_basic.wav"

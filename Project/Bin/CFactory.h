@@ -58,6 +58,7 @@ class CFactory {
 		// Create objects
 		CPlayer* CreatePlayer(int nX, int nY);
 		bool CreateEnemyShip(int type, int nX, int nY);
+		bool CreateRandomItem(int nX, int nY); 
 		bool CreateItem(int type, int nX, int nY);
 		bool CreateBullet(int type, int nX, int nY);
 

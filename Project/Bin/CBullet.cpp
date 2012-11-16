@@ -116,6 +116,7 @@ bool CBullet::OnLoad(int nType) {
     return true;
 }
 
+//------------------------------------------------------------------------------
 void CBullet::OnRender(SDL_Surface* Surf_Display) {
 	if (Y > GUI_HEIGHT && 
 		Y < WHEIGHT) {
@@ -158,15 +159,14 @@ void CBullet::OnCollision(CTile* Tile) {
 
 	switch( Tile->TypeID ){
 		case TILE_TYPE_BLOCK:
-			Dead = true;
+			Die();
 			break;
 		case TILE_TYPE_BLOCK_BREAKABLE:
 			Tile->Damage(DamageOutput);
 
-			Dead = true;
+			Die();
 			break;
 		default:
-			return;
 			break;
 	}
 	return;

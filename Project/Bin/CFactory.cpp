@@ -91,12 +91,14 @@ CEntity* CFactory::GetClosest(int X, int Y, int TargetType, bool Frontal, bool H
 	CEntity* Closest = 0;
 	int Distance = 0;
 	for(unsigned int i = 0;i < CEntity::EntityList.size();i++) {
+
 		// Only check enemies
 		if( TargetType == -1 || CEntity::EntityList.at(i)->Type == TargetType ) {
 			CEntity* Candidate = CEntity::EntityList.at(i);
 			// In frontal search we skip objects that are left from X
+
 			if( Frontal && Candidate->X < X ) {
-				continue;
+				continue;			
 			}
 			// In horizontal search we skip objects farther than offset in Y direction
 			/*if( HorizontalSearch && abs(Y - Candidate->Y) > Offset ) {
@@ -121,6 +123,7 @@ CEntity* CFactory::GetClosest(int X, int Y, int TargetType, bool Frontal, bool H
 			}
 		}
 	}
+
 	return Closest;
 }
 //------------------------------------------------------------------------------
@@ -220,12 +223,14 @@ bool CFactory::CreateItem(int type, int nX, int nY) {
 
 //------------------------------------------------------------------------------
 bool CFactory::CreateBullet(int type, int nX, int nY) {
+
 	CBullet* tmp = new CBullet;
 	bool EntityOK = true;
 
-	EntityOK = tmp->OnLoad( type );
 	tmp->X = static_cast<float>(nX);
 	tmp->Y = static_cast<float>(nY);
+
+	EntityOK = tmp->OnLoad( type );
 	
 	CEntity::EntityList.push_back(tmp);
 

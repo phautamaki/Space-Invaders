@@ -2,6 +2,8 @@
 #ifndef _CMANOUVER_H_
     #define _CMANOUVER_H_
 
+#define PI 3.14159265
+
 #include "CEntity.h"
 
 // This class should probably be created from a scratch...
@@ -47,6 +49,7 @@ class CManouver {
 		// For aim and follow
 		int TargetX;
 		int TargetY;
+		bool Aim_Set;			//Is the aim set already?
 		CEntity* TargetEntity;
 
 	private:

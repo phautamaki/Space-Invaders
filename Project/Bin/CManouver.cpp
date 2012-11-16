@@ -12,6 +12,7 @@ CManouver::CManouver(CEntity* parent) {
 
 	StartTime = 0;
 	Wait = 0;
+	Aim_Set = false;
 }
 
 //=============================================================================
@@ -127,16 +128,29 @@ bool CManouver::OnLoop() {
 			return true;
 		}
 	}
-	else if( Type == M_AIM ) {
+	else if( Type == M_AIM && !Aim_Set) {
+		
+		/*
 		if( Parent->X == TargetX && Parent->Y == TargetY ) {
 			return true;
 		}
+		*/
 
 		float Speed = Parent->MaxSpeedX;
-		int AngleToTarget = (int)atan( static_cast<float>((TargetX - Parent->X)) / static_cast<float>((TargetY - Parent->Y)) ) * 100;
+		if( TargetX != -1 && TargetY != -1  ) {
+		
+			int AngleToTarget = (int)(atan(static_cast<float>(TargetY - Parent->Y) / ( static_cast<float>(TargetX - Parent->X))) * 180 / PI);
 
-		Parent->SpeedX = cos(DegreesToRadian(AngleToTarget)) * Speed;
-		Parent->SpeedY = sin(DegreesToRadian(AngleToTarget)) * Speed;
+			Parent->SpeedX = cos(DegreesToRadian(AngleToTarget)) * Speed;
+			Parent->SpeedY = sin(DegreesToRadian(AngleToTarget)) * Speed;
+			Aim_Set = true; //Should be only set once, then keeps going to that direction
+
+		}
+		else {	
+			Type = M_MOVE_RIGHT;
+			return false;
+		}
+		
 	}
 	else if( Type == M_FOLLOW ) {
 		if( TargetEntity == NULL || (Parent->X == TargetEntity->X && Parent->Y == TargetEntity->Y) ) {

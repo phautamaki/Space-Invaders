@@ -44,7 +44,7 @@ void CEnemy::OnCollision(CEntity* Entity) {
 
 			if( HP <= 0 ){
 				// Need to substract bullet life, since it won't check collission when enemy dies from hit
-				Entity->HP--;
+				Entity->Damage(1);
 				CFactory::Factory.CreateExplosion((int)X-130,(int)Y-200, EXPLOSION_ENEMY);
 			}
 			break;

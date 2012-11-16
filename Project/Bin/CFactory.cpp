@@ -157,7 +157,7 @@ bool CFactory::CreateEnemyShip(int type, int nX, int nY) {
 			tmp->OnLoad( PATH_IMAGES PATH_ENEMIES "ship1.png",ENEMY_SHIP_1_SPRITE_WIDTH, ENEMY_SHIP_1_SPRITE_HEIGHT, ENEMY_SHIP_1_MAX_FRAMES);
 			tmp->X = static_cast<float>(nX);
 			tmp->Y = static_cast<float>(nY+GUI_HEIGHT);
-			tmp->HP = ENEMY_SHIP_1_HP;
+			tmp->SetHP(ENEMY_SHIP_1_HP);
 			break;
 		default:
 			return false;

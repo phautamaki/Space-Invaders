@@ -92,9 +92,6 @@ public:
 
 	int	Flags;
 
-	/* misc */
-	int	HP;   // TODO: Change this to private and make Damage() etc
-
 public:
 	CEntity();
 	virtual ~CEntity();
@@ -121,11 +118,13 @@ public:
 	bool IsActive();
 	virtual void Die();
 	virtual bool IsDead();
-
 	void Kill(); // Sets Dead = true
+	void Damage(int Amount);
+	void SetHP(int Amount);
 
 protected:
-	bool Dead;
+	bool	Dead;
+	int		HP;
 
 private:
 	int	Width;

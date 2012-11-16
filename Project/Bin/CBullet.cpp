@@ -133,12 +133,12 @@ void CBullet::OnCollision(CEntity* Entity) {
 
 	switch(Entity->Type) {
 		case ENTITY_TYPE_GENERIC:
-			Dead = true;
+			Die();
 			break;
-		case ENTITY_TYPE_ENEMY: 
-			HP--;
+		case ENTITY_TYPE_ENEMY:
+			Damage(1);
 			if( HP <= 0 ){
-				Entity->HP = Entity->HP - DamageOutput;
+				Entity->Damage(DamageOutput);
 			}
 			break;
 		case ENTITY_TYPE_ITEM:

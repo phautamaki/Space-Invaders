@@ -90,11 +90,13 @@ bool CBullet::OnLoad(int nType) {
 
 			MaxSpeedX = SpeedX = PLAYER_BULLET_HOMING_SPEED;
 			HP = 1;
-			tmpEntity = CFactory::Factory.GetClosest((int)X,(int)Y,ENTITY_TYPE_ENEMY);
+
+			tmpEntity = CFactory::Factory.GetClosest((int)X, (int)Y, ENTITY_TYPE_ENEMY, true);
 			tmpMan = new CManouver(this);
+
 			tmpMan->OnLoad(M_AIM);
-			tmpMan->TargetX = (int)tmpEntity->X;
-			tmpMan->TargetY = (int)tmpEntity->Y;
+			tmpMan->TargetX = tmpEntity != 0 ? (int)tmpEntity->X : -1;
+			tmpMan->TargetY = tmpEntity != 0 ? (int)tmpEntity->Y : -1;
 			Manouvers.push_back(tmpMan);
 
 			break;
@@ -117,6 +119,7 @@ bool CBullet::OnLoad(int nType) {
 }
 
 void CBullet::OnRender(SDL_Surface* Surf_Display) {
+
 	if (Y > GUI_HEIGHT && 
 		Y < WHEIGHT) {
 		CEntity::OnRender(Surf_Display);

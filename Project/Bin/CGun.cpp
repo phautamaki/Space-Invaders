@@ -117,9 +117,9 @@ void CGun::ChangeType(int nType) {
 
 //-----------------------------------------------------------------------------
 void CGun::Reset() {
-	Type   = GUN_NORMAL;
+	//Type   = GUN_NORMAL;
 	//Type   = GUN_BEAM;
-	//Type	 = GUN_MISSILES;
+	Type	 = GUN_MISSILES;
 	Level  = 0;
 	BeamOn = false;
 }
@@ -180,7 +180,8 @@ void CGun::Shoot() {
 		case GUN_MISSILES:
 			// Can't shoot too fast
 			if( LastShot + PLAYER_SHOOT_DELAY < SDL_GetTicks() ) {
-				CFactory::Factory.CreateBullet(ENTITY_SUBTYPE_BULLET_HOMING, static_cast<int>(X) + PLAYER_SPRITE_WIDTH + 5, static_cast<int>(Y) + PLAYER_SPRITE_HEIGHT / 2);
+				CFactory::Factory.CreateBullet(ENTITY_SUBTYPE_BULLET_HOMING, (X + PLAYER_SPRITE_WIDTH + 5), (Y + PLAYER_SPRITE_HEIGHT / 2));
+				LastShot = SDL_GetTicks();
 			}
 		default:
 			break;

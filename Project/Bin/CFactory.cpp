@@ -130,7 +130,7 @@ void CFactory::FlagNonPlayerEntities() {
 	for(unsigned int i = 0;i < CEntity::EntityList.size();i++) {
 		if(!CEntity::EntityList[i] || CEntity::EntityList[i]->Type == ENTITY_TYPE_PLAYER) continue;
 
-		CEntity::EntityList[i]->Dead = true;
+		CEntity::EntityList[i]->Kill();
     }
 }
 
@@ -160,7 +160,7 @@ bool CFactory::CreateEnemyShip(int type, int nX, int nY) {
 			tmp->OnLoad( PATH_IMAGES PATH_ENEMIES "ship1.png",ENEMY_SHIP_1_SPRITE_WIDTH, ENEMY_SHIP_1_SPRITE_HEIGHT, ENEMY_SHIP_1_MAX_FRAMES);
 			tmp->X = static_cast<float>(nX);
 			tmp->Y = static_cast<float>(nY+GUI_HEIGHT);
-			tmp->HP = ENEMY_SHIP_1_HP;
+			tmp->SetHP(ENEMY_SHIP_1_HP);
 			break;
 		default:
 			return false;
@@ -271,11 +271,11 @@ void CFactory::FreezeEnemies(SlowMotionLevel level, int duration_ms) {
 void CFactory::KillEnemiesOnScreen() {
 	std::vector<CEntity*>::iterator it = CEntity::EntityList.begin();
 	while( it != CEntity::EntityList.end() ) {
-		if ((*it) != NULL && (*it)->Type == ENTITY_TYPE_ENEMY && !((*it)->Dead)) {
+		if ((*it) != NULL && (*it)->Type == ENTITY_TYPE_ENEMY && !((*it)->IsDead())) {
 			int x = (int)((*it)->X);
 			int y = (int)((*it)->Y);
 			//CreateExplosion(x, y, EXPLOSION_ENEMY);
-			(*it)->Dead = true;
+			(*it)->Kill();
 		}
 		++it;
 	}

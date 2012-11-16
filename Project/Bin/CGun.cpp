@@ -111,6 +111,7 @@ void CGun::ChangeType(int nType) {
 		Type = nType;
 		Level = 0;
 		ChargeStart = 0;
+		ChargeLevel = 0;
 		LastShot = 0;
 	}
 }
@@ -121,6 +122,8 @@ void CGun::Reset() {
 	//Type   = GUN_BEAM;
 	Type	 = GUN_MISSILES;
 	Level  = 0;
+	ChargeStart = 0;
+	ChargeLevel = 0;
 	BeamOn = false;
 }
 
@@ -242,7 +245,7 @@ int CGun::UpdateBeamWidth(int StartX, int StartY) {
 			ClosestTile->Damage(BULLET_BEAM_STR);
 		}
 		else if( FoundEnemy ) {
-			ClosestEntity->HP = ClosestEntity->HP - BULLET_BEAM_STR;
+			ClosestEntity->Damage(BULLET_BEAM_STR);
 		}
 	}
 	else {

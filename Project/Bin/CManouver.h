@@ -51,11 +51,10 @@ class CManouver {
 		int TargetY;
 		bool Aim_Set;			//Is the aim set already?
 		CEntity* TargetEntity;
+		int Type;
 
 	private:
-		CEntity* Parent;
-
-		int Type;	
+		CEntity* Parent;		
 
 		int StartTime;
 		int Wait;

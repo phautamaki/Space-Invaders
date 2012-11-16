@@ -91,10 +91,10 @@ bool CBullet::OnLoad(int nType) {
 			MaxSpeedX = SpeedX = PLAYER_BULLET_HOMING_SPEED;
 			HP = 1;
 
-			tmpEntity = CFactory::Factory.GetClosest((int)X, (int)Y, ENTITY_TYPE_ENEMY, true);
+			tmpEntity = CFactory::Factory.GetClosest((int)X, (int)Y, ENTITY_TYPE_ENEMY);
 			tmpMan = new CManouver(this);
 
-			tmpMan->OnLoad(M_AIM);
+			tmpMan->OnLoad(M_FOLLOW);
 			tmpMan->TargetX = tmpEntity != 0 ? (int)tmpEntity->X : -1;
 			tmpMan->TargetY = tmpEntity != 0 ? (int)tmpEntity->Y : -1;
 			Manouvers.push_back(tmpMan);
@@ -116,6 +116,21 @@ bool CBullet::OnLoad(int nType) {
 	CurrentManouver = Manouvers.begin();
 	
     return true;
+}
+
+void CBullet::OnLoop() {
+
+	CManouvarableEntity::OnLoop();
+
+	for(unsigned int i = 0; i < Manouvers.size(); i++) {
+		if(Manouvers.at(i)->Type == M_FOLLOW) {
+
+			CEntity* tmpEntity = CFactory::Factory.GetClosest((int)X, (int)Y, ENTITY_TYPE_ENEMY);
+			Manouvers.at(i)->TargetX = tmpEntity != 0 ? (int)tmpEntity->X : -1;
+			Manouvers.at(i)->TargetY = tmpEntity != 0 ? (int)tmpEntity->Y : -1;
+		}
+	}
+
 }
 
 //------------------------------------------------------------------------------

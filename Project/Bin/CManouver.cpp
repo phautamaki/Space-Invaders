@@ -129,39 +129,42 @@ bool CManouver::OnLoop() {
 		}
 	}
 	else if( Type == M_AIM && !Aim_Set) {
-		
-		/*
-		if( Parent->X == TargetX && Parent->Y == TargetY ) {
-			return true;
-		}
-		*/
 
 		float Speed = Parent->MaxSpeedX;
 		if( TargetX != -1 && TargetY != -1  ) {
 		
-			int AngleToTarget = (int)(atan(static_cast<float>(TargetY - Parent->Y) / ( static_cast<float>(TargetX - Parent->X))) * 180 / PI);
+			float YDifference = static_cast<float>(TargetY - Parent->Y);
+			float XDifference = static_cast<float>(TargetX - Parent->X);
+			int AngleToTarget = XDifference > 0.0 ? (int)(atan( YDifference / XDifference ) * 180 / PI) : (int)(atan( YDifference / XDifference ) * 180 / PI) + 180;
 
 			Parent->SpeedX = cos(DegreesToRadian(AngleToTarget)) * Speed;
 			Parent->SpeedY = sin(DegreesToRadian(AngleToTarget)) * Speed;
+			
 			Aim_Set = true; //Should be only set once, then keeps going to that direction
 
 		}
 		else {	
 			Type = M_MOVE_RIGHT;
-			return false;
 		}
 		
 	}
 	else if( Type == M_FOLLOW ) {
-		if( TargetEntity == NULL || (Parent->X == TargetEntity->X && Parent->Y == TargetEntity->Y) ) {
-			return true;
-		}
 
 		float Speed = Parent->MaxSpeedX;
-		int AngleToTarget = (int)atan( (TargetEntity->X - Parent->X) / (TargetEntity->Y - Parent->Y) );
+		
+		if( TargetX != -1 && TargetY != -1  ) {
 
-		Parent->SpeedX = cos(DegreesToRadian(AngleToTarget)) * Speed;
-		Parent->SpeedY = sin(DegreesToRadian(AngleToTarget)) * Speed;
+			float YDifference = static_cast<float>(TargetY - Parent->Y);
+			float XDifference = static_cast<float>(TargetX - Parent->X);
+			int AngleToTarget = XDifference > 0.0 ? (int)(atan( YDifference / XDifference ) * 180 / PI) : (int)(atan( YDifference / XDifference ) * 180 / PI) + 180;
+
+			Parent->SpeedX = cos(DegreesToRadian(AngleToTarget)) * Speed;
+			Parent->SpeedY = sin(DegreesToRadian(AngleToTarget)) * Speed;
+
+		}
+		else {
+			Type = M_MOVE_RIGHT;
+		}
 	}
 	return false;
 }

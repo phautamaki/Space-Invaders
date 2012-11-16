@@ -117,8 +117,8 @@ void CGun::ChangeType(int nType) {
 
 //-----------------------------------------------------------------------------
 void CGun::Reset() {
-	//Type   = GUN_NORMAL;
-	Type   = GUN_BEAM;
+	Type   = GUN_NORMAL;
+	//Type   = GUN_BEAM;
 	//Type	 = GUN_MISSILES;
 	Level  = 0;
 	BeamOn = false;
@@ -141,10 +141,10 @@ void CGun::Deactivate() {
 	ChargeLevel = 0;
 	BeamOn = false;
 	BeamWidth = 0;
-	if(BeamChannel) {
+	if(BeamChannel != -1) {
 		CSoundBank::SoundControl.StopChannel(BeamChannel);
+		BeamChannel = -1;
 	}
-	BeamChannel = -1;
 }
 
 void CGun::Shoot() {

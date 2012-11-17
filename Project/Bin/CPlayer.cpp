@@ -217,12 +217,12 @@ void CPlayer::OnCollision(CEntity* Entity) {
 			else if( Entity->SubType == ENTITY_SUBTYPE_ITEM_WPN_MISSILE ) {
 				Gun.ChangeType(GUN_MISSILES);
 			}
+			Entity->Die();
 			break;
 		default: 
 			// Unknown collision
 			break;
 	}
-	Entity->Die();
 	
     return; 
 }

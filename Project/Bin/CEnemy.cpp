@@ -50,7 +50,7 @@ void CEnemy::OnCollision(CEntity* Entity) {
 		case ENTITY_TYPE_PLAYER:
 			// Always die when colliding with player
 			CFactory::Factory.CreateExplosion((int)X-130,(int)Y-200, EXPLOSION_ENEMY);
-			Entity->Die();
+			Entity->Damage(1);
 			Die();
 		default:
 			return;

@@ -207,12 +207,22 @@ void CPlayer::OnCollision(CEntity* Entity) {
 			//Die();
 			break;
 		case ENTITY_TYPE_ITEM: 
-			// TODO: collect powers from item
+			debug(Entity->SubType);
+			if( Entity->SubType == ENTITY_SUBTYPE_ITEM_WPN_NORMAL ) {
+				Gun.ChangeType(GUN_NORMAL);
+			}
+			else if( Entity->SubType == ENTITY_SUBTYPE_ITEM_WPN_BEAM ) {
+				Gun.ChangeType(GUN_BEAM);
+			}
+			else if( Entity->SubType == ENTITY_SUBTYPE_ITEM_WPN_MISSILE ) {
+				Gun.ChangeType(GUN_MISSILES);
+			}
 			break;
 		default: 
 			// Unknown collision
 			break;
 	}
+	Entity->Die();
 	
     return; 
 }

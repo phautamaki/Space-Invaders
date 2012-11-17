@@ -18,8 +18,15 @@ bool CApp::OnInit() {
 	}
 	debug("SDL TTF initialized", 1);
 
-    if((Surf_Display = SDL_SetVideoMode(WWIDTH, WHEIGHT, 32, SDL_HWSURFACE | SDL_DOUBLEBUF)) == NULL) {
-        return false;
+	if( FULLSCREEN_MODE ) {
+		if((Surf_Display = SDL_SetVideoMode(WWIDTH, WHEIGHT, 32, SDL_FULLSCREEN | SDL_HWSURFACE | SDL_DOUBLEBUF)) == NULL) {
+			return false;
+		}
+	}
+	else {
+		if((Surf_Display = SDL_SetVideoMode(WWIDTH, WHEIGHT, 32, SDL_HWSURFACE | SDL_DOUBLEBUF)) == NULL) {
+			return false;
+		}
     }
 	
 	debug("Screen created", 1);

@@ -19,6 +19,8 @@ CGun::CGun() {
 	ChargeLevel = 0;
 	ChargeStart = 0;
 	LastShot	= 0;
+	LastMissileShot = 0;
+	MissileDelay = PLAYER_SHOOT_DELAY_MISSILE;
 	BeamOn		= false;
 	BeamWidth   = 0;
 }
@@ -106,6 +108,10 @@ void CGun::OnCleanup() {
 void CGun::ChangeType(int nType) {
 	if( nType == Type ) {
 		Level++;
+		MissileDelay = MissileDelay-200;
+		if( MissileDelay < 100 ) {
+			MissileDelay = 100;
+		}
 	}
 	else {
 		Type = nType;
@@ -113,14 +119,14 @@ void CGun::ChangeType(int nType) {
 		ChargeStart = 0;
 		ChargeLevel = 0;
 		LastShot = 0;
+		LastMissileShot = 0;
+		MissileDelay = PLAYER_SHOOT_DELAY_MISSILE;
 	}
 }
 
 //-----------------------------------------------------------------------------
 void CGun::Reset() {
-	//Type   = GUN_NORMAL;
-	//Type   = GUN_BEAM;
-	Type	 = GUN_MISSILES;
+	Type   = GUN_NORMAL;
 	Level  = 0;
 	ChargeStart = 0;
 	ChargeLevel = 0;
@@ -181,10 +187,15 @@ void CGun::Shoot() {
 			//CFactory::Factory.CreateBullet(ENTITY_SUBTYPE_BULLET_BEAM, static_cast<int>(X) + PLAYER_SPRITE_WIDTH + 5, static_cast<int>(Y) + PLAYER_SPRITE_HEIGHT / 2);
 			break;
 		case GUN_MISSILES:
-			// Can't shoot too fast
 			if( LastShot + PLAYER_SHOOT_DELAY < SDL_GetTicks() ) {
-				CFactory::Factory.CreateBullet(ENTITY_SUBTYPE_BULLET_HOMING, (X + PLAYER_SPRITE_WIDTH + 5), (Y + PLAYER_SPRITE_HEIGHT / 2));
+				CSoundBank::SoundControl.Play(CSoundBank::EFFECT, "ShootingSoundBasic");
+				CFactory::Factory.CreateBullet(ENTITY_SUBTYPE_BULLET_NORMAL, static_cast<int>(X) + PLAYER_SPRITE_WIDTH + 5, static_cast<int>(Y) + PLAYER_SPRITE_HEIGHT / 2);
 				LastShot = SDL_GetTicks();
+			}
+			// Can't shoot too fast
+			if( LastMissileShot + MissileDelay < SDL_GetTicks() ) {
+				CFactory::Factory.CreateBullet(ENTITY_SUBTYPE_BULLET_MISSILE, (X + PLAYER_SPRITE_WIDTH + 5), (Y + PLAYER_SPRITE_HEIGHT / 2));
+				LastMissileShot = SDL_GetTicks();
 			}
 		default:
 			break;

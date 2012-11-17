@@ -48,6 +48,8 @@ class CGun {
 		unsigned int ChargeStart;
 		unsigned int ChargeLevel;
 		unsigned int LastShot;
+		unsigned int LastMissileShot;
+		unsigned int MissileDelay;
 
 		int  BeamChannel;
 		bool BeamOn;

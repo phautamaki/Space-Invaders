@@ -171,7 +171,7 @@ void CEntity::OnRender(SDL_Surface* Surf_Display) {
     if(Surf_Entity == NULL || Surf_Display == NULL) return;
 
 	if (Anim_Control.KeepAnimating) {
-		CSurface::OnDraw(Surf_Display, Surf_Entity, (int)X - CCamera::CameraControl.GetX(), (int)Y - CCamera::CameraControl.GetY(), 0, Anim_Control.GetCurrentFrame() * Height, Width, Height);
+		CSurface::OnDraw(Surf_Display, Surf_Entity, (int)X - CCamera::CameraControl.GetX(), (int)Y - CCamera::CameraControl.GetY(), Width*CurrentFrameCol, Anim_Control.GetCurrentFrame() * Height, Width, Height);
 	}
 }
 

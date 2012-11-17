@@ -8,6 +8,8 @@
 
 #define GUI_HEIGHT	160
 
+#define FULLSCREEN_MODE false
+
 //-----------------------------------------------------------------------------
 /* Level specific settings */
 #define MAP_WIDTH	60 // Number of tiles horizontally in a map
@@ -44,10 +46,12 @@
 #define PLAYER_MAX_FRAMES		1
 
 #define PLAYER_SHOOT_DELAY			300
+#define PLAYER_SHOOT_DELAY_MISSILE	1000
+
 #define PLAYER_BULLET_NORMAL_SPEED	25
 #define PLAYER_BULLET_CHARGE1_SPEED	20
 #define PLAYER_BULLET_BEAM_SPEED	3
-#define PLAYER_BULLET_HOMING_SPEED	10
+#define PLAYER_BULLET_MISSILE_SPEED	9
 
 //-----------------------------------------------------------------------------
 /* Enemy specific settings */

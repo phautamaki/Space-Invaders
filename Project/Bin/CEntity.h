@@ -28,7 +28,7 @@ enum SubTypes {
 	ENTITY_SUBTYPE_BULLET_SMALL_45D = 3,
 	ENTITY_SUBTYPE_BULLET_CHARGE1 = 4,
 	ENTITY_SUBTYPE_BULLET_BEAM = 5,
-	ENTITY_SUBTYPE_BULLET_HOMING = 6,
+	ENTITY_SUBTYPE_BULLET_MISSILE = 6,
 
 	ENTITY_SUBTYPE_ENEMY_1 = 100,
 	//ENTITY_SUBTYPE_ENEMY_2 = 101,
@@ -130,11 +130,12 @@ protected:
 	int	Width;
 	int	Height;
 
-private:
-
 	/* Animation */
+	// Are these actually used?
 	int	CurrentFrameCol;
-	int	CurrentFrameRow;
+	int	CurrentFrameRow; 
+
+private:
 
 	/* Collission */
 	SDL_Rect GetFrameBounds();

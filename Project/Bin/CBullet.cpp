@@ -1,9 +1,10 @@
 //=============================================================================
 #include "CBullet.h"
 #include "Paths.h"
+#include "CFactory.h"
 
 #include "functions.h"
-#include "CFactory.h"
+
 
 //=============================================================================
 CBullet::CBullet() {
@@ -24,7 +25,7 @@ bool CBullet::OnLoad(int nType) {
 
 	switch( nType ) {
 		case ENTITY_SUBTYPE_BULLET_NORMAL: 
-			File = PATH_IMAGES PATH_ITEMS "bullet_normal.png";
+			File = PATH_IMAGES PATH_ITEMS FILENAME_BULLET_NORMAL;
 			Width = 22;
 			Height = 11;
 			MaxFrames = 1;
@@ -35,7 +36,7 @@ bool CBullet::OnLoad(int nType) {
 
 			break;
 		case ENTITY_SUBTYPE_BULLET_SMALL_45U: 
-			File = PATH_IMAGES PATH_ITEMS "bullet_small.png";
+			File = PATH_IMAGES PATH_ITEMS FILENAME_BULLET_SMALL;
 			Width = 10;
 			Height = 7;
 			MaxFrames = 1;
@@ -48,7 +49,7 @@ bool CBullet::OnLoad(int nType) {
 
 			break;
 		case ENTITY_SUBTYPE_BULLET_SMALL_45D: 
-			File = PATH_IMAGES PATH_ITEMS "bullet_small.png";
+			File = PATH_IMAGES PATH_ITEMS FILENAME_BULLET_SMALL;
 			Width = 10;
 			Height = 7;
 			MaxFrames = 1;
@@ -61,7 +62,7 @@ bool CBullet::OnLoad(int nType) {
 
 			break;
 		case ENTITY_SUBTYPE_BULLET_CHARGE1:
-			File = PATH_IMAGES PATH_ITEMS "bullet_charge1.png";
+			File = PATH_IMAGES PATH_ITEMS FILENAME_BULLET_CHARGE;
 			Width = 44;
 			Height = 22;
 			MaxFrames = 1;
@@ -72,7 +73,7 @@ bool CBullet::OnLoad(int nType) {
 
 			break;
 		case ENTITY_SUBTYPE_BULLET_BEAM:
-			File = PATH_IMAGES PATH_ITEMS "bullet_beam.png";
+			File = PATH_IMAGES PATH_ITEMS FILENAME_BULLET_BEAM_BODY;
 			Width = 15;
 			Height = 4;
 			MaxFrames = 1;
@@ -81,14 +82,14 @@ bool CBullet::OnLoad(int nType) {
 			HP = 1;
 
 			break;
-		case ENTITY_SUBTYPE_BULLET_HOMING:
-			File = PATH_IMAGES PATH_ITEMS "bullet_charge1.png";
-			Width = 44;
-			Height = 22;
+		case ENTITY_SUBTYPE_BULLET_MISSILE:
+			File = PATH_IMAGES PATH_ITEMS FILENAME_BULLET_MISSILE;
+			Width = 12;
+			Height = 12;
 			MaxFrames = 1;
 			DamageOutput = BULLET_HOMING_STR;
 
-			MaxSpeedX = SpeedX = PLAYER_BULLET_HOMING_SPEED;
+			MaxSpeedX = SpeedX = PLAYER_BULLET_MISSILE_SPEED;
 			HP = 1;
 
 			tmpEntity = CFactory::Factory.GetClosest((int)X, (int)Y, ENTITY_TYPE_ENEMY);
@@ -128,6 +129,35 @@ void CBullet::OnLoop() {
 			CEntity* tmpEntity = CFactory::Factory.GetClosest((int)X, (int)Y, ENTITY_TYPE_ENEMY);
 			Manouvers.at(i)->TargetX = tmpEntity != 0 ? (int)tmpEntity->X : -1;
 			Manouvers.at(i)->TargetY = tmpEntity != 0 ? (int)tmpEntity->Y : -1;
+		}
+	}
+
+	// Pick correct direction for missile
+	if( SubType == ENTITY_SUBTYPE_BULLET_MISSILE ) {
+		int bAngle = Angle;//static_cast<int>(atan2(SpeedY,SpeedX) * (180.0/3.14159265));
+		if( bAngle > -25 && bAngle <= 25 ) {
+			CurrentFrameCol = 0;
+		}
+		else if( bAngle > 25 && bAngle <= 65 ) {
+			CurrentFrameCol = 6;
+		}
+		else if( bAngle > 65 && bAngle <= 115 ) {
+			CurrentFrameCol = 2;
+		}
+		else if( bAngle > 115 && bAngle <= 155 ) {
+			CurrentFrameCol = 5;
+		}
+		else if( bAngle <= -25 && bAngle > -65 ) {
+			CurrentFrameCol = 7;
+		}
+		else if( bAngle <= -65 && bAngle > -115 ) {
+			CurrentFrameCol = 3;
+		}
+		else if( bAngle <= -115 && bAngle > -155 ) {
+			CurrentFrameCol = 4;
+		}
+		else {
+			CurrentFrameCol = 1;
 		}
 	}
 

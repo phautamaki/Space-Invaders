@@ -3,6 +3,7 @@
 
 //=============================================================================
 CItem::CItem() {
+	MaxSpeedX = 5;
 }
 
 //=============================================================================
@@ -91,7 +92,6 @@ void CItem::OnCollision(CEntity* Entity) {
 
 	switch(Entity->Type) {
 		case ENTITY_TYPE_PLAYER: 
-			Die();
 			break;
 		case ENTITY_TYPE_BULLET: 
 			break;

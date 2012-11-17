@@ -214,6 +214,7 @@ bool CFactory::CreateItem(int type, int nX, int nY) {
 		default:
 			return false;
 	}
+	tmp->SubType = type;
 	tmp->X = static_cast<float>(nX);
 	tmp->Y = static_cast<float>(nY);
 	CEntity::EntityList.push_back(tmp);

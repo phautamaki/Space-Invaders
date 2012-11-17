@@ -257,6 +257,7 @@ bool CFactory::CreateExplosion(int nX, int nY, ExplType explosion){
 		}
 		tmp->Anim_Control.AnimateOnce = true;
 	}
+	/*
 	else if (explosion == EXPLOSION_TILE_1) {
 		if(!tmp->OnLoad( PATH_IMAGES PATH_SPECIALEFFECTS "breakable_tile_1_break.png",32, 32, 4)){
 			return false;
@@ -277,13 +278,14 @@ bool CFactory::CreateExplosion(int nX, int nY, ExplType explosion){
 		}
 		tmp->Anim_Control.AnimateOnce = true;
 	}
+	// TODO: own explosion .png
 	else if (explosion == EXPLOSION_TILE_DAMAGE) {
-		if(!tmp->OnLoad( PATH_IMAGES PATH_SPECIALEFFECTS "breakable_tile_damage.png",16, 16, 3)){
-			return false;
-		}
-		tmp->Anim_Control.AnimateOnce = true;
+		//if(!tmp->OnLoad( PATH_IMAGES PATH_SPECIALEFFECTS "breakable_tile_damage.png",16, 16, 3)){
+		//	return false;
+		//}
+		//tmp->Anim_Control.AnimateOnce = true;
 	}
-
+	*/
 	tmp->X = static_cast<float>(nX);
 	tmp->Y = static_cast<float>(nY+GUI_HEIGHT);
 	CEntity::EntityList.push_back(tmp);

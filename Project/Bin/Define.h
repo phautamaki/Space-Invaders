@@ -12,9 +12,9 @@
 
 //-----------------------------------------------------------------------------
 /* Level specific settings */
-#define MAP_WIDTH	60 // Number of tiles horizontally in a map
-#define MAP_HEIGHT	30 // Number of tiles vertically in a map
-#define TILE_SIZE	16 // Size of one tile in pixels
+#define MAP_WIDTH	30 // Number of tiles horizontally in a map
+#define MAP_HEIGHT	15 // Number of tiles vertically in a map
+#define TILE_SIZE	32 // Size of one tile in pixels
 
 //-----------------------------------------------------------------------------
 /* Background specific settings */

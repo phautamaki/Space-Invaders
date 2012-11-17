@@ -18,12 +18,18 @@ CFactory::CFactory() {
 
 //------------------------------------------------------------------------------
 bool CFactory::OnInit() {
+	Popup = CPopup();
+	if( !Popup.OnLoad("Empty", 0, 0) ) {
+		error("Couldn't create Popup-object.");
+		return false;
+	}
+	Popup.Hide();
+
 	return true;
 }
 
 //------------------------------------------------------------------------------
 void CFactory::OnLoop() {
-	
 	if (SDL_GetTicks() > SMStartMoment + SMDuration) {
 		CFPS::FPSControl.SetSlowMo(LEVEL_NORMAL);
 	}
@@ -31,6 +37,7 @@ void CFactory::OnLoop() {
 		CFPS::FPSControl.SetSlowMo(SMLevel);
 	}
 	
+	Popup.OnLoop();
 
 	std::vector<CEntity*>::iterator it = CEntity::EntityList.begin();
 	while( it != CEntity::EntityList.end() ) {
@@ -65,6 +72,8 @@ void CFactory::OnLoop() {
 
 //------------------------------------------------------------------------------
 void CFactory::OnCleanup() {
+	Popup.OnCleanup();
+
 	for( unsigned int i = 0; i < CEntity::EntityList.size(); i++ ) {
 		CEntity::EntityList.at(i)->OnCleanup();
 		delete CEntity::EntityList.at(i);

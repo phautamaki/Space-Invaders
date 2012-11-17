@@ -9,6 +9,7 @@
 #include "CItem.h"
 #include "CBullet.h"
 #include "CSpecialEffect.h"
+#include "CPopup.h"
 
 //=============================================================================
 enum ExplType {			// TODO: move this code to SpecialEffect.h
@@ -27,6 +28,9 @@ class CFactory {
 
 		unsigned int LastEnemyKillMoment;
 		std::vector<CPlayer*> Players;
+
+	public:
+		CPopup Popup;
 
 	public:
 

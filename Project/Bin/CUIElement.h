@@ -19,9 +19,6 @@ class CUIElement{
 	public:
 		static std::vector<CUIElement*>    UIElementList;
 
-	protected:
-		SDL_Surface*    Surf_Entity;
-
 	public:
 		int		X;
 		int		Y;
@@ -35,21 +32,18 @@ class CUIElement{
 	protected:
 		bool	Hover;
 
+		SDL_Surface*    Surf_Entity;
+
 	public:
 		CUIElement();
 
 		virtual ~CUIElement();
 
-	public:
 		virtual bool OnLoad(char* File, int Width, int Height);
-
 		virtual void OnLoop();
-
 		virtual void OnRender(SDL_Surface* Surf_Display);
-
 		virtual void OnCleanup();
 
-	public:
 		virtual	void Disable();
 		virtual	void Enable();
 		virtual	void Hide();
@@ -57,7 +51,7 @@ class CUIElement{
 
 		virtual void OnClick();
 
-		bool	IsClicked(int oX, int oY);
+		bool IsClicked(int oX, int oY);
 };
 
 //==============================================================================

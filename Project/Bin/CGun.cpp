@@ -143,7 +143,7 @@ void CGun::Activate() {
 	}
 }
 
-//-----------------------------------------------------------------------------
+//------------------------------------------------------ -----------------------
 void CGun::Deactivate() {
 	Shoot();
 	ChargeStart = 0;
@@ -159,6 +159,9 @@ void CGun::Deactivate() {
 void CGun::Shoot() {
 	int X = (int)CFactory::Factory.GetPlayer()->X;
 	int Y = (int)CFactory::Factory.GetPlayer()->Y;
+
+	CFactory::Factory.Popup.SetVisibilityTime(2000);
+	CFactory::Factory.Popup.Show();
 
 	switch( Type ) {
 		case GUN_NORMAL:

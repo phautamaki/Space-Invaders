@@ -253,6 +253,7 @@ void CAppStateGame::OnRender(SDL_Surface* Surf_Display) {
 	for(unsigned int i = 0; i < Player->Lives; i++ ){
 		CSurface::OnDraw(Surf_Display, IconLife, 50 + (i*30), 30);
 	}
+	CFactory::Factory.Popup.OnRender(Surf_Display);
 }
 
 //=============================================================================

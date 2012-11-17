@@ -33,7 +33,12 @@ bool CApp::OnInit() {
 
 	SDL_EnableKeyRepeat(1, SDL_DEFAULT_REPEAT_INTERVAL / 3);
 
-	CFont::FontControl.OnLoad(PATH_FONTS "FairyDustB.ttf", 50 );
+	if(!CFont::FontControl.OnLoad(PATH_FONTS "FairyDustB.ttf", 50 )){
+		error("Coudln't initialize FontControl.");
+	}
+	if(!CFactory::Factory.OnInit()){
+		error("Coudln't initialize Factor.");
+	}
 
 	CAppStateManager::SetActiveAppState(APPSTATE_INTRO);
 	

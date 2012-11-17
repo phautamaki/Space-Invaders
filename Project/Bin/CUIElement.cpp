@@ -7,6 +7,7 @@ std::vector<CUIElement*> 	CUIElement::UIElementList;
 CUIElement::CUIElement() {
 	Hover = false;
 	Hoverable = false;
+	Surf_Entity = NULL;
 }
 
 //-----------------------------------------------------------------------------
@@ -43,10 +44,9 @@ void CUIElement::OnRender(SDL_Surface* Surf_Display) {
 
 //-----------------------------------------------------------------------------
 void CUIElement::OnCleanup() {
-	if(Surf_Entity) {
+	if(Surf_Entity != NULL) {
         SDL_FreeSurface(Surf_Entity);
     }
-
     Surf_Entity = NULL;
 }
 

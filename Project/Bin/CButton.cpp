@@ -43,7 +43,6 @@ bool CButton::OnLoad(std::string Text, int oX, int oY, bool Image) {
 	State = UI_NORMAL;
 
 	ButtonClickSound = Mix_LoadWAV(PATH_EFFECTS FILENAME_BUTTON_CLICK);
-	ButtonClickSound == NULL ? debug("Shit hit the fan when loading ButtonClickSound.") : debug("Loading ButtonClickSound was a great success!");
 
 	return true;
 }

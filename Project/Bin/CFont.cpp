@@ -20,6 +20,8 @@ bool CFont::OnLoad(char* File, int size, long index) {
 	TTF_Font* TempFont = NULL;
 
 	if( (TempFont = TTF_OpenFontIndex(File, size, index)) == NULL ){
+		std::string filename = File;
+		error("Couldn't load font " + filename + ".");
 		return false;
 	}
 
@@ -27,8 +29,6 @@ bool CFont::OnLoad(char* File, int size, long index) {
 	Size = size;
 	FontPath = File;
 
-	std::string filename = File;
-	debug("Loaded font " + filename, 2);
 
 	return true;
 }

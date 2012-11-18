@@ -219,6 +219,9 @@ void CPlayer::OnCollision(CEntity* Entity) {
 			else if( Entity->SubType == ENTITY_SUBTYPE_ITEM_WPN_MISSILE ) {
 				Gun.ChangeType(GUN_MISSILES);
 			}
+			else if( Entity->SubType == ENTITY_SUBTYPE_ITEM_POINTS ) {
+				Points = Points+900;
+			}
 			Entity->Die();
 			break;
 		default: 

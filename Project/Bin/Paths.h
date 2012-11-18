@@ -37,6 +37,7 @@
 #define FILENAME_ITEM_WPN_NORMAL	"item_wpn_normal.png"
 #define FILENAME_ITEM_WPN_BEAM		"item_wpn_beam.png"
 #define FILENAME_ITEM_WPN_MISSILES	"item_wpn_missiles.png"
+#define FILENAME_ITEM_POINTS		"item_rupee.png"
 
 #define FILENAME_BUTTON_CLICK "button_click.wav"
 

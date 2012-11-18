@@ -64,7 +64,7 @@ void CEnemy::Die() {
 	CManouvarableEntity::Die();
 	CFactory::Factory.CreateExplosion((int)X-130,(int)Y-200, EXPLOSION_ENEMY);
 	CFactory::Factory.CreateRandomItem((int)X,(int)Y+(Height/2));
-	CFactory::Factory.GetPlayer()->Points = CFactory::Factory.GetPlayer()->Points + 1000;
+	CFactory::Factory.GetPlayer()->Points = CFactory::Factory.GetPlayer()->Points + 500;
 }
 
 //=============================================================================

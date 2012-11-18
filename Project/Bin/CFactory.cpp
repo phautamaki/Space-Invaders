@@ -186,7 +186,10 @@ bool CFactory::CreateRandomItem(int nX, int nY) {
 	static const int candidates[] = {
 		ENTITY_SUBTYPE_ITEM_WPN_NORMAL,
 		ENTITY_SUBTYPE_ITEM_WPN_BEAM,
-		ENTITY_SUBTYPE_ITEM_WPN_MISSILE
+		ENTITY_SUBTYPE_ITEM_WPN_MISSILE,
+		ENTITY_SUBTYPE_ITEM_POINTS,
+		ENTITY_SUBTYPE_ITEM_POINTS,
+		ENTITY_SUBTYPE_ITEM_POINTS
 	};
 	std::vector<int> pool (candidates, candidates + sizeof(candidates) / sizeof(candidates[0]) );
 	random_shuffle( pool.begin(), pool.end() );
@@ -218,7 +221,7 @@ bool CFactory::CreateItem(int type, int nX, int nY) {
 			break;
 		case ENTITY_SUBTYPE_ITEM_POINTS:
 			tmp = new CItem;
-			tmp->OnLoad( PATH_IMAGES PATH_ITEMS "star.png",15, 16, 1);
+			tmp->OnLoad( PATH_IMAGES PATH_ITEMS FILENAME_ITEM_POINTS,13, 23, 7);
 			break;
 		default:
 			return false;

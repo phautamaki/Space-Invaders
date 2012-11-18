@@ -14,9 +14,6 @@ class CPlayer : public CEntity {
 		void StopMoveX();
 		void StopMoveY();
 
-		bool			MakeDeathScene;
-		int				DeathMoment;
-
 	// Events
 		bool OnLoad(char* File, int Width, int Height, int MaxFrames);
 
@@ -40,8 +37,10 @@ class CPlayer : public CEntity {
 		void Die();
 
 	public:
-		unsigned int Lives;
+		bool	MakeDeathScene;
+		int		DeathMoment;
 
+		unsigned int Lives;
 		unsigned int Points;
 
 		bool TookHit;

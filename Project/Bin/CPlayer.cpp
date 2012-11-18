@@ -21,6 +21,8 @@ CPlayer::CPlayer() {
 	MakeDeathScene = false;
 	DeathMoment = 0;
 
+	Points = 0;
+
 	MaxSpeedX = PLAYER_MAX_SPEED_X;
 	MaxSpeedY = PLAYER_MAX_SPEED_Y;
 
@@ -207,7 +209,7 @@ void CPlayer::OnCollision(CEntity* Entity) {
 			//Die();
 			break;
 		case ENTITY_TYPE_ITEM: 
-			debug(Entity->SubType);
+			Points = Points + 100;
 			if( Entity->SubType == ENTITY_SUBTYPE_ITEM_WPN_NORMAL ) {
 				Gun.ChangeType(GUN_NORMAL);
 			}

@@ -29,12 +29,11 @@ public:
 	static CAppStateGame Instance;
 
 private:
-
-	bool ResetCurrentLevel;
 	CPlayer*		Player;
 
 	// GUI
 	SDL_Surface*	IconLife;
+	SDL_Surface*	UItiles;
 
 	// Scrolling space background
 	SDL_Surface*	SpaceBG;
@@ -42,16 +41,14 @@ private:
 
 	//Holds the information about what is our current level we are playing
 	int CurrentLevelNumber;
-
 	//Defines the X-coordinate in which the level should change. Information should be stored on the last line of the level's info-file. 
 	//This may need modification, in case we have e.g. some kind of boss at the end and the level should change after it is killed.
 	int LevelEndingPoint;
-
 	//Holds the information about different entities (enemies and items) that should appear.
 	std::vector<LevelInfo> Level;
-
 	//Next index to inspect from Level-vector
 	unsigned int LevelInfoIndex;
+	bool ResetCurrentLevel;
 
 	CAppStateGame();
 

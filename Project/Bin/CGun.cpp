@@ -77,21 +77,23 @@ void CGun::OnRender(SDL_Surface* Surf_Display) {
 			int EndW = 13;
 			int EndH = 11;
 
+			// Draw laser body
 			int LastX = 0;
 			for( int i = 0; i < BeamWidth / BodyW; i++ ) {
 				LastX = X-CCamera::CameraControl.GetX() + i*BodyW;
 				if( LastX >= X-CCamera::CameraControl.GetX() ) {
-					CSurface::OnDraw(Surf_Display, LaserBody, LastX, Y, 0, 0, BodyW, BodyH);
+					CSurface::OnDraw(Surf_Display, LaserBody, LastX, Y, BodyW*Level, 0, BodyW, BodyH);
 				}
 			}
+			// Draw laser end
 			int Extra = BeamWidth % BodyW;
 			if( Extra != 0 ) {
 				if( LastX+BodyW > X-CCamera::CameraControl.GetX() ) {
-					CSurface::OnDraw(Surf_Display, LaserBody, LastX+BodyW, Y, 0, 0, Extra, BodyH);
+					CSurface::OnDraw(Surf_Display, LaserBody, LastX+BodyW, Y, BodyW*Level, 0, Extra, BodyH);
 				}
 			}
 			if( X-CCamera::CameraControl.GetX() + BeamWidth - EndW > X-CCamera::CameraControl.GetX() ) {
-				CSurface::OnDraw(Surf_Display, LaserEnd, X-CCamera::CameraControl.GetX() + BeamWidth - EndW, Y-1, 0, 0, Extra, BodyH);
+				CSurface::OnDraw(Surf_Display, LaserEnd, X-CCamera::CameraControl.GetX() + BeamWidth - EndW, Y-1, BodyW*Level, 0, Extra, BodyH);
 			}
 			 
 		}
@@ -108,19 +110,21 @@ void CGun::OnCleanup() {
 void CGun::ChangeType(int nType) {
 	if( nType == Type ) {
 		Level++;
+		// Missiles will get shorter delay
 		MissileDelay = MissileDelay-200;
 		if( MissileDelay < 100 ) {
 			MissileDelay = 100;
 		}
+		// Laser will upgrade once
+		if( Type == GUN_BEAM ) {
+			if( Level > 1 ) {
+				Level--;
+			}
+		}
 	}
 	else {
+		Reset();
 		Type = nType;
-		Level = 0;
-		ChargeStart = 0;
-		ChargeLevel = 0;
-		LastShot = 0;
-		LastMissileShot = 0;
-		MissileDelay = PLAYER_SHOOT_DELAY_MISSILE;
 	}
 }
 
@@ -131,6 +135,9 @@ void CGun::Reset() {
 	ChargeStart = 0;
 	ChargeLevel = 0;
 	BeamOn = false;
+	LastShot = 0;
+	LastMissileShot = 0;
+	MissileDelay = PLAYER_SHOOT_DELAY_MISSILE;
 }
 
 //-----------------------------------------------------------------------------
@@ -253,10 +260,10 @@ int CGun::UpdateBeamWidth(int StartX, int StartY) {
 
 		// Damage
 		if( FoundTile ){
-			ClosestTile->Damage(BULLET_BEAM_STR);
+			ClosestTile->Damage(BULLET_BEAM_STR+(BULLET_BEAM_STR*Level));
 		}
 		else if( FoundEnemy ) {
-			ClosestEntity->Damage(BULLET_BEAM_STR);
+			ClosestEntity->Damage(BULLET_BEAM_STR+(BULLET_BEAM_STR*Level));
 		}
 	}
 	else {

@@ -25,6 +25,7 @@ bool CFont::OnLoad(char* File, int size, long index) {
 
 	Default = TempFont;
 	Size = size;
+	FontPath = File;
 
 	std::string filename = File;
 	debug("Loaded font " + filename, 2);
@@ -44,6 +45,16 @@ void CFont::Write(SDL_Surface* Surf_Display, const char* Text, unsigned int x, u
 	SDL_Surface* Surf_Text = TTF_RenderText_Blended(Default, Text, Color);
 	CSurface::OnDraw(Surf_Display, Surf_Text, x, y);
 	SDL_FreeSurface(Surf_Text);
+}
+
+//------------------------------------------------------------------------------
+void CFont::Write(SDL_Surface* Surf_Display, const char* Text, unsigned int x, unsigned int y, int size) {
+	int original_size = Size;
+	OnCleanup();
+	OnLoad(FontPath, size);
+	Write(Surf_Display, Text, x, y);
+	OnCleanup();
+	OnLoad(FontPath, original_size);
 }
 
 //------------------------------------------------------------------------------

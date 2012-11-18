@@ -22,6 +22,7 @@ class CFont {
 
 	public:
 		void Write(SDL_Surface* Surf_Display, const char* Text, unsigned int x, unsigned int y);
+		void Write(SDL_Surface* Surf_Display, const char* Text, unsigned int x, unsigned int y, int size); // Heavy version
 
 		void SetFontStyle(int style);
 
@@ -30,6 +31,7 @@ class CFont {
 		void GetTextSize(const char *text, int *w, int *h);
 
 	private:
+		char*		FontPath;
 		TTF_Font*	Default;
 		int			Size;
 		SDL_Color	Color;

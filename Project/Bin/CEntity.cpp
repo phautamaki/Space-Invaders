@@ -4,6 +4,7 @@
 
 #include "functions.h"
 #include <iostream>
+#include "CAppStateGame.h"
 
 #include <cmath>
 

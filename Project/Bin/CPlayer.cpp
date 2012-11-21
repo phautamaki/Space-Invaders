@@ -22,7 +22,7 @@ CPlayer::CPlayer() {
 	DeathMoment = 0;
 
 	Points = 0;
-
+	
 	MaxSpeedX = PLAYER_MAX_SPEED_X;
 	MaxSpeedY = PLAYER_MAX_SPEED_Y;
 
@@ -39,19 +39,19 @@ CPlayer::CPlayer() {
 // Stop player's moving horizontally
 void CPlayer::StopMoveX() {
 
-	// If left or right isn't pressed and speed differs from CAMERA_SPEED,
+	// If left or right isn't pressed and speed differs from CCamera::CameraControl.speed,
 	// let's start to brake player's speed until...
-	if(SpeedX > CAMERA_SPEED) {
+	if(SpeedX > CCamera::CameraControl.speed) {
 		AccelX = -1;
 	}
-	else if(SpeedX < CAMERA_SPEED) {
+	else if(SpeedX < CCamera::CameraControl.speed) {
 		AccelX =  1;
 	}
 
-	// ... it is slow enough to set to same as CAMERA_SPEED
-	if(SpeedX < (CAMERA_SPEED+1) && SpeedX > (-CAMERA_SPEED-1)) {
+	// ... it is slow enough to set to same as CCamera::CameraControl.speed
+	if(SpeedX < (CCamera::CameraControl.speed+1) && SpeedX > (-CCamera::CameraControl.speed-1)) {
 		AccelX = 0;
-		SpeedX = CAMERA_SPEED;
+		SpeedX = CCamera::CameraControl.speed;
 	}
 }
 
@@ -147,15 +147,15 @@ void CPlayer::OnLoop() {
 	} 
 	// If player is touching one but his speed is not too slow (left border)
 	// or too fast (right border) to go off the screen, move normally
-	else if (leftScreenCrossed && SpeedX >= CAMERA_SPEED || 
-			 rightScreenCrossed && SpeedX <= CAMERA_SPEED) {
+	else if (leftScreenCrossed && SpeedX >= CCamera::CameraControl.speed || 
+			 rightScreenCrossed && SpeedX <= CCamera::CameraControl.speed) {
 		OnMove(SpeedX, SpeedY);
 	} 
 	// Otherwise force player to move same speed as the camera (or the
 	// rolling play area)
 	else {
 		// Might also want to check player X won't get off screen (level objects can "push" player)
-		OnMove(CAMERA_SPEED, SpeedY);
+		OnMove(CCamera::CameraControl.speed, SpeedY);
 	}
 
 	/* After has been moved */

@@ -164,10 +164,17 @@ CPlayer* CFactory::CreatePlayer(int nX, int nY) {
 // TODO: Could make a single function of these?
 bool CFactory::CreateEnemyShip(int type, int nX, int nY) {
 	CEnemyShip* tmp = new CEnemyShip;
+	tmp->SubType = type;
 
 	switch( type ) {
 		case ENTITY_SUBTYPE_ENEMY_1:
 			tmp->OnLoad( PATH_IMAGES PATH_ENEMIES "ship1.png",ENEMY_SHIP_1_SPRITE_WIDTH, ENEMY_SHIP_1_SPRITE_HEIGHT, ENEMY_SHIP_1_MAX_FRAMES);
+			tmp->X = static_cast<float>(nX);
+			tmp->Y = static_cast<float>(nY+GUI_HEIGHT);
+			tmp->SetHP(ENEMY_SHIP_1_HP);
+			break;
+		case ENTITY_SUBTYPE_ENEMY_BOSS_1:
+			tmp->OnLoad( PATH_IMAGES PATH_ENEMIES "enemies/bubble_enemy.png",128, 160, 1);
 			tmp->X = static_cast<float>(nX);
 			tmp->Y = static_cast<float>(nY+GUI_HEIGHT);
 			tmp->SetHP(ENEMY_SHIP_1_HP);

@@ -1,5 +1,5 @@
 ./tilesets/tileset.png
-8
+10
 ./maps/1a.map 
 ./maps/1b.map 
 ./maps/1c.map
@@ -8,3 +8,5 @@
 ./maps/1f.map
 ./maps/1g.map
 ./maps/1h.map
+./maps/1i.map
+./maps/1j.map

@@ -19,6 +19,8 @@ CAppStateGame CAppStateGame::Instance;
 //=============================================================================
 CAppStateGame::CAppStateGame() {
 	ResetCurrentLevel = false;
+	BossFightOn = false;
+	BossDead = false;
 }
 
 //=============================================================================
@@ -153,12 +155,13 @@ void CAppStateGame::OnLoop() {
 
 
 	//If the level should change
-	if( CCamera::CameraControl.GetX() >= LevelEndingPoint ) {
-		OnLevelChange();
-	}
+	//if( CCamera::CameraControl.GetX() >= LevelEndingPoint ) {
+	//	OnLevelChange();
+	//}
 
 	// Spawn new entities
-	else if( LevelInfoIndex < Level.size() && 
+	//else if( LevelInfoIndex < Level.size() && 
+	if( LevelInfoIndex < Level.size() &&
 		(unsigned int)CCamera::CameraControl.GetX() >= Level.at(LevelInfoIndex).ActiveXPosition) {
 
 		CAppStateGame::LevelInfo TmpInfo = Level.at(LevelInfoIndex);
@@ -166,8 +169,14 @@ void CAppStateGame::OnLoop() {
 		switch(TmpInfo.Type) {
 			case ENTITY_TYPE_ENEMY:
 				// Enemy Ship
-				CFactory::Factory.CreateEnemyShip(TmpInfo.SubType, CCamera::CameraControl.GetX()+1000, TmpInfo.YPosition);
-				
+				if (TmpInfo.SubType == ENTITY_SUBTYPE_ENEMY_1) {
+					CFactory::Factory.CreateEnemyShip(TmpInfo.SubType, CCamera::CameraControl.GetX()+1000, TmpInfo.YPosition);
+				}
+				else if (TmpInfo.SubType == ENTITY_SUBTYPE_ENEMY_BOSS_1) {
+					CFactory::Factory.CreateEnemyShip(ENTITY_SUBTYPE_ENEMY_BOSS_1, CCamera::CameraControl.GetX()+1000, TmpInfo.YPosition);
+					BossFightOn = true;
+				}
+
 				break;
 			case ENTITY_TYPE_ITEM:
 				// Item
@@ -217,16 +226,28 @@ void CAppStateGame::OnLoop() {
 
 	// Camera movement:
 	// Make camera move wanted amount of pixels per second to right
-	float moveX = CAMERA_SPEED * CFPS::FPSControl.GetSpeedFactor();
-	CCamera::CameraControl.OnMove(moveX, static_cast<float>(CCamera::CameraControl.GetY()));
-	// Update BG offset
-	BG_offset = BG_offset - BG_SPEED * CFPS::FPSControl.GetSpeedFactor();
-	if( BG_offset <= 0 ) {
-		BG_offset = BG_WIDTH;
+	float moveX = CCamera::CameraControl.speed * CFPS::FPSControl.GetSpeedFactor();
+
+	if ( (CCamera::CameraControl.GetX() + (int)moveX) < LEVEL_LENGTH) {
+		CCamera::CameraControl.OnMove(moveX, static_cast<float>(CCamera::CameraControl.GetY()));
+	
+		// Update BG offset
+		BG_offset = BG_offset - BG_SPEED * CFPS::FPSControl.GetSpeedFactor();
+		if( BG_offset <= 0 ) {
+			BG_offset = BG_WIDTH;
+		}
 	}
+	else {
+		CCamera::CameraControl.SetPos(LEVEL_LENGTH, static_cast<float>(CCamera::CameraControl.GetY()));
+		CCamera::CameraControl.speed = 0;
+	}
+	
 
 	if (ResetCurrentLevel) {
 		ResetLevel();
+	}
+	else if (BossFightOn && BossDead) {
+		OnLevelChange();
 	}
 }
 
@@ -296,9 +317,12 @@ CAppStateGame* CAppStateGame::GetInstance() {
 void CAppStateGame::ResetLevel(){
 
 	ResetCurrentLevel = false;
+	BossFightOn = false;
+	BossDead = false;
 
 	// Reset camera starting position
 	CCamera::CameraControl.SetPos(0,0);
+	CCamera::CameraControl.speed = CAMERA_SPEED;
 	
 	if( Player->Lives == 0 ) {
 		NextState = APPSTATE_MAINMENU;

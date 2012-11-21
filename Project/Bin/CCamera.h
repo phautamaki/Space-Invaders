@@ -18,6 +18,7 @@ class CCamera {
 public:
 	static CCamera CameraControl;
 	int TargetMode;
+	float speed;
 
 	CCamera();
 
@@ -28,9 +29,11 @@ public:
 
 	void SetPos(int X, int Y);
 
+
 private:
 	float X;
 	float Y;
+	
 };
 
 //==============================================================================

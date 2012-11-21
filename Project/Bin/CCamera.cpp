@@ -9,9 +9,8 @@ CCamera::CCamera() {
 	X = 0;
 	Y = 0;
 
-	//TargetX = TargetY = NULL;
-
 	TargetMode = TARGET_MODE_NORMAL;
+	speed = CCamera::CameraControl.speed;
 }
 
 //==============================================================================
@@ -22,29 +21,11 @@ void CCamera::OnMove(float MoveX, float MoveY) {
 
 //==============================================================================
 int CCamera::GetX() {
-	/*
-	if(TargetX != NULL) {
-		if(TargetMode == TARGET_MODE_CENTER) {
-			return *TargetX - (WWIDTH / 2);
-		}
-
-		return *TargetX;
-	}
-	*/
 	return (int)X;
 }
 
 //------------------------------------------------------------------------------
 int CCamera::GetY() {
-	/*
-	if(TargetY != NULL) {
-		if(TargetMode == TARGET_MODE_CENTER) {
-			return *TargetY - (WHEIGHT / 2);
-		}
-
-		return *TargetY;
-	}
-	*/
 	return (int)Y;
 }
 
@@ -53,12 +34,4 @@ void CCamera::SetPos(int X, int Y) {
 	this->X = (float)X;
 	this->Y = (float)Y;
 }
-
-//------------------------------------------------------------------------------
-/*
-void CCamera::SetTarget(float* X, float* Y) {
-	TargetX = X;
-	TargetY = Y;
-}
-*/
 //==============================================================================

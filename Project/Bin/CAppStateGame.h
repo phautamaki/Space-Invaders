@@ -27,9 +27,12 @@ public:
 	};
 
 	static CAppStateGame Instance;
+	bool			BossDead;
 
 private:
 	CPlayer*		Player;
+	bool			BossFightOn;
+	
 
 	// GUI
 	SDL_Surface*	IconLife;

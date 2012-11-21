@@ -74,6 +74,7 @@ class CFactory {
 		void FreezeEnemies(SlowMotionLevel level, int duration_ms);
 		void KillEnemiesOnScreen();
 
+		void CreateText(std::string& text, int durationMS, int x, int y);
 };
 
 //=============================================================================

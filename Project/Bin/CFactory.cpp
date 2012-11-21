@@ -259,12 +259,6 @@ bool CFactory::CreateExplosion(int nX, int nY, ExplType explosion){
 			return false;
 		}
 		tmp->Anim_Control.AnimateOnce = true;
-
-		Popup.ChangeText("KABOM");
-		Popup.SetVisibilityTime(10000);
-		Popup.X = 480;
-		Popup.Y = 240;
-		Popup.Show();
 	}
 	/*
 	else if (explosion == EXPLOSION_TILE_1) {
@@ -331,3 +325,11 @@ void CFactory::KillEnemiesOnScreen() {
 	return;
 }
 //==============================================================================
+
+void CFactory::CreateText(std::string& text, int durationMS, int x, int y) {
+	Popup.ChangeText(text);
+	Popup.SetVisibilityTime(durationMS);
+	Popup.X = x;
+	Popup.Y = y;
+	Popup.Show();
+}

@@ -13,11 +13,13 @@ bool CItem::OnLoad(char* File, int Width, int Height, int MaxFrames) {
     }
 	Type = 	ENTITY_TYPE_ITEM;
 	// Assume all items initally move left
-	Angle = 180;
-
+	
 	CManouver* tmpMan = 0;
 	
+	
 	// Start moving left
+	Angle = 180;
+
 	tmpMan = new CManouver(this);
 	tmpMan->OnLoad(M_MOVE_LEFT);
 	Manouvers.push_back(tmpMan);
@@ -57,7 +59,7 @@ bool CItem::OnLoad(char* File, int Width, int Height, int MaxFrames) {
 	tmpMan = new CManouver(this);
 	tmpMan->OnLoad(M_WAIT, 2000);
 	Manouvers.push_back(tmpMan);
-
+	
 	CurrentManouver = Manouvers.begin();
 	
     return true;

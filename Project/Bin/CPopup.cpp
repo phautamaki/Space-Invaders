@@ -63,7 +63,7 @@ void CPopup::OnCleanup() {
 }
 
 //=============================================================================
-void CPopup::ChangeText(std::string nText) {
+void CPopup::ChangeText(std::string& nText) {
 	if( nText != "" ) {
 		Text = nText;
 	}

@@ -11,6 +11,7 @@
 #include "CSoundBank.h"
 
 #include "CApp.h"
+#include "CPopup.h"
 
 //=============================================================================
 CAppStateGame CAppStateGame::Instance;
@@ -43,7 +44,7 @@ void CAppStateGame::OnActivate() {
 	debug("All areas loaded successfully", 1);
 
 	debug("Entity loading start", 1);
-	Player = CFactory::Factory.CreatePlayer(400, 290);
+	Player = CFactory::Factory.CreatePlayer(100, 240);
 
 	// TODO: Player2 not needed yet. Make the game support co-op later
 
@@ -96,6 +97,7 @@ void CAppStateGame::OnActivate() {
 	//CSoundBank::SoundControl.Play(CSoundBank::MUSIC, LevelMusicID);
 
 	debug("Game initialization successful");
+	ResetLevel();
 }
 
 //-----------------------------------------------------------------------------
@@ -305,8 +307,8 @@ void CAppStateGame::ResetLevel(){
 	else {
 		Player->TookHit = false;
 		Player->SetHP(1);
-		Player->X = 400;
-		Player->Y = 290+GUI_HEIGHT;
+		Player->X = 100;
+		Player->Y = 240+GUI_HEIGHT;
 		Player->SpeedX = Player->SpeedY = Player->AccelX = Player->AccelY = 0;
 
 		//Let's set spawner index back to the start
@@ -317,6 +319,11 @@ void CAppStateGame::ResetLevel(){
 
 		// Restore already broken breakable tiles
 		CArea::AreaControl.RestoreBrokenTiles();
+
+		std::stringstream ss;
+		ss << CurrentLevelNumber;
+		std::string text = "LEVEL " + ss.str();
+		CFactory::Factory.CreateText(text, 2000, (int)Player->X, (int)Player->Y-100);
 	}
 }
 

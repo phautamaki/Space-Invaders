@@ -21,7 +21,7 @@ class CPopup : public CUIElement {
 
 		void OnCleanup();
 
-		void ChangeText(std::string nText);
+		void ChangeText(std::string& nText);
 		void SetVisibilityTime(int TimeInMS);
 
 		void Show();

@@ -238,7 +238,7 @@ void CAppStateGame::OnLoop() {
 		}
 	}
 	else {
-		CCamera::CameraControl.SetPos(LEVEL_LENGTH, static_cast<float>(CCamera::CameraControl.GetY()));
+		CCamera::CameraControl.SetPos(LEVEL_LENGTH, CCamera::CameraControl.GetY());
 		CCamera::CameraControl.speed = 0;
 	}
 	
@@ -298,13 +298,13 @@ void CAppStateGame::OnRender(SDL_Surface* Surf_Display) {
 			CSurface::OnDraw(Surf_Display, UItiles, TILE_SIZE*i, TILE_SIZE*j, TILE_SIZE, TILE_SIZE, TILE_SIZE, TILE_SIZE);
 		}
 	}
-	CFont::FontControl.Write(Surf_Display,"Lives:", TILE_SIZE, TILE_SIZE,25);
+	CFont::FontControl.Write(Surf_Display,"Lives:", TILE_SIZE, TILE_SIZE,1);
 	// Life icons
 	for(unsigned int i = 0; i < Player->Lives; i++ ){
 		CSurface::OnDraw(Surf_Display, IconLife, TILE_SIZE + (i*30), TILE_SIZE*2);
 	}
-	CFont::FontControl.Write(Surf_Display,"Points:", TILE_SIZE*20, TILE_SIZE,25);
-	CFont::FontControl.Write(Surf_Display,IntToString(Player->Points).c_str(), TILE_SIZE*21, TILE_SIZE*2,25);
+	CFont::FontControl.Write(Surf_Display,"Points:", TILE_SIZE*20, TILE_SIZE,1);
+	CFont::FontControl.Write(Surf_Display,IntToString(Player->Points).c_str(), TILE_SIZE*21, TILE_SIZE*2,1);
 	CFactory::Factory.Popup.OnRender(Surf_Display);
 }
 

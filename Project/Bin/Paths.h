@@ -18,13 +18,13 @@
 
 #define FILENAME_UI_BUTTON		"button.png"
 #define FILENAME_UI_ICON_LIFE	"icon_life.png"
-#define FILENAME_UI_TILES	"UItilesheet.png"
+#define FILENAME_UI_TILES		"UItilesheet.png"
 
 #define FILENAME_TITLE_BG		"title_bg.png"
 #define FILENAME_TITLE_TEXT_1	"title1.png"
 #define FILENAME_TITLE_TEXT_2	"title2.png"
 
-#define FILENAME_PLAYER		"ship.png"
+#define FILENAME_PLAYER		"player_ship.png"
 #define FILENAME_SPACE_BG_1 "space_bg.png"
 
 #define FILENAME_BULLET_NORMAL		"bullet_normal.png"

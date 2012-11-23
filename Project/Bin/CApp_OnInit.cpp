@@ -36,6 +36,9 @@ bool CApp::OnInit() {
 	if(!CFont::FontControl.OnLoad(PATH_FONTS "FairyDustB.ttf", 50 )){
 		error("Coudln't initialize FontControl.");
 	}
+	if(!CFont::FontControl.OnLoad(PATH_FONTS "DigitalDream.ttf", 25 )){
+		error("Coudln't initialize FontControl.");
+	}
 	if(!CFactory::Factory.OnInit()){
 		error("Coudln't initialize Factor.");
 	}

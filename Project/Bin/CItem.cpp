@@ -3,7 +3,7 @@
 
 //=============================================================================
 CItem::CItem() {
-	MaxSpeedX = 5;
+	MaxSpeedX = 3;
 }
 
 //=============================================================================
@@ -22,42 +22,6 @@ bool CItem::OnLoad(char* File, int Width, int Height, int MaxFrames) {
 
 	tmpMan = new CManouver(this);
 	tmpMan->OnLoad(M_MOVE_LEFT);
-	Manouvers.push_back(tmpMan);
-	// Wait 1,6s
-	tmpMan = new CManouver(this);
-	tmpMan->OnLoad(M_WAIT, 1600);
-	Manouvers.push_back(tmpMan);
-	// Turn down
-	tmpMan = new CManouver(this);
-	tmpMan->OnLoad(M_TURN, 90);
-	Manouvers.push_back(tmpMan);
-	// Wait 0,5s
-	tmpMan = new CManouver(this);
-	tmpMan->OnLoad(M_WAIT, 500);
-	Manouvers.push_back(tmpMan);
-	// Turn left
-	tmpMan = new CManouver(this);
-	tmpMan->OnLoad(M_TURN, 180);
-	Manouvers.push_back(tmpMan);
-	// Wait 0,2s
-	tmpMan = new CManouver(this);
-	tmpMan->OnLoad(M_WAIT, 200);
-	Manouvers.push_back(tmpMan);
-	// Turn up
-	tmpMan = new CManouver(this);
-	tmpMan->OnLoad(M_TURN, -90);
-	Manouvers.push_back(tmpMan);
-	// Wait 0,2s
-	tmpMan = new CManouver(this);
-	tmpMan->OnLoad(M_WAIT, 150);
-	Manouvers.push_back(tmpMan);
-	// Turn right
-	tmpMan = new CManouver(this);
-	tmpMan->OnLoad(M_TURN, 0);
-	Manouvers.push_back(tmpMan);
-	// Wait 2s
-	tmpMan = new CManouver(this);
-	tmpMan->OnLoad(M_WAIT, 2000);
 	Manouvers.push_back(tmpMan);
 	
 	CurrentManouver = Manouvers.begin();

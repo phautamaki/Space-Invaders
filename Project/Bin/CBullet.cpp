@@ -93,8 +93,12 @@ bool CBullet::OnLoad(int nType) {
 			HP = 1;
 
 			tmpEntity = CFactory::Factory.GetClosest((int)X, (int)Y, ENTITY_TYPE_ENEMY);
+	
 			tmpMan = new CManouver(this);
+			tmpMan->OnLoad(M_WAIT,200);
+			Manouvers.push_back(tmpMan);
 
+			tmpMan = new CManouver(this);
 			tmpMan->OnLoad(M_FOLLOW);
 			tmpMan->TargetX = tmpEntity != 0 ? (int)tmpEntity->X : -1;
 			tmpMan->TargetY = tmpEntity != 0 ? (int)tmpEntity->Y : -1;

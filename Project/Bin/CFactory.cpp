@@ -251,8 +251,9 @@ bool CFactory::CreateBullet(int type, int nX, int nY) {
 	tmp->Y = static_cast<float>(nY);
 
 	EntityOK = tmp->OnLoad( type );
-	
-	CEntity::EntityList.push_back(tmp);
+	if( EntityOK ) {
+		CEntity::EntityList.push_back(tmp);
+	}
 
 	return EntityOK;
 }

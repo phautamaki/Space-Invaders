@@ -110,11 +110,13 @@ void CGun::OnCleanup() {
 void CGun::ChangeType(int nType) {
 	if( nType == Type ) {
 		Level++;
+		/*
 		// Missiles will get shorter delay
 		MissileDelay = MissileDelay-200;
 		if( MissileDelay < 100 ) {
 			MissileDelay = 100;
 		}
+		*/
 		// Laser will upgrade once
 		if( Type == GUN_BEAM ) {
 			if( Level > 1 ) {
@@ -194,6 +196,7 @@ void CGun::Shoot() {
 			//CFactory::Factory.CreateBullet(ENTITY_SUBTYPE_BULLET_BEAM, static_cast<int>(X) + PLAYER_SPRITE_WIDTH + 5, static_cast<int>(Y) + PLAYER_SPRITE_HEIGHT / 2);
 			break;
 		case GUN_MISSILES:
+			// Always shoot basic bullet
 			if( LastShot + PLAYER_SHOOT_DELAY < SDL_GetTicks() ) {
 				CSoundBank::SoundControl.Play(CSoundBank::EFFECT, "ShootingSoundBasic");
 				CFactory::Factory.CreateBullet(ENTITY_SUBTYPE_BULLET_NORMAL, static_cast<int>(X) + PLAYER_SPRITE_WIDTH + 5, static_cast<int>(Y) + PLAYER_SPRITE_HEIGHT / 2);
@@ -201,7 +204,14 @@ void CGun::Shoot() {
 			}
 			// Can't shoot too fast
 			if( LastMissileShot + MissileDelay < SDL_GetTicks() ) {
-				CFactory::Factory.CreateBullet(ENTITY_SUBTYPE_BULLET_MISSILE, (X + PLAYER_SPRITE_WIDTH + 5), (Y + PLAYER_SPRITE_HEIGHT / 2));
+				if( Level != 0 ) {
+					CFactory::Factory.CreateBullet(ENTITY_SUBTYPE_BULLET_MISSILE, (X + PLAYER_SPRITE_WIDTH-5), (Y + PLAYER_SPRITE_HEIGHT / 2-6));
+					CFactory::Factory.CreateBullet(ENTITY_SUBTYPE_BULLET_MISSILE, (X + PLAYER_SPRITE_WIDTH/2-5), Y-7);
+					CFactory::Factory.CreateBullet(ENTITY_SUBTYPE_BULLET_MISSILE, (X + PLAYER_SPRITE_WIDTH/2-5), (Y + PLAYER_SPRITE_HEIGHT)-7);
+				}
+				else {
+					CFactory::Factory.CreateBullet(ENTITY_SUBTYPE_BULLET_MISSILE, (X + PLAYER_SPRITE_WIDTH-5), (Y + PLAYER_SPRITE_HEIGHT / 2-6));
+				}
 				LastMissileShot = SDL_GetTicks();
 			}
 		default:

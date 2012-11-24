@@ -62,14 +62,15 @@ void CEnemy::OnCollision(CEntity* Entity) {
 
 //=============================================================================
 void CEnemy::Die() {
-	if (SubType == ENTITY_SUBTYPE_ENEMY_BOSS_1) {
-		CAppStateGame::Instance.BossDead = true;
-	}
-
 	CManouvarableEntity::Die();
 	CFactory::Factory.CreateExplosion((int)X-130,(int)Y-200, EXPLOSION_ENEMY);
 	CFactory::Factory.CreateRandomItem((int)X,(int)Y+(Height/2));
 	CFactory::Factory.GetPlayer()->Points = CFactory::Factory.GetPlayer()->Points + 500;
+}
+
+//------------------------------------------------------------------------------
+bool CEnemy::IsDead() {
+	return CEntity::IsDead();
 }
 
 //=============================================================================

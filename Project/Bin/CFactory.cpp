@@ -162,22 +162,30 @@ CPlayer* CFactory::CreatePlayer(int nX, int nY) {
 
 //------------------------------------------------------------------------------
 // TODO: Could make a single function of these?
-bool CFactory::CreateEnemyShip(int type, int nX, int nY) {
-	CEnemyShip* tmp = new CEnemyShip;
-	tmp->SubType = type;
+bool CFactory::CreateEnemy(int type, int nX, int nY) {
+	CEnemy* tmp;// = new CEnemyShip;
 
 	switch( type ) {
 		case ENTITY_SUBTYPE_ENEMY_1:
+			tmp = new CEnemyShip;
 			tmp->OnLoad( PATH_IMAGES PATH_ENEMIES "ship1.png",ENEMY_SHIP_1_SPRITE_WIDTH, ENEMY_SHIP_1_SPRITE_HEIGHT, ENEMY_SHIP_1_MAX_FRAMES);
 			tmp->X = static_cast<float>(nX);
 			tmp->Y = static_cast<float>(nY+GUI_HEIGHT);
 			tmp->SetHP(ENEMY_SHIP_1_HP);
 			break;
 		case ENTITY_SUBTYPE_ENEMY_BOSS_1:
-			tmp->OnLoad( PATH_IMAGES PATH_ENEMIES "enemies/bubble_enemy.png",128, 160, 1);
+			tmp = new CEnemyBoss(1);
+			tmp->OnLoad( PATH_IMAGES PATH_ENEMIES "enemies/boss_level1.png",128, 160, 1);
 			tmp->X = static_cast<float>(nX);
 			tmp->Y = static_cast<float>(nY+GUI_HEIGHT);
-			tmp->SetHP(ENEMY_SHIP_1_HP);
+			tmp->SetHP(ENEMY_BOSS_1_HP);
+			break;
+		case ENTITY_SUBTYPE_ENEMY_BOSS_1_LITTLE_BUBBLES:
+			tmp = new CEnemyShip;
+			tmp->OnLoad( PATH_IMAGES PATH_ENEMIES "enemies/boss_level1_little_bubbles.png",32, 64, 1);
+			tmp->X = static_cast<float>(nX);
+			tmp->Y = static_cast<float>(nY);
+			tmp->SetHP(ENEMY_SHIP_1_HP*2);
 			break;
 		default:
 			return false;
@@ -187,6 +195,8 @@ bool CFactory::CreateEnemyShip(int type, int nX, int nY) {
 
 	return true;
 }
+
+
 //------------------------------------------------------------------------------
 bool CFactory::CreateRandomItem(int nX, int nY) {
 	int RandomizedType = 0;
@@ -268,13 +278,14 @@ bool CFactory::CreateExplosion(int nX, int nY, ExplType explosion){
 		}
 		tmp->Anim_Control.AnimateOnce = true;
 	}
-	/*
-	else if (explosion == EXPLOSION_TILE_1) {
-		if(!tmp->OnLoad( PATH_IMAGES PATH_SPECIALEFFECTS "breakable_tile_1_break.png",32, 32, 4)){
+	
+	else if (explosion == EXPLOSION_ENEMY_BOSS_1) {
+		if(!tmp->OnLoad( PATH_IMAGES PATH_SPECIALEFFECTS "animations/red_explosion.png",120, 120, 12)){
 			return false;
 		}
 		tmp->Anim_Control.AnimateOnce = true;
 	}
+	/*
 	// TODO: own explosion .png
 	else if (explosion == EXPLOSION_TILE_2) {
 		if(!tmp->OnLoad( PATH_IMAGES PATH_SPECIALEFFECTS "breakable_tile_1_break.png",32, 32, 4)){

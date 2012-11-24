@@ -170,11 +170,10 @@ void CAppStateGame::OnLoop() {
 			case ENTITY_TYPE_ENEMY:
 				// Enemy Ship
 				if (TmpInfo.SubType == ENTITY_SUBTYPE_ENEMY_1) {
-					CFactory::Factory.CreateEnemyShip(TmpInfo.SubType, CCamera::CameraControl.GetX()+1000, TmpInfo.YPosition);
+					CFactory::Factory.CreateEnemy(TmpInfo.SubType, CCamera::CameraControl.GetX()+1000, TmpInfo.YPosition);
 				}
 				else if (TmpInfo.SubType == ENTITY_SUBTYPE_ENEMY_BOSS_1) {
-					CFactory::Factory.CreateEnemyShip(ENTITY_SUBTYPE_ENEMY_BOSS_1, CCamera::CameraControl.GetX()+1000, TmpInfo.YPosition);
-					BossFightOn = true;
+					CFactory::Factory.CreateEnemy(ENTITY_SUBTYPE_ENEMY_BOSS_1, CCamera::CameraControl.GetX()+1000, TmpInfo.YPosition);
 				}
 
 				break;
@@ -228,6 +227,7 @@ void CAppStateGame::OnLoop() {
 	// Make camera move wanted amount of pixels per second to right
 	float moveX = CCamera::CameraControl.speed * CFPS::FPSControl.GetSpeedFactor();
 
+	// If we are not in the boss area
 	if ( (CCamera::CameraControl.GetX() + (int)moveX) < LEVEL_LENGTH) {
 		CCamera::CameraControl.OnMove(moveX, static_cast<float>(CCamera::CameraControl.GetY()));
 	
@@ -237,9 +237,11 @@ void CAppStateGame::OnLoop() {
 			BG_offset = BG_WIDTH;
 		}
 	}
+	// When we come to the boss map of the level area
 	else {
 		CCamera::CameraControl.SetPos(LEVEL_LENGTH, CCamera::CameraControl.GetY());
 		CCamera::CameraControl.speed = 0;
+		BossFightOn = true;
 	}
 	
 

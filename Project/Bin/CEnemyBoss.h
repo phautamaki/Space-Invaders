@@ -1,30 +1,34 @@
 //=============================================================================
-#ifndef _CMANOUVARABLEENTITY_H_
-    #define _CMANOUVARABLEENTITY_H_
+#ifndef _CENEMYBOSS_H_
+    #define _CENEMYBOSS_H_
 
-#include <vector>
-
-#include "CEntity.h"
-#include "CManouver.h"
+#include "CEnemy.h"
 
 //=============================================================================
-class CManouvarableEntity : public CEntity {
+class CEnemyBoss : public CEnemy {
     public:
-        CManouvarableEntity();
+        CEnemyBoss(int level);
 
 		virtual bool OnLoad(char* File, int Width, int Height, int MaxFrames);
 
         virtual void OnLoop();
 
-        virtual void OnRender(SDL_Surface* Surf_Display);
+		virtual void OnRender(SDL_Surface* Surf_Display);
 
-        virtual void OnCleanup();
+		virtual void OnCleanup();
+
+		virtual void OnCollision(CEntity* Entity);
+
+		virtual void Die();
 
 		virtual bool IsDead();
 
-	protected:
-		std::vector<CManouver*>::iterator CurrentManouver;
-		std::vector<CManouver*> Manouvers;
+private:
+	int lastBubble;
+	bool MakeBossDeathScene;
+	int DeathMoment;
+
+	bool bossDead;
 };
 
 //=============================================================================

@@ -47,4 +47,9 @@ void CManouvarableEntity::OnCleanup() {
 	Manouvers.clear();
 }
 
+//------------------------------------------------------------------------------
+bool CManouvarableEntity::IsDead() {
+	return CEntity::IsDead();
+}
+
 //=============================================================================

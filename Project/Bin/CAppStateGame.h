@@ -28,12 +28,11 @@ public:
 
 	static CAppStateGame Instance;
 	bool			BossDead;
+	bool			BossFightOn;
+	CPlayer*		Player;
 
 private:
-	CPlayer*		Player;
-	bool			BossFightOn;
 	
-
 	// GUI
 	SDL_Surface*	IconLife;
 	SDL_Surface*	UItiles;

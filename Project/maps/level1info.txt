@@ -67,6 +67,6 @@
 
 
 # The ending point of level 1
-8640 2 101 200
+8340 2 101 200
 
 # ...end of level information.

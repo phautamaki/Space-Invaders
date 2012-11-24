@@ -63,6 +63,8 @@
 #define ENEMY_SHIP_1_MAX_FRAMES		3
 #define ENEMY_SHIP_1_HP				100
 
+#define ENEMY_BOSS_1_HP				3000
+
 //-----------------------------------------------------------------------------
 /* Bullet strengths */
 #define BULLET_NORMAL_STR	100

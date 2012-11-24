@@ -10,10 +10,12 @@
 #include "CBullet.h"
 #include "CSpecialEffect.h"
 #include "CPopup.h"
+#include "CEnemyBoss.h"
 
 //=============================================================================
 enum ExplType {			// TODO: move this code to SpecialEffect.h
 	EXPLOSION_ENEMY = 0,
+	EXPLOSION_ENEMY_BOSS_1,
 	EXPLOSION_TILE_1,
 	EXPLOSION_TILE_2,
 	EXPLOSION_TILE_3,
@@ -61,7 +63,7 @@ class CFactory {
 		
 		// Create objects
 		CPlayer* CreatePlayer(int nX, int nY);
-		bool CreateEnemyShip(int type, int nX, int nY);
+		bool CreateEnemy(int type, int nX, int nY);
 		bool CreateRandomItem(int nX, int nY);
 		bool CreateItem(int type, int nX, int nY);
 		bool CreateBullet(int type, int nX, int nY);

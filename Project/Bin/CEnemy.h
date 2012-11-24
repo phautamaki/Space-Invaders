@@ -9,13 +9,15 @@ class CEnemy : public CManouvarableEntity {
     public:
         CEnemy();
 
-		bool OnLoad(char* File, int Width, int Height, int MaxFrames);
+		virtual bool OnLoad(char* File, int Width, int Height, int MaxFrames);
 
-        void OnLoop();
+        virtual void OnLoop();
 
-        void OnCollision(CEntity* Entity);
+        virtual void OnCollision(CEntity* Entity);
 
-		void Die();
+		virtual void Die();
+
+		virtual bool IsDead();
 };
 
 //=============================================================================

@@ -11,6 +11,7 @@
 #include "CSpecialEffect.h"
 #include "CPopup.h"
 #include "CEnemyBoss.h"
+#include "CEnemyMeteorite.h"
 
 //=============================================================================
 enum ExplType {			// TODO: move this code to SpecialEffect.h

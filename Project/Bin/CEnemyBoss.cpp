@@ -26,7 +26,9 @@ void CEnemyBoss::OnLoop() {
 	if (Y > 250+GUI_HEIGHT) SpeedY = -2;
 	else if (Y < 50+GUI_HEIGHT) SpeedY = 2;
 
+	// Make a new little bubble enemy every second
 	if ( CAppStateGame::Instance.Player->IsActive() &&
+		CAppStateGame::Instance.BossFightOn &&
 		!MakeBossDeathScene &&
 		(SDL_GetTicks()-lastBubble > 1000) ) {
 
@@ -80,6 +82,8 @@ void CEnemyBoss::OnCollision(CEntity* Entity) {
 				Entity->Damage(1);
 			}
 			break;
+		case ENTITY_TYPE_PLAYER:
+			Entity->Damage(1);
 		default:
 			return;
 	}

@@ -168,17 +168,9 @@ void CAppStateGame::OnLoop() {
 		
 		switch(TmpInfo.Type) {
 			case ENTITY_TYPE_ENEMY:
-				// Enemy Ship
-				if (TmpInfo.SubType == ENTITY_SUBTYPE_ENEMY_1) {
-					CFactory::Factory.CreateEnemy(TmpInfo.SubType, CCamera::CameraControl.GetX()+1000, TmpInfo.YPosition);
-				}
-				else if (TmpInfo.SubType == ENTITY_SUBTYPE_ENEMY_BOSS_1) {
-					CFactory::Factory.CreateEnemy(ENTITY_SUBTYPE_ENEMY_BOSS_1, CCamera::CameraControl.GetX()+1000, TmpInfo.YPosition);
-				}
-
+				CFactory::Factory.CreateEnemy(TmpInfo.SubType, CCamera::CameraControl.GetX()+1000, TmpInfo.YPosition);
 				break;
 			case ENTITY_TYPE_ITEM:
-				// Item
 				CFactory::Factory.CreateItem(TmpInfo.SubType, CCamera::CameraControl.GetX()+1000, TmpInfo.YPosition);
 				break;
 			default:

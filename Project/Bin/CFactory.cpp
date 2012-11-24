@@ -103,6 +103,7 @@ CEntity* CFactory::GetClosest(int X, int Y, int TargetType, bool Frontal, bool H
 
 		// Only check enemies
 		if( TargetType == -1 || CEntity::EntityList.at(i)->Type == TargetType ) {
+
 			CEntity* Candidate = CEntity::EntityList.at(i);
 			// In frontal search we skip objects that are left from X
 
@@ -163,7 +164,8 @@ CPlayer* CFactory::CreatePlayer(int nX, int nY) {
 //------------------------------------------------------------------------------
 // TODO: Could make a single function of these?
 bool CFactory::CreateEnemy(int type, int nX, int nY) {
-	CEnemy* tmp;// = new CEnemyShip;
+	CEnemy* tmp;
+	tmp->SubType = type;
 
 	switch( type ) {
 		case ENTITY_SUBTYPE_ENEMY_1:
@@ -186,6 +188,13 @@ bool CFactory::CreateEnemy(int type, int nX, int nY) {
 			tmp->X = static_cast<float>(nX);
 			tmp->Y = static_cast<float>(nY);
 			tmp->SetHP(ENEMY_SHIP_1_HP*2);
+			break;
+		case ENTITY_SUBTYPE_ENEMY_METEORITE:
+			tmp = new CEnemyMeteorite;
+			tmp->OnLoad( PATH_IMAGES PATH_ENEMIES "enemies/meteorite.png",128, 128, 12);
+			tmp->X = static_cast<float>(nX);
+			tmp->Y = static_cast<float>(nY);
+			tmp->SetHP(1000000);
 			break;
 		default:
 			return false;

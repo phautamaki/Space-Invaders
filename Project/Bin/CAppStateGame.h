@@ -34,7 +34,7 @@ public:
 private:
 	
 	// GUI
-	SDL_Surface*	IconLife;
+	SDL_Surface*	UIIcons;
 	SDL_Surface*	UItiles;
 
 	// Scrolling space background
@@ -63,6 +63,8 @@ public:
 	void OnDeactivate();
 	void OnLoop();
 	void OnRender(SDL_Surface* Surf_Display);
+		void RenderUIBase(SDL_Surface* Surf_Display) const;
+		void RenderUIIcons(SDL_Surface* Surf_Display) const;
 
 	std::vector<LevelInfo> GetCurrentLevelInfo(const std::string& filename);
 	static CAppStateGame* GetInstance();

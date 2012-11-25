@@ -10,14 +10,14 @@
 
 #define PATH_UI				"UI/"
 #define PATH_TITLE			""
-#define PATH_ENEMIES		""
-#define PATH_ITEMS			""
+#define PATH_ENEMIES		"enemies/"
+#define PATH_ITEMS			"objects/"
 #define PATH_SPECIALEFFECTS	""
 
 #define PATH_AREA1	"1.area"
 
 #define FILENAME_UI_BUTTON		"button.png"
-#define FILENAME_UI_ICON_LIFE	"icon_life.png"
+#define FILENAME_UI_ICONS		"icon_life.png"
 #define FILENAME_UI_TILES		"UItilesheet.png"
 
 #define FILENAME_TITLE_BG		"title_bg.png"

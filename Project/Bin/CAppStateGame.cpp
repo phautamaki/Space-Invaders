@@ -46,7 +46,7 @@ void CAppStateGame::OnActivate() {
 	debug("All areas loaded successfully", 1);
 
 	debug("Entity loading start", 1);
-	Player = CFactory::Factory.CreatePlayer(100, 240);
+	Player = CFactory::Factory.CreatePlayer(PLAYER_STARTING_X, PLAYER_STARTING_Y);
 
 	// TODO: Player2 not needed yet. Make the game support co-op later
 
@@ -70,7 +70,7 @@ void CAppStateGame::OnActivate() {
 	debug("All entities loaded successfully", 1);
 
 	debug("Additional image loading stat", 1);
-	if((IconLife = CSurface::OnLoad(PATH_IMAGES PATH_UI FILENAME_UI_ICON_LIFE)) == NULL) {
+	if((UIIcons = CSurface::OnLoad(PATH_IMAGES PATH_UI FILENAME_UI_ICONS)) == NULL) {
 		error("Couldn't load UI life icon.");
 		return;
 	}
@@ -168,6 +168,7 @@ void CAppStateGame::OnLoop() {
 		
 		switch(TmpInfo.Type) {
 			case ENTITY_TYPE_ENEMY:
+				debug("creating enemy of type: " + IntToString(TmpInfo.SubType));
 				CFactory::Factory.CreateEnemy(TmpInfo.SubType, CCamera::CameraControl.GetX()+1000, TmpInfo.YPosition);
 				break;
 			case ENTITY_TYPE_ITEM:
@@ -271,6 +272,16 @@ void CAppStateGame::OnRender(SDL_Surface* Surf_Display) {
 	//--------------------------------------------------------------------------
     // UI
     //--------------------------------------------------------------------------
+// Todo: Make a UI class for handling this functionaly?
+	RenderUIBase(Surf_Display);
+	RenderUIIcons(Surf_Display);
+
+	// Popup
+	CFactory::Factory.Popup.OnRender(Surf_Display);
+}
+
+//-----------------------------------------------------------------------------
+void CAppStateGame::RenderUIBase(SDL_Surface* Surf_Display) const {
 	// Tiles
 	// Corners
 	CSurface::OnDraw(Surf_Display, UItiles, 0, 0, 0, 0, TILE_SIZE, TILE_SIZE);
@@ -292,14 +303,41 @@ void CAppStateGame::OnRender(SDL_Surface* Surf_Display) {
 			CSurface::OnDraw(Surf_Display, UItiles, TILE_SIZE*i, TILE_SIZE*j, TILE_SIZE, TILE_SIZE, TILE_SIZE, TILE_SIZE);
 		}
 	}
+}
+
+//-----------------------------------------------------------------------------
+void CAppStateGame::RenderUIIcons(SDL_Surface* Surf_Display) const {
 	CFont::FontControl.Write(Surf_Display,"Lives:", TILE_SIZE, TILE_SIZE,1);
 	// Life icons
 	for(unsigned int i = 0; i < Player->Lives; i++ ){
-		CSurface::OnDraw(Surf_Display, IconLife, TILE_SIZE + (i*30), TILE_SIZE*2);
+		CSurface::OnDraw(Surf_Display, UIIcons, TILE_SIZE + (i*30), TILE_SIZE*2,0,0,35,40);
 	}
+
+	// Weapon info
+	CFont::FontControl.Write(Surf_Display,"Weapon:", TILE_SIZE*10, TILE_SIZE,1);
+	CSurface::OnDraw(Surf_Display, UIIcons, TILE_SIZE*10, TILE_SIZE*2,35+35*Player->Gun.GetType(),0,35,40);
+
+	// Points
 	CFont::FontControl.Write(Surf_Display,"Points:", TILE_SIZE*20, TILE_SIZE,1);
-	CFont::FontControl.Write(Surf_Display,IntToString(Player->Points).c_str(), TILE_SIZE*21, TILE_SIZE*2,1);
-	CFactory::Factory.Popup.OnRender(Surf_Display);
+	CFont::FontControl.Write(Surf_Display,IntToString(Player->Points).c_str(), TILE_SIZE*20, TILE_SIZE*2,1);
+
+	// Draw ChargeBar only for basic gun
+	if( Player->Gun.GetType() == GUN_NORMAL ) {
+		int BarStart = TILE_SIZE*11;
+		SDL_Rect RectRed;
+		RectRed.x = BarStart;
+		RectRed.y = TILE_SIZE*2+5;
+		RectRed.w = Player->Gun.ChargeLevel * 10;
+		RectRed.h = TILE_SIZE/2;
+		SDL_Rect RectGray;
+		RectGray.x = BarStart;
+		RectGray.y = TILE_SIZE*2+5;
+		RectGray.w = 100;
+		RectGray.h = TILE_SIZE/2;
+
+		SDL_FillRect(Surf_Display, &RectGray, SDL_MapRGB(Surf_Display->format, 211, 211, 211));
+		SDL_FillRect(Surf_Display, &RectRed, SDL_MapRGB(Surf_Display->format, 255, 0, 0));
+	}
 }
 
 //=============================================================================
@@ -325,9 +363,10 @@ void CAppStateGame::ResetLevel(){
 	else {
 		Player->TookHit = false;
 		Player->SetHP(1);
-		Player->X = 100;
-		Player->Y = 240+GUI_HEIGHT;
+		Player->X = PLAYER_STARTING_X;
+		Player->Y = PLAYER_STARTING_Y+GUI_HEIGHT;
 		Player->SpeedX = Player->SpeedY = Player->AccelX = Player->AccelY = 0;
+		Player->Gun.Reset();
 
 		//Let's set spawner index back to the start
 		LevelInfoIndex = 0;

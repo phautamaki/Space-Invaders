@@ -7,6 +7,7 @@
 CEnemyMeteorite::CEnemyMeteorite() {
 }
 
+//-----------------------------------------------------------------------------
 bool CEnemyMeteorite::OnLoad(char* File, int Width, int Height, int MaxFrames) {
 	if(CEnemy::OnLoad(File, Width, Height, MaxFrames) == false) {
         return false;
@@ -15,6 +16,7 @@ bool CEnemyMeteorite::OnLoad(char* File, int Width, int Height, int MaxFrames) {
 	return true;
 }
 
+//-----------------------------------------------------------------------------
 void CEnemyMeteorite::OnLoop() {
 	X += static_cast<float>(-2*CFPS::FPSControl.GetSpeedFactor());
 	Y += static_cast<float>(5*CFPS::FPSControl.GetSpeedFactor());
@@ -32,6 +34,7 @@ void CEnemyMeteorite::OnCleanup() {
 	CEnemy::OnCleanup();
 }
 
+//-----------------------------------------------------------------------------
 void CEnemyMeteorite::OnCollision(CEntity* Entity) {
 	if( !IsActive() || !Entity->IsActive() ) return;
 
@@ -46,3 +49,5 @@ void CEnemyMeteorite::OnCollision(CEntity* Entity) {
 
 	return;
 }
+
+//=============================================================================

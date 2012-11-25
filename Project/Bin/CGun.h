@@ -22,6 +22,7 @@ class CGun {
 		void OnCleanup();
 
 		void ChangeType(int nType);
+		unsigned int GetType() const;
 		void Reset();
 
 		void Activate();
@@ -40,13 +41,13 @@ class CGun {
 	public:
 		int X;
 		int Y;
+		unsigned int ChargeLevel;
 
 	private:
 		unsigned int Type;
 		unsigned int Level;
 
 		unsigned int ChargeStart;
-		unsigned int ChargeLevel;
 		unsigned int LastShot;
 		unsigned int LastMissileShot;
 		unsigned int MissileDelay;

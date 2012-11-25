@@ -45,7 +45,6 @@ class CPlayer : public CEntity {
 
 		bool TookHit;
 
-	private:
 		CGun	Gun;
 };
 

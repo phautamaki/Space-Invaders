@@ -48,23 +48,8 @@ void CGun::OnLoop() {
 	}
 }
 
+//-----------------------------------------------------------------------------
 void CGun::OnRender(SDL_Surface* Surf_Display) {
-	// ChargeBar
-	int BarStart = WWIDTH/2 - 50;
-	SDL_Rect RectRed;
-	RectRed.x = BarStart;
-	RectRed.y = 30;
-	RectRed.w = ChargeLevel * 10;
-	RectRed.h = 10;
-	SDL_Rect RectGray;
-	RectGray.x = BarStart;
-	RectGray.y = 30;
-	RectGray.w = 100;
-	RectGray.h = 10;
-
-	SDL_FillRect(Surf_Display, &RectGray, SDL_MapRGB(Surf_Display->format, 211, 211, 211));
-	SDL_FillRect(Surf_Display, &RectRed, SDL_MapRGB(Surf_Display->format, 255, 0, 0));
-
 	if( BeamOn ) {
 		// Beam start
 		int X = (int)CFactory::Factory.GetPlayer()->X + PLAYER_SPRITE_WIDTH;
@@ -120,7 +105,7 @@ void CGun::ChangeType(int nType) {
 		// Laser will upgrade once
 		if( Type == GUN_BEAM ) {
 			if( Level > 1 ) {
-				Level--;
+				Level = 1;
 			}
 		}
 	}
@@ -128,6 +113,11 @@ void CGun::ChangeType(int nType) {
 		Reset();
 		Type = nType;
 	}
+}
+
+//-----------------------------------------------------------------------------
+unsigned int CGun::GetType() const {
+	return Type;
 }
 
 //-----------------------------------------------------------------------------

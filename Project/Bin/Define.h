@@ -32,12 +32,14 @@
 
 //-----------------------------------------------------------------------------
 /* Player specific settings */
-#define PLAYER_STARTING_LIVES 3
+#define PLAYER_STARTING_LIVES	3
+#define PLAYER_STARTING_X		100
+#define PLAYER_STARTING_Y		240
 
-#define PLAYER_ACCEL_LEFT	-3
-#define PLAYER_ACCEL_RIGHT	 3
-#define PLAYER_ACCEL_UP		-3
-#define PLAYER_ACCEL_DOWN	 3
+#define PLAYER_ACCEL_LEFT	-5
+#define PLAYER_ACCEL_RIGHT	 5
+#define PLAYER_ACCEL_UP		-5
+#define PLAYER_ACCEL_DOWN	 5
 
 #define PLAYER_MAX_SPEED_X 10
 #define PLAYER_MAX_SPEED_Y 10
@@ -70,7 +72,7 @@
 #define BULLET_NORMAL_STR	100
 #define BULLET_SMALL_STR	50
 #define BULLET_CHARGE1_STR	300
-#define BULLET_BEAM_STR		1
+#define BULLET_BEAM_STR		3
 #define BULLET_HOMING_STR	50
 
 

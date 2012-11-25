@@ -63,9 +63,9 @@ bool CBullet::OnLoad(int nType) {
 			break;
 		case ENTITY_SUBTYPE_BULLET_CHARGE1:
 			File = PATH_IMAGES PATH_ITEMS FILENAME_BULLET_CHARGE;
-			Width = 44;
-			Height = 22;
-			MaxFrames = 1;
+			Width = 54;
+			Height = 17;
+			MaxFrames = 3;
 			DamageOutput = BULLET_CHARGE1_STR;
 
 			MaxSpeedX = SpeedX = PLAYER_BULLET_CHARGE1_SPEED;

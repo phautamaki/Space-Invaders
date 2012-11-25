@@ -177,21 +177,21 @@ bool CFactory::CreateEnemy(int type, int nX, int nY) {
 			break;
 		case ENTITY_SUBTYPE_ENEMY_BOSS_1:
 			tmp = new CEnemyBoss(1);
-			tmp->OnLoad( PATH_IMAGES PATH_ENEMIES "enemies/boss_level1.png",128, 160, 1);
+			tmp->OnLoad( PATH_IMAGES PATH_ENEMIES "boss_level1.png",128, 160, 1);
 			tmp->X = static_cast<float>(nX);
 			tmp->Y = static_cast<float>(nY+GUI_HEIGHT);
 			tmp->SetHP(ENEMY_BOSS_1_HP);
 			break;
 		case ENTITY_SUBTYPE_ENEMY_BOSS_1_LITTLE_BUBBLES:
 			tmp = new CEnemyShip;
-			tmp->OnLoad( PATH_IMAGES PATH_ENEMIES "enemies/boss_level1_little_bubbles.png",32, 64, 1);
+			tmp->OnLoad( PATH_IMAGES PATH_ENEMIES "boss_level1_little_bubbles.png",32, 64, 1);
 			tmp->X = static_cast<float>(nX);
 			tmp->Y = static_cast<float>(nY);
 			tmp->SetHP(ENEMY_SHIP_1_HP*2);
 			break;
 		case ENTITY_SUBTYPE_ENEMY_METEORITE:
 			tmp = new CEnemyMeteorite;
-			tmp->OnLoad( PATH_IMAGES PATH_ENEMIES "enemies/meteorite.png",128, 128, 12);
+			tmp->OnLoad( PATH_IMAGES PATH_ENEMIES "meteorite.png",128, 128, 12);
 			tmp->X = static_cast<float>(nX);
 			tmp->Y = static_cast<float>(nY);
 			tmp->SetHP(1000000);

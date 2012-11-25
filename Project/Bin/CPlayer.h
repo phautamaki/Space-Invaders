@@ -46,6 +46,8 @@ class CPlayer : public CEntity {
 		bool TookHit;
 
 		CGun	Gun;
+	private:
+		CEntity Afterburner;
 };
 
 //=============================================================================

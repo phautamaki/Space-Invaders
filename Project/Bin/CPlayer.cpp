@@ -77,6 +77,8 @@ bool CPlayer::OnLoad(char* File, int Width, int Height, int MaxFrames) {
     if(CEntity::OnLoad(File, Width, Height, MaxFrames) == false) {
         return false;
     }
+	Afterburner.OnLoad(PATH_IMAGES PATH_SPECIALEFFECTS "afterburner.png",23,17,3);
+
 	Gun.OnLoad();
 
     return true;
@@ -160,6 +162,9 @@ void CPlayer::OnLoop() {
 
 	/* After has been moved */
 	Gun.OnLoop();
+	Afterburner.OnLoop();
+	Afterburner.X = X-20;
+	Afterburner.Y = Y+PLAYER_SPRITE_HEIGHT/2-7;
 
 	// Reset level after death scene is complete
 	if ( MakeDeathScene && (SDL_GetTicks() > (unsigned int)(DeathMoment + 3000)) ) {
@@ -172,14 +177,17 @@ void CPlayer::OnLoop() {
 //-----------------------------------------------------------------------------
 void CPlayer::OnRender(SDL_Surface* Surf_Display) {
 	if (!TookHit) {
+		if( SpeedX > 0 ) {
+			Afterburner.OnRender(Surf_Display);
+		}
 		CEntity::OnRender(Surf_Display);
+		Gun.OnRender(Surf_Display);
 	}
-
-	Gun.OnRender(Surf_Display);
 }
 
 //------------------------------------------------------------------------------
 void CPlayer::OnCleanup() {
+	Afterburner.OnCleanup();
 	Gun.OnCleanup();
 	CEntity::OnCleanup();
 }
@@ -209,18 +217,20 @@ void CPlayer::OnCollision(CEntity* Entity) {
 			//Die();
 			break;
 		case ENTITY_TYPE_ITEM: 
-			Points = Points + 100;
-			if( Entity->SubType == ENTITY_SUBTYPE_ITEM_WPN_NORMAL ) {
-				Gun.ChangeType(GUN_NORMAL);
-			}
-			else if( Entity->SubType == ENTITY_SUBTYPE_ITEM_WPN_BEAM ) {
-				Gun.ChangeType(GUN_BEAM);
-			}
-			else if( Entity->SubType == ENTITY_SUBTYPE_ITEM_WPN_MISSILE ) {
-				Gun.ChangeType(GUN_MISSILES);
-			}
-			else if( Entity->SubType == ENTITY_SUBTYPE_ITEM_POINTS ) {
-				Points = Points+900;
+			if (!TookHit) {
+				Points = Points + 100;
+				if( Entity->SubType == ENTITY_SUBTYPE_ITEM_WPN_NORMAL ) {
+					Gun.ChangeType(GUN_NORMAL);
+				}
+				else if( Entity->SubType == ENTITY_SUBTYPE_ITEM_WPN_BEAM ) {
+					Gun.ChangeType(GUN_BEAM);
+				}
+				else if( Entity->SubType == ENTITY_SUBTYPE_ITEM_WPN_MISSILE ) {
+					Gun.ChangeType(GUN_MISSILES);
+				}
+				else if( Entity->SubType == ENTITY_SUBTYPE_ITEM_POINTS ) {
+					Points = Points+900;
+				}
 			}
 			Entity->Die();
 			break;

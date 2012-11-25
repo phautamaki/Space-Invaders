@@ -60,9 +60,9 @@
 /* Enemy specific settings */
 
 // Small weak ship
-#define ENEMY_SHIP_1_SPRITE_WIDTH	33
-#define ENEMY_SHIP_1_SPRITE_HEIGHT	39
-#define ENEMY_SHIP_1_MAX_FRAMES		3
+#define ENEMY_SHIP_1_SPRITE_WIDTH	40
+#define ENEMY_SHIP_1_SPRITE_HEIGHT	28
+#define ENEMY_SHIP_1_MAX_FRAMES		1
 #define ENEMY_SHIP_1_HP				100
 
 #define ENEMY_BOSS_1_HP				3000

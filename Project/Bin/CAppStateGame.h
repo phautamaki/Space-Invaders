@@ -72,6 +72,7 @@ public:
 
 private:
 	void ResetLevel();
+	void CheckHighScores();
 };
 
 //=============================================================================

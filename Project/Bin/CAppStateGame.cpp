@@ -9,6 +9,7 @@
 #include "Paths.h"
 #include "CFileReader.h"
 #include "CSoundBank.h"
+#include "CHighScores.h"
 
 #include "CApp.h"
 #include "CPopup.h"
@@ -357,6 +358,8 @@ void CAppStateGame::ResetLevel(){
 	CCamera::CameraControl.speed = CAMERA_SPEED;
 	
 	if( Player->Lives == 0 ) {
+		CheckHighScores();
+
 		NextState = APPSTATE_MAINMENU;
 		CAppStateManager::SetActiveAppState(NextState);
 	}
@@ -381,6 +384,19 @@ void CAppStateGame::ResetLevel(){
 		ss << CurrentLevelNumber;
 		std::string text = "LEVEL " + ss.str();
 		CFactory::Factory.CreateText(text, 2000, (int)Player->X, (int)Player->Y-100);
+	}
+}
+
+//-----------------------------------------------------------------------------
+void CAppStateGame::CheckHighScores() {
+	CHighScores HighScore;
+	if( !HighScore.OnInit() ) {
+		error("Failed loading high scores.");
+	}
+	// Check whether player made it to the list
+	if( HighScore.CheckPoints(Player->Points) ){
+		std::string Name = "Player1";
+		HighScore.Add(Name,Player->Points);
 	}
 }
 
@@ -424,7 +440,7 @@ std::vector<CAppStateGame::LevelInfo> CAppStateGame::GetCurrentLevelInfo(const s
 				tmp.push_back(info);
 			}
 			else {
-				debug("There was some problems with the file. Could not read contents properly");
+				error("There was some problems with the file. Could not read contents properly");
 				break;
 			}
 		}

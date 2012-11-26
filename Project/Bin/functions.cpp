@@ -60,4 +60,17 @@ float DegreesToRadian(int Degree) {
 	return ((float)Degree) * (float)(3.14159265/180.0);
 }
 
+//------------------------------------------------------------------------------
+std::vector<std::string> Explode(std::string Text, char Separator) {
+	std::vector<std::string> result;
+
+	std::istringstream istream(Text);
+	std::string Value = "";
+	while( std::getline(istream, Value, Separator) ){
+		result.push_back(Value);
+	}
+
+	return result;
+}
+
 //==============================================================================

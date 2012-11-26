@@ -182,8 +182,6 @@ void CGun::Shoot() {
 			break;
 		case GUN_BEAM:
 			BeamOn = true;
-			//BeamChannel = CSoundBank::SoundControl.Play(CSoundBank::EFFECT, "ShootingSoundBeam", true);
-			//CFactory::Factory.CreateBullet(ENTITY_SUBTYPE_BULLET_BEAM, static_cast<int>(X) + PLAYER_SPRITE_WIDTH + 5, static_cast<int>(Y) + PLAYER_SPRITE_HEIGHT / 2);
 			break;
 		case GUN_MISSILES:
 			// Always shoot basic bullet

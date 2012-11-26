@@ -65,6 +65,11 @@
 #define ENEMY_SHIP_1_MAX_FRAMES		1
 #define ENEMY_SHIP_1_HP				100
 
+// Cannon
+#define ENEMY_CANNON_HP				1
+#define ENEMY_CANNON_INTERVAL		300
+
+// Boss
 #define ENEMY_BOSS_1_HP				3000
 
 //-----------------------------------------------------------------------------

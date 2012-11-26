@@ -105,6 +105,23 @@ bool CBullet::OnLoad(int nType) {
 			Manouvers.push_back(tmpMan);
 
 			break;
+		case ENTITY_SUBTYPE_BULLET_GENERIC:
+			delete Manouvers.at(0);
+			Manouvers.clear();
+			tmpMan = new CManouver(this);
+			tmpMan->OnLoad(M_MOVE_LEFT);
+			Manouvers.push_back(tmpMan);
+
+			File = PATH_IMAGES PATH_ITEMS FILENAME_BULLET_GENERIC;
+			Width = 12;
+			Height = 14;
+			MaxFrames = 5;
+			DamageOutput = 1;
+
+			MaxSpeedX = SpeedX = MaxSpeedY = SpeedY = 0;
+			HP = 1;
+
+			break;
 		default:
 			return false;
 	}
@@ -189,12 +206,20 @@ void CBullet::OnCollision(CEntity* Entity) {
 			Die();
 			break;
 		case ENTITY_TYPE_ENEMY:
-			Damage(1);
-			if( HP <= 0 ){
-				Entity->Damage(DamageOutput);
+			if( SubType != ENTITY_SUBTYPE_BULLET_GENERIC ) {
+				Damage(1);
+				if( HP <= 0 ){
+					Entity->Damage(DamageOutput);
+				}
 			}
 			break;
 		case ENTITY_TYPE_ITEM:
+			break;
+		case ENTITY_TYPE_PLAYER:
+			if( SubType == ENTITY_SUBTYPE_BULLET_GENERIC ) {
+				Entity->Damage(DamageOutput);
+				Die();
+			}
 			break;
 		default: 
 			return;

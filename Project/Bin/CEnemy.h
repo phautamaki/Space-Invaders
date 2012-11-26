@@ -18,6 +18,10 @@ class CEnemy : public CManouvarableEntity {
 		virtual void Die();
 
 		virtual bool IsDead();
+
+//------------------------------------------------------------------------------
+	public:
+		bool OnRoof;
 };
 
 //=============================================================================

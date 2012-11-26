@@ -503,6 +503,7 @@ void CEntity::CheckPossibleTileCollision(int NewX, int NewY) {
 	return;
 }
 
+//------------------------------------------------------------------------------
 bool CEntity::CheckTileCollision(CTile* tile, int tileX, int tileY)
 {
 	// Create rectangle of the tile's area in the space

@@ -12,6 +12,7 @@
 #include "CPopup.h"
 #include "CEnemyBoss.h"
 #include "CEnemyMeteorite.h"
+#include "CEnemyCannon.h"
 
 //=============================================================================
 enum ExplType {			// TODO: move this code to SpecialEffect.h
@@ -67,7 +68,7 @@ class CFactory {
 		bool CreateEnemy(int type, int nX, int nY);
 		bool CreateRandomItem(int nX, int nY);
 		bool CreateItem(int type, int nX, int nY);
-		bool CreateBullet(int type, int nX, int nY);
+		CBullet* CreateBullet(int type, int nX, int nY);
 
 		// Create effects
 		bool CreateExplosion(int nX, int nY, ExplType explosion);

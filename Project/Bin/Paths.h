@@ -33,6 +33,7 @@
 #define FILENAME_BULLET_BEAM_BODY	"bullet_beam.png"
 #define FILENAME_BULLET_BEAM_END	"bullet_beam_end.png"
 #define FILENAME_BULLET_MISSILE		"bullet_missile.png"
+#define FILENAME_BULLET_GENERIC		"bullet_generic_1.png"
 
 #define FILENAME_ITEM_WPN_NORMAL	"item_wpn_normal.png"
 #define FILENAME_ITEM_WPN_BEAM		"item_wpn_beam.png"

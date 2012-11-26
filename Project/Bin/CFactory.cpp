@@ -101,19 +101,17 @@ CEntity* CFactory::GetClosest(int X, int Y, int TargetType, bool Frontal, bool H
 	int Distance = 0;
 	for(unsigned int i = 0;i < CEntity::EntityList.size();i++) {
 
-		// Only check enemies
 		if( TargetType == -1 || CEntity::EntityList.at(i)->Type == TargetType ) {
 
 			CEntity* Candidate = CEntity::EntityList.at(i);
-			// In frontal search we skip objects that are left from X
+			if( !Candidate->IsActive() ) continue;
 
+			// In frontal search we skip objects that are left from X
 			if( Frontal && Candidate->X < X ) {
 				continue;			
 			}
 			// In horizontal search we skip objects farther than offset in Y direction
-			/*if( HorizontalSearch && abs(Y - Candidate->Y) > Offset ) {
-				continue;
-			}*/
+
 			if( HorizontalSearch ) {
 				SDL_Rect Cbounds = Candidate->GetBounds();
 				// Point is within height range
@@ -164,9 +162,8 @@ CPlayer* CFactory::CreatePlayer(int nX, int nY) {
 //------------------------------------------------------------------------------
 // TODO: Could make a single function of these?
 bool CFactory::CreateEnemy(int type, int nX, int nY) {
-	CEnemy* tmp;
-	tmp->SubType = type;
-
+	CEnemy* tmp = NULL;
+	
 	switch( type ) {
 		case ENTITY_SUBTYPE_ENEMY_1:
 			tmp = new CEnemyShip;
@@ -196,9 +193,25 @@ bool CFactory::CreateEnemy(int type, int nX, int nY) {
 			tmp->Y = static_cast<float>(nY);
 			tmp->SetHP(1000000);
 			break;
+		case ENTITY_SUBTYPE_ENEMY_CANNON_1:
+			tmp = new CEnemyCannon();
+			tmp->OnLoad( PATH_IMAGES PATH_ENEMIES "cannon_1.png",58, 56, 1);
+			tmp->X = static_cast<float>(nX);
+			tmp->Y = static_cast<float>(nY+GUI_HEIGHT);
+			tmp->SetHP(ENEMY_CANNON_HP);
+			break;
+		case ENTITY_SUBTYPE_ENEMY_CANNON_2:
+			tmp = new CEnemyCannon();
+			tmp->OnLoad( PATH_IMAGES PATH_ENEMIES "cannon_2.png",58, 56, 1);
+			tmp->X = static_cast<float>(nX);
+			tmp->Y = static_cast<float>(nY+GUI_HEIGHT);
+			tmp->SetHP(ENEMY_CANNON_HP);
+			tmp->OnRoof = true;
+			break;
 		default:
 			return false;
 	}
+	tmp->SubType = type;
 
 	CEntity::EntityList.push_back(tmp);
 
@@ -261,7 +274,7 @@ bool CFactory::CreateItem(int type, int nX, int nY) {
 }
 
 //------------------------------------------------------------------------------
-bool CFactory::CreateBullet(int type, int nX, int nY) {
+CBullet* CFactory::CreateBullet(int type, int nX, int nY) {
 
 	CBullet* tmp = new CBullet;
 	bool EntityOK = true;
@@ -274,7 +287,7 @@ bool CFactory::CreateBullet(int type, int nX, int nY) {
 		CEntity::EntityList.push_back(tmp);
 	}
 
-	return EntityOK;
+	return tmp;
 }
 
 //------------------------------------------------------------------------------

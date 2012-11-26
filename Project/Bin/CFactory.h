@@ -13,6 +13,7 @@
 #include "CEnemyBoss.h"
 #include "CEnemyMeteorite.h"
 #include "CEnemyCannon.h"
+#include "CEnemyShipShooting.h"
 
 //=============================================================================
 enum ExplType {			// TODO: move this code to SpecialEffect.h

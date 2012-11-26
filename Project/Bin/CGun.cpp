@@ -23,10 +23,12 @@ CGun::CGun() {
 	MissileDelay = PLAYER_SHOOT_DELAY_MISSILE;
 	BeamOn		= false;
 	BeamWidth   = 0;
+	Enemy = false;
 }
 
 //=============================================================================
-bool CGun::OnLoad() {
+bool CGun::OnLoad(bool Enemy) {
+	Enemy = Enemy;
 	// Set to default gun and level
 	Reset();
 
@@ -122,7 +124,7 @@ unsigned int CGun::GetType() const {
 
 //-----------------------------------------------------------------------------
 void CGun::Reset() {
-	Type   = GUN_NORMAL;
+	Type   = Enemy ? GUN_ENEMY_MISSILES : GUN_NORMAL;
 	Level  = 0;
 	ChargeStart = 0;
 	ChargeLevel = 0;
@@ -143,8 +145,9 @@ void CGun::Activate() {
 }
 
 //------------------------------------------------------ -----------------------
-void CGun::Deactivate() {
-	Shoot();
+void CGun::Deactivate(int X, int Y) {
+
+	X && Y ? Shoot(X, Y) : Shoot();
 	ChargeStart = 0;
 	ChargeLevel = 0;
 	BeamOn = false;
@@ -155,9 +158,9 @@ void CGun::Deactivate() {
 	}
 }
 
-void CGun::Shoot() {
-	int X = (int)CFactory::Factory.GetPlayer()->X;
-	int Y = (int)CFactory::Factory.GetPlayer()->Y;
+void CGun::Shoot(int GivenX, int GivenY) {
+	int X = GivenX ? GivenX : (int)CFactory::Factory.GetPlayer()->X;
+	int Y = GivenY ? GivenY : (int)CFactory::Factory.GetPlayer()->Y;
 
 	switch( Type ) {
 		case GUN_NORMAL:
@@ -202,6 +205,13 @@ void CGun::Shoot() {
 				}
 				LastMissileShot = SDL_GetTicks();
 			}
+			break;
+		case GUN_ENEMY_MISSILES:
+				
+			debug("Enemy missiles");
+			CFactory::Factory.CreateBullet(ENTITY_SUBTYPE_BULLET_ENEMY_MISSILE, (X - PLAYER_SPRITE_WIDTH-5), (Y + PLAYER_SPRITE_HEIGHT / 2-6));
+			break;
+
 		default:
 			break;
 	}

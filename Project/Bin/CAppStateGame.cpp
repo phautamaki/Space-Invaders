@@ -111,7 +111,20 @@ void CAppStateGame::OnLevelChange() {
 	CurrentLevelNumber++;
 
 	//If we have survived the last level (TODO:next state should be end credits or something?)
-	if(CurrentLevelNumber > 2) {
+	
+	if (CurrentLevelNumber == 1) {
+		debug("Area 1 loading start", 1);
+		if(CArea::AreaControl.OnLoad(PATH_MAPS PATH_AREA1) == false) {
+			return;
+		}
+	}
+	else if (CurrentLevelNumber == 2) {
+		debug("Area 2 loading start", 1);
+		if(CArea::AreaControl.OnLoad(PATH_MAPS PATH_AREA2) == false) {
+			return;
+		}
+	}
+	else if(CurrentLevelNumber > 2) {
 		NextState = APPSTATE_MAINMENU;
 		CAppStateManager::SetActiveAppState(NextState);
 		return;
@@ -377,14 +390,27 @@ void CAppStateGame::ResetLevel(){
 		//And kill everything except player 
 		CFactory::Factory.FlagNonPlayerEntities();
 
-		// Restore already broken breakable tiles
-		CArea::AreaControl.RestoreBrokenTiles();
+		if (CurrentLevelNumber == 1) {
+			debug("Area 1 loading start on resetlevel", 1);
+			if(CArea::AreaControl.OnLoad(PATH_MAPS PATH_AREA1) == false) {
+				return;
+			}
+		}
+		else if (CurrentLevelNumber == 2) {
+			debug("Area 2 loading start on resetlevel", 1);
+			if(CArea::AreaControl.OnLoad(PATH_MAPS PATH_AREA2) == false) {
+				return;
+			}
+		}
+
 
 		std::stringstream ss;
 		ss << CurrentLevelNumber;
 		std::string text = "LEVEL " + ss.str();
 		CFactory::Factory.CreateText(text, 2000, (int)Player->X, (int)Player->Y-100);
 	}
+
+	debug("ResetLevel() exit");
 }
 
 //-----------------------------------------------------------------------------

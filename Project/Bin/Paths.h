@@ -15,6 +15,7 @@
 #define PATH_SPECIALEFFECTS	""
 
 #define PATH_AREA1	"1.area"
+#define PATH_AREA2	"2.area"
 
 #define FILENAME_UI_BUTTON		"button.png"
 #define FILENAME_UI_ICONS		"icon_life.png"

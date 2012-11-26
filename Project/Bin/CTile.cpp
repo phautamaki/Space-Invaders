@@ -22,7 +22,6 @@ void CTile::Damage(int amount) {
 
 			CFactory::Factory.CreateExplosion(X-8,Y-8, explosionType);
 			TypeID = TILE_TYPE_NONE;
-			CArea::AreaControl.BrokenTiles.push_back(this);
 		}
 		else {
 			CFactory::Factory.CreateExplosion(X,Y, EXPLOSION_TILE_DAMAGE);

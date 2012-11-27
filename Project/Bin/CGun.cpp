@@ -210,6 +210,7 @@ void CGun::Shoot(int GivenX, int GivenY) {
 				else {
 					CFactory::Factory.CreateBullet(ENTITY_SUBTYPE_BULLET_MISSILE, (X + PLAYER_SPRITE_WIDTH-5), (Y + PLAYER_SPRITE_HEIGHT / 2-6));
 				}
+				CSoundBank::SoundControl.Play(CSoundBank::EFFECT, "ShootingSoundMissile");
 				LastMissileShot = SDL_GetTicks();
 			}
 			break;
@@ -217,6 +218,7 @@ void CGun::Shoot(int GivenX, int GivenY) {
 				
 			debug("Enemy missile.");
 			CFactory::Factory.CreateBullet(ENTITY_SUBTYPE_BULLET_ENEMY_MISSILE, (X - PLAYER_SPRITE_WIDTH-5), (Y + PLAYER_SPRITE_HEIGHT / 2-6));
+			CSoundBank::SoundControl.Play(CSoundBank::EFFECT, "ShootingSoundMissile");
 			break;
 
 		default:

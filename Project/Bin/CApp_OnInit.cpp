@@ -16,10 +16,12 @@ bool CApp::OnInit() {
 
 	//Loads all the sounds
 	!CSoundBank::SoundControl.OnLoad(CSoundBank::EFFECT, "EnemyExplodingSound", PATH_EFFECTS FILENAME_ENEMY_EXPLODING) ? debug("Shit hit the fan when loading EnemyExplodingSound.") : debug("Loading EnemyExplodingSound was a great success!");
+	!CSoundBank::SoundControl.OnLoad(CSoundBank::EFFECT, "BossExplodingSound", PATH_EFFECTS FILENAME_BOSS_EXPLODING) ? debug("Shit hit the fan when loading BossExplodingSound.") : debug("Loading BossExplodingSound was a great success!");
 	!CSoundBank::SoundControl.OnLoad(CSoundBank::EFFECT, "ShootingSoundBasic", PATH_EFFECTS FILENAME_SHOOTING_BASIC) ? debug("Shit hit the fan when loading ShootingSoundBasic.") : debug("Loading ShootingSoundBasic was a great success!");
 	!CSoundBank::SoundControl.OnLoad(CSoundBank::EFFECT, "ShootingSoundBig", PATH_EFFECTS FILENAME_SHOOTING_BIG) ? debug("Shit hit the fan when loading ShootingSoundBig.") : debug("Loading ShootingSoundBig was a great success!");
 	!CSoundBank::SoundControl.OnLoad(CSoundBank::EFFECT, "ShootingSoundBeam", PATH_EFFECTS FILENAME_SHOOTING_BEAM) ? debug("Shit hit the fan when loading ShootingSoundBeam.") : debug("Loading ShootingSoundBeam was a great success!");	
 	!CSoundBank::SoundControl.OnLoad(CSoundBank::EFFECT, "PlayerCrashingSound", PATH_EFFECTS FILENAME_PLAYER_CRASHING) ? debug("Shit hit the fan when loading PlayerCrashingSound.") : debug("Loading PlayerCrashingSound was a great success!");
+	!CSoundBank::SoundControl.OnLoad(CSoundBank::EFFECT, "ShootingSoundMissile", PATH_EFFECTS FILENAME_SHOOTING_MISSILE) ? debug("Shit hit the fan when loading ShootingSoundMissile.") : debug("Loading ShootingSoundMissile was a great success!");
 	!CSoundBank::SoundControl.OnLoad(CSoundBank::EFFECT, "ButtonClickSound", PATH_EFFECTS FILENAME_BUTTON_CLICK) ? debug("Shit hit the fan when loading ButtonClickSound.") : debug("Loading ButtonClickSound was a great success!");
 	
 	debug("All sounds initialized", 1);

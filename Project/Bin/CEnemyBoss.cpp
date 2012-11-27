@@ -2,6 +2,7 @@
 #include "CEnemyBoss.h"
 #include "CAppStateGame.h"
 #include "CFactory.h"
+#include "CSoundBank.h"
 //=============================================================================
 
 CEnemyBoss::CEnemyBoss(int level) {
@@ -99,6 +100,7 @@ void CEnemyBoss::Die() {
 	CFactory::Factory.CreateExplosion((int)X,(int)Y-60, EXPLOSION_ENEMY_BOSS_1);
 	CFactory::Factory.CreateExplosion((int)X-40,(int)Y-120, EXPLOSION_ENEMY_BOSS_1);
 	CFactory::Factory.CreateExplosion((int)X+30,(int)Y-170, EXPLOSION_ENEMY_BOSS_1);
+	CSoundBank::SoundControl.Play(CSoundBank::EFFECT, "BossExplodingSound");
 	CFactory::Factory.GetPlayer()->Points = CFactory::Factory.GetPlayer()->Points + 5000;
 }
 

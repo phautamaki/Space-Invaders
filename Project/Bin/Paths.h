@@ -41,13 +41,15 @@
 #define FILENAME_ITEM_WPN_MISSILES	"item_wpn_missiles.png"
 #define FILENAME_ITEM_POINTS		"item_rupee.png"
 
-#define FILENAME_BUTTON_CLICK "button_click.wav"
+#define FILENAME_BUTTON_CLICK		"button_click.wav"
 
-#define FILENAME_SHOOTING_BASIC "shoot_basic.wav"
-#define FILENAME_SHOOTING_BIG "shoot_big.wav"
-#define FILENAME_SHOOTING_BEAM "shoot_beam.wav"
+#define FILENAME_SHOOTING_BASIC		"shoot_basic.wav"
+#define FILENAME_SHOOTING_BIG		"shoot_big.wav"
+#define FILENAME_SHOOTING_BEAM		"shoot_beam.wav"
+#define FILENAME_SHOOTING_MISSILE	"shoot_missile.wav"
 
-#define FILENAME_PLAYER_CRASHING "player_ship_crashing.wav"
-#define FILENAME_ENEMY_EXPLODING "enemy_exploding.wav"
+#define FILENAME_PLAYER_CRASHING	"player_ship_crashing.wav"
+#define FILENAME_ENEMY_EXPLODING	"enemy_exploding.wav"
+#define FILENAME_BOSS_EXPLODING		"boss_exploding.wav"
 
 #endif

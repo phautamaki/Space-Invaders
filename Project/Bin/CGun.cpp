@@ -208,7 +208,7 @@ void CGun::Shoot(int GivenX, int GivenY) {
 			break;
 		case GUN_ENEMY_MISSILES:
 				
-			debug("Enemy missiles");
+			debug("Enemy missile.");
 			CFactory::Factory.CreateBullet(ENTITY_SUBTYPE_BULLET_ENEMY_MISSILE, (X - PLAYER_SPRITE_WIDTH-5), (Y + PLAYER_SPRITE_HEIGHT / 2-6));
 			break;
 

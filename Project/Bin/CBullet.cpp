@@ -113,7 +113,8 @@ bool CBullet::OnLoad(int nType) {
 			MaxFrames = 1;
 			DamageOutput = BULLET_HOMING_STR;
 
-			MaxSpeedX = SpeedX = PLAYER_BULLET_MISSILE_SPEED + 5;
+			MaxSpeedX = PLAYER_BULLET_MISSILE_SPEED;
+			SpeedX = -MaxSpeedX;
 			HP = 1;
 	
 			tmpMan = new CManouver(this);
@@ -121,9 +122,9 @@ bool CBullet::OnLoad(int nType) {
 			Manouvers.push_back(tmpMan);
 
 			tmpMan = new CManouver(this);
+			tmpMan->OnLoad(M_AIM);
 			tmpMan->TargetX = (int)CFactory::Factory.GetPlayer()->X;
 			tmpMan->TargetY = (int)CFactory::Factory.GetPlayer()->Y;
-			tmpMan->OnLoad(M_AIM);
 			Manouvers.push_back(tmpMan);
 
 			break;

@@ -124,7 +124,7 @@ unsigned int CGun::GetType() const {
 
 //-----------------------------------------------------------------------------
 void CGun::Reset() {
-	Type   = Enemy ? GUN_ENEMY_MISSILES : GUN_BEAM;
+	Type   = Enemy ? GUN_ENEMY_MISSILES : GUN_NORMAL;
 	Level  = 0;
 	ChargeStart = 0;
 	ChargeLevel = 0;

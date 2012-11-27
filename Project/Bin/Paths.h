@@ -48,5 +48,6 @@
 #define FILENAME_SHOOTING_BEAM "shoot_beam.wav"
 
 #define FILENAME_PLAYER_CRASHING "player_ship_crashing.wav"
+#define FILENAME_ENEMY_EXPLODING "enemy_exploding.wav"
 
 #endif

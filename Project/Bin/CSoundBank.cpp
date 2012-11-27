@@ -117,8 +117,6 @@ int CSoundBank::Play(SoundType type, std::string ID, bool loop) {
 		
 		break;
 	}
-	
-	debug(IntToString(channel));
 
 	return channel;
 }

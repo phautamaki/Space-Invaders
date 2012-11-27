@@ -27,8 +27,10 @@ CGun::CGun() {
 }
 
 //=============================================================================
-bool CGun::OnLoad(bool Enemy) {
-	Enemy = Enemy;
+bool CGun::OnLoad(bool enemy) {
+	
+	Enemy = enemy;
+
 	// Set to default gun and level
 	Reset();
 
@@ -215,10 +217,10 @@ void CGun::Shoot(int GivenX, int GivenY) {
 			}
 			break;
 		case GUN_ENEMY_MISSILES:
-				
-			debug("Enemy missile.");
-			CFactory::Factory.CreateBullet(ENTITY_SUBTYPE_BULLET_ENEMY_MISSILE, (X - PLAYER_SPRITE_WIDTH-5), (Y + PLAYER_SPRITE_HEIGHT / 2-6));
+			
+			CFactory::Factory.CreateBullet(ENTITY_SUBTYPE_BULLET_ENEMY_MISSILE,(int)X - 50,(int)Y);
 			CSoundBank::SoundControl.Play(CSoundBank::EFFECT, "ShootingSoundMissile");
+
 			break;
 
 		default:

@@ -38,17 +38,11 @@ bool CEnemyShipShooting::OnLoad(char* File, int Width, int Height, int MaxFrames
 //-----------------------------------------------------------------------------
 void CEnemyShipShooting::OnLoop() {
 	CEnemy::OnLoop();
-		if(static_cast<unsigned int>(TimeStart + 1000) < SDL_GetTicks()) {
-
-			CBullet*	tmp = CFactory::Factory.CreateBullet(ENTITY_SUBTYPE_BULLET_ENEMY_MISSILE,(int)X - 50,(int)Y);
-
-			if( tmp != NULL ) {
-				tmp->MaxSpeedX = tmp->MaxSpeedY = 3;
-				tmp->SpeedX = -3;
-				tmp->SpeedY = 0;
-				TimeStart = SDL_GetTicks();
-			}
-		}
+	
+	if(static_cast<unsigned int>(TimeStart + 2000) < SDL_GetTicks()) {
+		Gun.Deactivate((int)X, (int)Y);
+		TimeStart = SDL_GetTicks();
+	}
 
 	Gun.OnLoop();
 }

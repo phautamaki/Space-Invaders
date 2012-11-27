@@ -208,9 +208,6 @@ void CPlayer::OnCollision(CEntity* Entity) {
 	if( IsDead() || Entity->IsDead()) return;
 
 	switch(Entity->Type) {
-		case ENTITY_TYPE_ENEMY: 
-			//Die();
-			break;
 		case ENTITY_TYPE_ITEM: 
 			if (!TookHit) {
 				Points = Points + 100;

@@ -106,19 +106,19 @@ bool CBullet::OnLoad(int nType) {
 
 			break;
 		case ENTITY_SUBTYPE_BULLET_ENEMY_MISSILE:
-			debug("Entity enemy missile.");
 			File = PATH_IMAGES PATH_ITEMS FILENAME_BULLET_MISSILE;
 			Width = 12;
 			Height = 12;
 			MaxFrames = 1;
 			DamageOutput = BULLET_HOMING_STR;
 
-			MaxSpeedX = PLAYER_BULLET_MISSILE_SPEED;
+			MaxSpeedX = 10;
 			SpeedX = -MaxSpeedX;
+			SpeedY = 0;
 			HP = 1;
 	
 			tmpMan = new CManouver(this);
-			tmpMan->OnLoad(M_WAIT,200);
+			tmpMan->OnLoad(M_MOVE_LEFT);
 			Manouvers.push_back(tmpMan);
 
 			tmpMan = new CManouver(this);
@@ -239,11 +239,14 @@ void CBullet::OnCollision(CEntity* Entity) {
 		case ENTITY_TYPE_ITEM:
 			break;
 		case ENTITY_TYPE_PLAYER:
-			if( SubType == ENTITY_SUBTYPE_BULLET_GENERIC ) {
+			if( SubType == ENTITY_SUBTYPE_BULLET_GENERIC || SubType == ENTITY_SUBTYPE_BULLET_ENEMY_MISSILE ) {
 				Entity->Damage(DamageOutput);
 				Die();
 			}
 			break;
+		case ENTITY_TYPE_BULLET:
+			Entity->Damage(DamageOutput);
+			Die();
 		default: 
 			return;
 	}

@@ -28,8 +28,6 @@ class CButton : public CUIElement {
 	private:
 		int TextStart;
 
-		//Mix_Chunk *ButtonClickSound;
-
 		SDL_Surface*	Surf_Entity;
 
 };

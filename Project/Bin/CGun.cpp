@@ -124,11 +124,15 @@ unsigned int CGun::GetType() const {
 
 //-----------------------------------------------------------------------------
 void CGun::Reset() {
-	Type   = Enemy ? GUN_ENEMY_MISSILES : GUN_NORMAL;
+	Type   = Enemy ? GUN_ENEMY_MISSILES : GUN_BEAM;
 	Level  = 0;
 	ChargeStart = 0;
 	ChargeLevel = 0;
 	BeamOn = false;
+	if(BeamChannel != -1) {
+		CSoundBank::SoundControl.StopChannel(BeamChannel);
+		BeamChannel = -1;
+	}
 	LastShot = 0;
 	LastMissileShot = 0;
 	MissileDelay = PLAYER_SHOOT_DELAY_MISSILE;
@@ -184,7 +188,10 @@ void CGun::Shoot(int GivenX, int GivenY) {
 			}
 			break;
 		case GUN_BEAM:
-			BeamOn = true;
+			if(!BeamOn) {
+				BeamChannel = CSoundBank::SoundControl.Play(CSoundBank::EFFECT, "ShootingSoundBeam", true);
+			}
+			BeamOn = true;	
 			break;
 		case GUN_MISSILES:
 			// Always shoot basic bullet

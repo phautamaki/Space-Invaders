@@ -3,6 +3,7 @@
 #include "CAppStateManager.h"
 #include "CFont.h"
 #include "Paths.h"
+#include "Define.h"
 
 //=============================================================================
 CAppStateMainMenu CAppStateMainMenu::Instance;
@@ -23,6 +24,11 @@ void CAppStateMainMenu::OnLButtonDown(int mX, int mY) {
 		Start.OnClick();
 		CAppStateManager::SetActiveAppState(NextState);
 	}
+	else if( Scores.IsClicked(mX,mY) ) {
+		Scores.OnClick();
+		NextState = APPSTATE_SCORES;
+		CAppStateManager::SetActiveAppState(NextState);
+	}
 }
 
 //=============================================================================
@@ -39,12 +45,15 @@ void CAppStateMainMenu::OnActivate() {
 		return;
 	}
 
-	Start.OnLoad("Start", WWIDTH/2-150, WHEIGHT - 150);
+	Start.OnLoad("Start", WWIDTH/2-250, WHEIGHT - 150);
 	Start.Hoverable = true;
 	CUIElement::UIElementList.push_back(&Start);
-	Exit.OnLoad("Quit", WWIDTH/2+50, WHEIGHT - 150);
+	Exit.OnLoad("Quit", WWIDTH/2-50, WHEIGHT - 150);
 	Exit.Hoverable = true;
 	CUIElement::UIElementList.push_back(&Exit);
+	Scores.OnLoad("Score", WWIDTH/2+150, WHEIGHT - 150);
+	Scores.Hoverable = true;
+	CUIElement::UIElementList.push_back(&Scores);
 }
 
 //-----------------------------------------------------------------------------
@@ -75,14 +84,6 @@ void CAppStateMainMenu::OnLoop() {
 
 //-----------------------------------------------------------------------------
 void CAppStateMainMenu::OnRender(SDL_Surface* Surf_Display) {
-	SDL_Rect Rect;
-	Rect.x = 0;
-	Rect.y = 0;
-	Rect.w = WWIDTH;
-	Rect.h = WHEIGHT;
-
-	SDL_FillRect( Surf_Display, &Rect, 0 );
-
 	CSurface::OnDraw(Surf_Display, MainBG, 0, 0);
 	CSurface::OnDraw(Surf_Display, Title1, WWIDTH/2-377, 50);
 	CSurface::OnDraw(Surf_Display, Title2, WWIDTH/2-157, 130);

@@ -5,6 +5,7 @@
 #include "CAppStateIntro.h"
 #include "CAppStateMainMenu.h"
 #include "CAppStateGame.h"
+#include "CAppStateScores.h"
 
 //=============================================================================
 CAppState* CAppStateManager::ActiveAppState = 0;
@@ -33,6 +34,7 @@ void CAppStateManager::SetActiveAppState(int AppStateID) {
 	if(AppStateID == APPSTATE_INTRO)	ActiveAppState = CAppStateIntro::GetInstance();
 	if(AppStateID == APPSTATE_MAINMENU)	ActiveAppState = CAppStateMainMenu::GetInstance();
 	if(AppStateID == APPSTATE_GAME)		ActiveAppState = CAppStateGame::GetInstance();
+	if(AppStateID == APPSTATE_SCORES)	ActiveAppState = CAppStateScores::GetInstance();
 
 	if(ActiveAppState) ActiveAppState->OnActivate();
 }

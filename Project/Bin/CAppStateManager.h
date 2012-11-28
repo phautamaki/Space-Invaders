@@ -10,7 +10,8 @@ enum {
 	APPSTATE_NONE,
 	APPSTATE_INTRO,
 	APPSTATE_MAINMENU,
-	APPSTATE_GAME
+	APPSTATE_GAME,
+	APPSTATE_SCORES
 };
 
 //=============================================================================

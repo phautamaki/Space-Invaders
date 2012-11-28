@@ -1,30 +1,24 @@
 //=============================================================================
-#ifndef __CAPPSTATEMAINMENU_H__
-	#define __CAPPSTATEMAINMENU_H__
+#ifndef __CAPPSTATESCORES_H__
+	#define __CAPPSTATESCORES_H__
 
 #include "CAppState.h"
 #include "CSurface.h"
-
 #include "CButton.h"
+#include "CHighScores.h"
 
 //=============================================================================
-class CAppStateMainMenu : public CAppState {
+class CAppStateScores : public CAppState {
 	private:
-		static CAppStateMainMenu Instance;
+		static CAppStateScores Instance;
 
 		SDL_Surface* MainBG;
-		SDL_Surface* Title1;
-		SDL_Surface* Title2;
+		CButton		 Back;
 
-		CButton Start;
-		CButton Exit;
-		CButton Scores;
+		CHighScores HighScore;
 
 	private:
-		CAppStateMainMenu();
-
-	public:
-		void OnLButtonDown(int mX, int mY);
+		CAppStateScores();
 
 	public:
 		void OnActivate();
@@ -35,8 +29,10 @@ class CAppStateMainMenu : public CAppState {
 
 		void OnRender(SDL_Surface* Surf_Display);
 
+		void OnLButtonDown(int mX, int mY);
+
 	public:
-		static CAppStateMainMenu* GetInstance();
+		static CAppStateScores* GetInstance();
 };
 
 //=============================================================================

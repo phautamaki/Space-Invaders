@@ -1,6 +1,7 @@
 #ifndef _CHIGHSCORES_H_
 #define _CHIGHSCORES_H_
 
+#include "CSurface.h"
 #include <vector>
 #include <string>
 
@@ -11,6 +12,7 @@ public:
 	CHighScores();
 
 	bool OnInit();
+	void OnRender(SDL_Surface* Surf_Display) const;
 
 	bool CheckPoints(int Points) const;
 	void Add(std::string Name, int Points);

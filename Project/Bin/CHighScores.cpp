@@ -1,5 +1,6 @@
 #include "CHighScores.h"
 #include "CFileReader.h"
+#include "CFont.h"
 #include "functions.h"
 #include <fstream>
 #include <cstdlib>
@@ -28,7 +29,33 @@ bool CHighScores::OnInit() {
 	}
 	return true;
 }
+
 //-----------------------------------------------------------------------------
+void CHighScores::OnRender(SDL_Surface* Surf_Display) const {
+	if( ScoreList.size() == 0 ) return;
+
+	int numX   = 100;
+	int nameX  = 200;
+	int pointX = 450;
+
+	int startY = 50;
+
+	int divider = 35;
+
+	unsigned int maxNames = 10;
+
+	for( unsigned int i = 0; i < ScoreList.size(); i++ ) {
+		CFont::FontControl.Write(Surf_Display,IntToString(i+1).c_str(), numX, startY+(i*divider),1);
+		CFont::FontControl.Write(Surf_Display,NameList.at(i).c_str(), nameX, startY+(i*divider),1);
+		CFont::FontControl.Write(Surf_Display,IntToString(ScoreList.at(i)).c_str(), pointX, startY+(i*divider),1);
+
+		if( i >= maxNames-1 ){
+			break;
+		}
+	}
+}
+
+//=============================================================================
 bool CHighScores::CheckPoints(int Points) const {
 	if( ScoreList.at(ScoreList.size()-1) >= Points ) {
 		return false;
@@ -58,8 +85,9 @@ void CHighScores::Add(std::string Name, int Points) {
 }
 //=============================================================================
 bool CHighScores::SavePoints() {
+	std::string FullPath = "maps/" + FilePath;
 	std::ofstream ScoreFile;
-	ScoreFile.open(FilePath.c_str());
+	ScoreFile.open(FullPath.c_str());
 
 	if(!ScoreFile) {
 		error("Couldn't open high score list.");

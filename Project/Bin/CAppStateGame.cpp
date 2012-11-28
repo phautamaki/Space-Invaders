@@ -442,9 +442,11 @@ void CAppStateGame::CheckHighScores() {
 	if( !HighScore.OnInit() ) {
 		error("Failed loading high scores.");
 	}
-	// Check whether player made it to the list
-	if( HighScore.CheckPoints(Player->Points) ){
-		HighScore.Add(PLAYER_NAME,Player->Points);
+	else {
+		// Check whether player made it to the list
+		if( HighScore.CheckPoints(Player->Points) ){
+			HighScore.Add(PLAYER_NAME,Player->Points);
+		}
 	}
 }
 

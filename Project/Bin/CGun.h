@@ -8,7 +8,8 @@
 enum GunTypes {
 	GUN_NORMAL = 0,
 	GUN_BEAM,
-	GUN_MISSILES
+	GUN_MISSILES,
+	GUN_ENEMY_MISSILES
 };
 
 //=============================================================================
@@ -16,7 +17,7 @@ class CGun {
     public:
         CGun();
 
-		bool OnLoad();
+		bool OnLoad(bool Enemy = false);
         void OnLoop();
 		void OnRender(SDL_Surface* Surf_Display);
 		void OnCleanup();
@@ -26,10 +27,10 @@ class CGun {
 		void Reset();
 
 		void Activate();
-		void Deactivate();
+		void Deactivate(int X = 0, int Y = 0);
 
 	private:
-		void Shoot();
+		void Shoot(int GivenX = 0, int GivenY = 0);
 		void Charge();
 
 		// Returns maximum beam width
@@ -55,6 +56,8 @@ class CGun {
 		int  BeamChannel;
 		bool BeamOn;
 		int  BeamWidth;
+
+		bool Enemy;
 
 };
 

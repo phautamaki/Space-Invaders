@@ -3,6 +3,8 @@
 #include "CFactory.h"
 #include "functions.h"
 #include "CAppStateGame.h"
+#include "Paths.h"
+#include "CSoundBank.h"
 //=============================================================================
 CEnemy::CEnemy() {
 	HP = 1;
@@ -65,6 +67,7 @@ void CEnemy::OnCollision(CEntity* Entity) {
 void CEnemy::Die() {
 	CManouvarableEntity::Die();
 	CFactory::Factory.CreateExplosion((int)X-130,(int)Y-200, EXPLOSION_ENEMY);
+	CSoundBank::SoundControl.Play(CSoundBank::EFFECT, "EnemyExplodingSound");
 	CFactory::Factory.CreateRandomItem((int)X,(int)Y+(Height/2));
 	CFactory::Factory.GetPlayer()->Points = CFactory::Factory.GetPlayer()->Points + 500;
 }

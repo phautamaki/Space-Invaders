@@ -27,6 +27,10 @@ public:
 	};
 
 	static CAppStateGame Instance;
+
+	//Holds the information about what is our current level we are playing
+	int CurrentLevelNumber;
+
 	bool			BossDead;
 	bool			BossFightOn;
 	CPlayer*		Player;
@@ -41,8 +45,7 @@ private:
 	SDL_Surface*	SpaceBG;
 	float			BG_offset;
 
-	//Holds the information about what is our current level we are playing
-	int CurrentLevelNumber;
+	
 	//Defines the X-coordinate in which the level should change. Information should be stored on the last line of the level's info-file. 
 	//This may need modification, in case we have e.g. some kind of boss at the end and the level should change after it is killed.
 	int LevelEndingPoint;

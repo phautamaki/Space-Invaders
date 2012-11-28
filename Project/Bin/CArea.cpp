@@ -131,16 +131,3 @@ CTile* CArea::GetNextHorizontalTile(int X, int Y) {
 	return RightMost;
 }
 
-//=============================================================================
-void CArea::RestoreBrokenTiles() {
-	for (unsigned int i = 0; i < BrokenTiles.size(); ++i) {
-		CTile* brokenTile = BrokenTiles.at(i);
-		if( brokenTile != NULL ) {
-			brokenTile->TypeID = brokenTile->oldTypeID;
-		}
-	}
-
-	BrokenTiles.clear();
-}
-
-//=============================================================================

@@ -3,13 +3,12 @@
 #include "CFont.h"
 #include "Paths.h"
 #include "functions.h"
+#include "CSoundBank.h"
 
 //=============================================================================
 CButton::CButton() {
 	Surf_Entity = NULL;
 	TextStart = 0;
-
-	ButtonClickSound = NULL;
 }
 
 //=============================================================================
@@ -41,8 +40,6 @@ bool CButton::OnLoad(std::string Text, int oX, int oY, bool Image) {
 	}
 
 	State = UI_NORMAL;
-
-	ButtonClickSound = Mix_LoadWAV(PATH_EFFECTS FILENAME_BUTTON_CLICK);
 
 	return true;
 }
@@ -110,7 +107,9 @@ void CButton::OnCleanup() {
 //-----------------------------------------------------------------------------
 void CButton::OnClick() {
 	CUIElement::OnClick();
-	Mix_PlayChannel( -1, ButtonClickSound, 0 );
+
+	// Play button click sound
+	CSoundBank::SoundControl.Play(CSoundBank::EFFECT, "ButtonClickSound");
 }
 
 //=============================================================================

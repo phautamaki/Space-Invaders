@@ -111,7 +111,20 @@ void CAppStateGame::OnLevelChange() {
 	CurrentLevelNumber++;
 
 	//If we have survived the last level (TODO:next state should be end credits or something?)
-	if(CurrentLevelNumber > 2) {
+	
+	if (CurrentLevelNumber == 1) {
+		debug("Area 1 loading start", 1);
+		if(CArea::AreaControl.OnLoad(PATH_MAPS PATH_AREA1) == false) {
+			return;
+		}
+	}
+	else if (CurrentLevelNumber == 2) {
+		debug("Area 2 loading start", 1);
+		if(CArea::AreaControl.OnLoad(PATH_MAPS PATH_AREA2) == false) {
+			return;
+		}
+	}
+	else if(CurrentLevelNumber > 2) {
 		NextState = APPSTATE_MAINMENU;
 		CAppStateManager::SetActiveAppState(NextState);
 		return;
@@ -166,14 +179,37 @@ void CAppStateGame::OnLoop() {
 		(unsigned int)CCamera::CameraControl.GetX() >= Level.at(LevelInfoIndex).ActiveXPosition) {
 
 		CAppStateGame::LevelInfo TmpInfo = Level.at(LevelInfoIndex);
-		
-		switch(TmpInfo.Type) {
+
+		int halfScreenX = WWIDTH/2 - WWIDTH/4;
+		int topScreenY = GUI_HEIGHT;
+
+		switch(TmpInfo.Type) { 
 			case ENTITY_TYPE_ENEMY:
 				debug("creating enemy of type: " + IntToString(TmpInfo.SubType));
 				CFactory::Factory.CreateEnemy(TmpInfo.SubType, CCamera::CameraControl.GetX()+1000, TmpInfo.YPosition);
 				break;
 			case ENTITY_TYPE_ITEM:
 				CFactory::Factory.CreateItem(TmpInfo.SubType, CCamera::CameraControl.GetX()+1000, TmpInfo.YPosition);
+				break;
+			case ENTITY_TYPE_SPECIAL_EFFECT:
+				// NOTE: y-position is now indicating the ms duration for the slowmo effect
+
+				if (TmpInfo.SubType == ENTITY_SUBTYPE_SPECIAL_EFFECT_SLOWMO_2X) {
+					CFactory::Factory.CreateSlowMotion(LEVEL_SLOWMO_2X, TmpInfo.YPosition);
+					std::string text = "2X SLOWMO";
+					
+					CFactory::Factory.CreateText(text, 2000, halfScreenX, topScreenY);
+				}
+				else if (TmpInfo.SubType == ENTITY_SUBTYPE_SPECIAL_EFFECT_SLOWMO_4X) {
+					CFactory::Factory.CreateSlowMotion(LEVEL_SLOWMO_4X, TmpInfo.YPosition);
+					std::string text = "4X SLOWMO";
+					CFactory::Factory.CreateText(text, 2000, halfScreenX, topScreenY);
+				}
+				else if (TmpInfo.SubType == ENTITY_SUBTYPE_SPECIAL_EFFECT_SLOWMO_8X) {
+					CFactory::Factory.CreateSlowMotion(LEVEL_SLOWMO_8X, TmpInfo.YPosition);
+					std::string text = "8X SLOWMO";
+					CFactory::Factory.CreateText(text, 2000, halfScreenX, topScreenY);
+				}
 				break;
 			default:
 				break;
@@ -377,14 +413,27 @@ void CAppStateGame::ResetLevel(){
 		//And kill everything except player 
 		CFactory::Factory.FlagNonPlayerEntities();
 
-		// Restore already broken breakable tiles
-		CArea::AreaControl.RestoreBrokenTiles();
+		if (CurrentLevelNumber == 1) {
+			debug("Area 1 loading start on resetlevel", 1);
+			if(CArea::AreaControl.OnLoad(PATH_MAPS PATH_AREA1) == false) {
+				return;
+			}
+		}
+		else if (CurrentLevelNumber == 2) {
+			debug("Area 2 loading start on resetlevel", 1);
+			if(CArea::AreaControl.OnLoad(PATH_MAPS PATH_AREA2) == false) {
+				return;
+			}
+		}
+
 
 		std::stringstream ss;
 		ss << CurrentLevelNumber;
 		std::string text = "LEVEL " + ss.str();
 		CFactory::Factory.CreateText(text, 2000, (int)Player->X, (int)Player->Y-100);
 	}
+
+	debug("ResetLevel() exit");
 }
 
 //-----------------------------------------------------------------------------

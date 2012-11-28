@@ -37,6 +37,9 @@ class CSoundBank {
 		void StopChannel(int channel);
 
 		void StopMusic();
+
+		void Volume(int channel, int volume);
+
 };
 
 //==============================================================================

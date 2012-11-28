@@ -4,6 +4,7 @@
 #include "functions.h"
 #include <algorithm>
 #include <cmath>
+#include "CAppStateGame.h"
 
 //==============================================================================
 CFactory CFactory::Factory;
@@ -208,6 +209,13 @@ bool CFactory::CreateEnemy(int type, int nX, int nY) {
 			tmp->SetHP(ENEMY_CANNON_HP);
 			tmp->OnRoof = true;
 			break;
+		case ENTITY_SUBTYPE_ENEMY_SHOOTING:
+			tmp = new CEnemyShipShooting();
+			tmp->OnLoad( PATH_IMAGES PATH_ENEMIES "ship1.png",ENEMY_SHIP_1_SPRITE_WIDTH, ENEMY_SHIP_1_SPRITE_HEIGHT, ENEMY_SHIP_1_MAX_FRAMES);
+			tmp->X = static_cast<float>(nX);
+			tmp->Y = static_cast<float>(nY+GUI_HEIGHT);
+			tmp->SetHP(ENEMY_SHIP_1_HP);
+			break;
 		default:
 			return false;
 	}
@@ -221,6 +229,7 @@ bool CFactory::CreateEnemy(int type, int nX, int nY) {
 
 //------------------------------------------------------------------------------
 bool CFactory::CreateRandomItem(int nX, int nY) {
+	/*
 	int RandomizedType = 0;
 	static const int candidates[] = {
 		ENTITY_SUBTYPE_ITEM_WPN_NORMAL,
@@ -237,7 +246,36 @@ bool CFactory::CreateRandomItem(int nX, int nY) {
 	if( RandomizedType > 0 ) {
 		CreateItem(RandomizedType,nX,nY);
 		return true;
+	}*/
+
+	int randomValue = SDL_GetTicks() % 100;
+
+	int selectedItem = -1;
+	int level = CAppStateGame::Instance.CurrentLevelNumber;
+
+	/* COMMON ITEMS FOR EVERY LEVEL */
+	// 10 % chance for extra points
+	if (randomValue >= 0 && randomValue <= 9) selectedItem = ENTITY_SUBTYPE_ITEM_POINTS;
+	// 10 % chance for normal weapon
+	else if (randomValue >= 10 && randomValue <= 19) selectedItem = ENTITY_SUBTYPE_ITEM_WPN_NORMAL;
+	// 5 % chance for laser beam
+	else if (randomValue >= 20 && randomValue <= 24) selectedItem = ENTITY_SUBTYPE_ITEM_WPN_BEAM;
+	
+	// TODO: 2% chance for extra life
+	//else if (randomValue >= 98 && randomValue <= 99) selectedItem = ENTITY_SUBTYPE_ITEM_EXTRA_LIFE;
+
+
+	// In level 2 also MISSILE is possible weapon
+	if (level == 2) {
+		// 5 % chance for MISSILE
+		if (randomValue >= 25 && randomValue <= 29) selectedItem = ENTITY_SUBTYPE_ITEM_WPN_MISSILE;
 	}
+	
+	if (selectedItem != -1) {
+		CreateItem(selectedItem,nX,nY);
+		return true;
+	}
+
 	return false;
 }
 

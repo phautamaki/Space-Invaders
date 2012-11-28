@@ -100,10 +100,10 @@ int CSoundBank::Play(SoundType type, std::string ID, bool loop) {
 	switch(type) {
 	
 	case EFFECT:
-		if(SoundList[ID] == NULL) return channel;
+ 		if(SoundList[ID] == NULL) return channel;
  
 		loop ? channel = Mix_PlayChannel(-1, SoundList[ID], -1) : Mix_PlayChannel(-1, SoundList[ID], 0);
-		
+
 		break;
 	
 	case MUSIC:
@@ -130,6 +130,12 @@ void CSoundBank::StopChannel(int channel) {
 void CSoundBank::StopMusic() {
 
 	Mix_HaltMusic();
+
+}
+
+void CSoundBank::Volume(int channel, int volume) {
+
+	Mix_Volume(channel, volume);
 
 }
 

@@ -144,7 +144,7 @@ bool CManouver::OnLoop() {
 
 		}
 		else {	
-			Type = M_MOVE_RIGHT;
+			Type = M_MOVE_LEFT;  //Currently only enemy uses this, so the default moving direction is meaningful to be left
 		}
 		
 	}

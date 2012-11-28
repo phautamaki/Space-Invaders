@@ -23,10 +23,14 @@ CGun::CGun() {
 	MissileDelay = PLAYER_SHOOT_DELAY_MISSILE;
 	BeamOn		= false;
 	BeamWidth   = 0;
+	Enemy = false;
 }
 
 //=============================================================================
-bool CGun::OnLoad() {
+bool CGun::OnLoad(bool enemy) {
+	
+	Enemy = enemy;
+
 	// Set to default gun and level
 	Reset();
 
@@ -122,11 +126,15 @@ unsigned int CGun::GetType() const {
 
 //-----------------------------------------------------------------------------
 void CGun::Reset() {
-	Type   = GUN_NORMAL;
+	Type   = Enemy ? GUN_ENEMY_MISSILES : GUN_NORMAL;
 	Level  = 0;
 	ChargeStart = 0;
 	ChargeLevel = 0;
 	BeamOn = false;
+	if(BeamChannel != -1) {
+		CSoundBank::SoundControl.StopChannel(BeamChannel);
+		BeamChannel = -1;
+	}
 	LastShot = 0;
 	LastMissileShot = 0;
 	MissileDelay = PLAYER_SHOOT_DELAY_MISSILE;
@@ -143,8 +151,9 @@ void CGun::Activate() {
 }
 
 //------------------------------------------------------ -----------------------
-void CGun::Deactivate() {
-	Shoot();
+void CGun::Deactivate(int X, int Y) {
+
+	X && Y ? Shoot(X, Y) : Shoot();
 	ChargeStart = 0;
 	ChargeLevel = 0;
 	BeamOn = false;
@@ -155,9 +164,9 @@ void CGun::Deactivate() {
 	}
 }
 
-void CGun::Shoot() {
-	int X = (int)CFactory::Factory.GetPlayer()->X;
-	int Y = (int)CFactory::Factory.GetPlayer()->Y;
+void CGun::Shoot(int GivenX, int GivenY) {
+	int X = GivenX ? GivenX : (int)CFactory::Factory.GetPlayer()->X;
+	int Y = GivenY ? GivenY : (int)CFactory::Factory.GetPlayer()->Y;
 
 	switch( Type ) {
 		case GUN_NORMAL:
@@ -181,7 +190,10 @@ void CGun::Shoot() {
 			}
 			break;
 		case GUN_BEAM:
-			BeamOn = true;
+			if(!BeamOn) {
+				BeamChannel = CSoundBank::SoundControl.Play(CSoundBank::EFFECT, "ShootingSoundBeam", true);
+			}
+			BeamOn = true;	
 			break;
 		case GUN_MISSILES:
 			// Always shoot basic bullet
@@ -200,8 +212,17 @@ void CGun::Shoot() {
 				else {
 					CFactory::Factory.CreateBullet(ENTITY_SUBTYPE_BULLET_MISSILE, (X + PLAYER_SPRITE_WIDTH-5), (Y + PLAYER_SPRITE_HEIGHT / 2-6));
 				}
+				CSoundBank::SoundControl.Play(CSoundBank::EFFECT, "ShootingSoundMissile");
 				LastMissileShot = SDL_GetTicks();
 			}
+			break;
+		case GUN_ENEMY_MISSILES:
+			
+			CFactory::Factory.CreateBullet(ENTITY_SUBTYPE_BULLET_ENEMY_MISSILE,(int)X - 50,(int)Y);
+			CSoundBank::SoundControl.Play(CSoundBank::EFFECT, "ShootingSoundMissile");
+
+			break;
+
 		default:
 			break;
 	}

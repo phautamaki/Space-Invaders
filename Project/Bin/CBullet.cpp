@@ -105,6 +105,29 @@ bool CBullet::OnLoad(int nType) {
 			Manouvers.push_back(tmpMan);
 
 			break;
+		case ENTITY_SUBTYPE_BULLET_ENEMY_MISSILE:
+			File = PATH_IMAGES PATH_ITEMS FILENAME_BULLET_MISSILE;
+			Width = 12;
+			Height = 12;
+			MaxFrames = 1;
+			DamageOutput = BULLET_HOMING_STR;
+
+			MaxSpeedX = 10;
+			SpeedX = -MaxSpeedX;
+			SpeedY = 0;
+			HP = 1;
+	
+			tmpMan = new CManouver(this);
+			tmpMan->OnLoad(M_MOVE_LEFT);
+			Manouvers.push_back(tmpMan);
+
+			tmpMan = new CManouver(this);
+			tmpMan->OnLoad(M_AIM);
+			tmpMan->TargetX = (int)CFactory::Factory.GetPlayer()->X;
+			tmpMan->TargetY = (int)CFactory::Factory.GetPlayer()->Y;
+			Manouvers.push_back(tmpMan);
+
+			break;
 		case ENTITY_SUBTYPE_BULLET_GENERIC:
 			delete Manouvers.at(0);
 			Manouvers.clear();
@@ -154,7 +177,7 @@ void CBullet::OnLoop() {
 	}
 
 	// Pick correct direction for missile
-	if( SubType == ENTITY_SUBTYPE_BULLET_MISSILE ) {
+	if( SubType == ENTITY_SUBTYPE_BULLET_MISSILE || SubType == ENTITY_SUBTYPE_BULLET_ENEMY_MISSILE ) {
 		int bAngle = Angle;//static_cast<int>(atan2(SpeedY,SpeedX) * (180.0/3.14159265));
 		if( bAngle > -25 && bAngle <= 25 ) {
 			CurrentFrameCol = 0;
@@ -216,11 +239,14 @@ void CBullet::OnCollision(CEntity* Entity) {
 		case ENTITY_TYPE_ITEM:
 			break;
 		case ENTITY_TYPE_PLAYER:
-			if( SubType == ENTITY_SUBTYPE_BULLET_GENERIC ) {
+			if( SubType == ENTITY_SUBTYPE_BULLET_GENERIC || SubType == ENTITY_SUBTYPE_BULLET_ENEMY_MISSILE ) {
 				Entity->Damage(DamageOutput);
 				Die();
 			}
 			break;
+		case ENTITY_TYPE_BULLET:
+			Entity->Damage(DamageOutput);
+			Die();
 		default: 
 			return;
 	}

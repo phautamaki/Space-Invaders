@@ -10,6 +10,8 @@
 
 #define FULLSCREEN_MODE false
 
+#define PLAYER_NAME "Player1"
+
 //-----------------------------------------------------------------------------
 /* Level specific settings */
 

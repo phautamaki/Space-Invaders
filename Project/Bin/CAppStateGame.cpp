@@ -395,8 +395,7 @@ void CAppStateGame::CheckHighScores() {
 	}
 	// Check whether player made it to the list
 	if( HighScore.CheckPoints(Player->Points) ){
-		std::string Name = "Player1";
-		HighScore.Add(Name,Player->Points);
+		HighScore.Add(PLAYER_NAME,Player->Points);
 	}
 }
 

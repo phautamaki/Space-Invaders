@@ -33,7 +33,7 @@ void CEnemyBoss::OnLoop() {
 		!MakeBossDeathScene &&
 		(SDL_GetTicks()-lastBubble > 1000) ) {
 
-		CFactory::Factory.CreateEnemy(ENTITY_SUBTYPE_ENEMY_BOSS_1_LITTLE_BUBBLES, (int)X-128, (int)Y+80);
+		CFactory::Factory.CreateEnemy(ENTITY_SUBTYPE_ENEMY_BOSS_1_LITTLE_BUBBLES, (int)X-64, (int)Y+80);
 		lastBubble = SDL_GetTicks();
 	}
 

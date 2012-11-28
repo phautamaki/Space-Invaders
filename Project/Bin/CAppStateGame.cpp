@@ -188,6 +188,22 @@ void CAppStateGame::OnLoop() {
 			case ENTITY_TYPE_ITEM:
 				CFactory::Factory.CreateItem(TmpInfo.SubType, CCamera::CameraControl.GetX()+1000, TmpInfo.YPosition);
 				break;
+			case ENTITY_TYPE_SPECIAL_EFFECT:
+				if (TmpInfo.SubType == ENTITY_SUBTYPE_SPECIAL_EFFECT_SLOWMO_2X) {
+					CFactory::Factory.CreateSlowMotion(LEVEL_SLOWMO_2X, 10000);
+					std::string text = "2X SLOWMO";
+					CFactory::Factory.CreateText(text, 1000, Player->X, Player->Y-100);
+				}
+				else if (TmpInfo.SubType == ENTITY_SUBTYPE_SPECIAL_EFFECT_SLOWMO_4X) {
+					CFactory::Factory.CreateSlowMotion(LEVEL_SLOWMO_4X, 10000);
+					std::string text = "4X SLOWMO";
+					CFactory::Factory.CreateText(text, 1000, Player->X, Player->Y-100);
+				}
+				else if (TmpInfo.SubType == ENTITY_SUBTYPE_SPECIAL_EFFECT_SLOWMO_8X) {
+					CFactory::Factory.CreateSlowMotion(LEVEL_SLOWMO_8X, 10000);
+					std::string text = "8X SLOWMO";
+					CFactory::Factory.CreateText(text, 1000, Player->X, Player->Y-100);
+				}
 			default:
 				break;
 		}

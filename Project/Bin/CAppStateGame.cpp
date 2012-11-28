@@ -179,8 +179,11 @@ void CAppStateGame::OnLoop() {
 		(unsigned int)CCamera::CameraControl.GetX() >= Level.at(LevelInfoIndex).ActiveXPosition) {
 
 		CAppStateGame::LevelInfo TmpInfo = Level.at(LevelInfoIndex);
-		
-		switch(TmpInfo.Type) {
+
+		int halfScreenX = WWIDTH/2 - WWIDTH/4;
+		int topScreenY = GUI_HEIGHT;
+
+		switch(TmpInfo.Type) { 
 			case ENTITY_TYPE_ENEMY:
 				debug("creating enemy of type: " + IntToString(TmpInfo.SubType));
 				CFactory::Factory.CreateEnemy(TmpInfo.SubType, CCamera::CameraControl.GetX()+1000, TmpInfo.YPosition);
@@ -189,21 +192,25 @@ void CAppStateGame::OnLoop() {
 				CFactory::Factory.CreateItem(TmpInfo.SubType, CCamera::CameraControl.GetX()+1000, TmpInfo.YPosition);
 				break;
 			case ENTITY_TYPE_SPECIAL_EFFECT:
+				// NOTE: y-position is now indicating the ms duration for the slowmo effect
+
 				if (TmpInfo.SubType == ENTITY_SUBTYPE_SPECIAL_EFFECT_SLOWMO_2X) {
-					CFactory::Factory.CreateSlowMotion(LEVEL_SLOWMO_2X, 10000);
+					CFactory::Factory.CreateSlowMotion(LEVEL_SLOWMO_2X, TmpInfo.YPosition);
 					std::string text = "2X SLOWMO";
-					CFactory::Factory.CreateText(text, 1000, Player->X, Player->Y-100);
+					
+					CFactory::Factory.CreateText(text, 2000, halfScreenX, topScreenY);
 				}
 				else if (TmpInfo.SubType == ENTITY_SUBTYPE_SPECIAL_EFFECT_SLOWMO_4X) {
-					CFactory::Factory.CreateSlowMotion(LEVEL_SLOWMO_4X, 10000);
+					CFactory::Factory.CreateSlowMotion(LEVEL_SLOWMO_4X, TmpInfo.YPosition);
 					std::string text = "4X SLOWMO";
-					CFactory::Factory.CreateText(text, 1000, Player->X, Player->Y-100);
+					CFactory::Factory.CreateText(text, 2000, halfScreenX, topScreenY);
 				}
 				else if (TmpInfo.SubType == ENTITY_SUBTYPE_SPECIAL_EFFECT_SLOWMO_8X) {
-					CFactory::Factory.CreateSlowMotion(LEVEL_SLOWMO_8X, 10000);
+					CFactory::Factory.CreateSlowMotion(LEVEL_SLOWMO_8X, TmpInfo.YPosition);
 					std::string text = "8X SLOWMO";
-					CFactory::Factory.CreateText(text, 1000, Player->X, Player->Y-100);
+					CFactory::Factory.CreateText(text, 2000, halfScreenX, topScreenY);
 				}
+				break;
 			default:
 				break;
 		}

@@ -22,16 +22,27 @@ CAppStateGame::CAppStateGame() {
 	ResetCurrentLevel = false;
 	BossFightOn = false;
 	BossDead = false;
+	GameOver = false;
 }
 
 //=============================================================================
 void CAppStateGame::OnKeyDown(SDLKey sym, SDLMod mod, Uint16 unicode) {
-	Player->OnKeyDown(sym, mod, unicode);
+	if( Input.HasFocus() ){
+		Input.OnKeyDown(sym,mod,unicode);
+	}
+	else {
+		Player->OnKeyDown(sym, mod, unicode);
+	}
 }
 
 //------------------------------------------------------------------------------
 void CAppStateGame::OnKeyUp(SDLKey sym, SDLMod mod, Uint16 unicode) {
-	Player->OnKeyUp(sym, mod, unicode);
+	if( Input.HasFocus() ){
+		Input.OnKeyUp(sym,mod,unicode);
+	}
+	else {
+		Player->OnKeyUp(sym, mod, unicode);
+	}
 }
 
 //=============================================================================
@@ -98,6 +109,11 @@ void CAppStateGame::OnActivate() {
 
 	//Plays the music
 	//CSoundBank::SoundControl.Play(CSoundBank::MUSIC, LevelMusicID);
+	if(!Input.OnLoad(PATH_IMAGES PATH_UI "input_field.png","",200,200, true)){
+		error("Couldn't load input field");
+		return;
+	}
+	Input.Hide();
 
 	debug("Game initialization successful");
 	ResetLevel();
@@ -156,6 +172,8 @@ void CAppStateGame::OnLevelChange() {
 
 //-----------------------------------------------------------------------------
 void CAppStateGame::OnDeactivate() {
+	Input.OnCleanup();
+
 	CArea::AreaControl.OnCleanup();
 
 	// Empty entities
@@ -167,6 +185,17 @@ void CAppStateGame::OnDeactivate() {
 //-----------------------------------------------------------------------------
 void CAppStateGame::OnLoop() {
 
+	if( GameOver ) {
+		if( !Input.HasFocus() ) {
+			if( Input.State == UI_NORMAL ) {
+				CHighScores HighScore;
+				HighScore.OnInit();
+				HighScore.Add(Input.GetValue(),Player->Points);
+			}
+			CAppStateManager::SetActiveAppState(NextState);
+		}
+		return;
+	}
 
 	//If the level should change
 	//if( CCamera::CameraControl.GetX() >= LevelEndingPoint ) {
@@ -315,6 +344,8 @@ void CAppStateGame::OnRender(SDL_Surface* Surf_Display) {
 
 	// Popup
 	CFactory::Factory.Popup.OnRender(Surf_Display);
+	// Input
+	Input.OnRender(Surf_Display);
 }
 
 //-----------------------------------------------------------------------------
@@ -397,7 +428,8 @@ void CAppStateGame::ResetLevel(){
 		CheckHighScores();
 
 		NextState = APPSTATE_MAINMENU;
-		CAppStateManager::SetActiveAppState(NextState);
+
+		GameOver = true;
 	}
 	else {
 		Player->TookHit = false;
@@ -445,7 +477,7 @@ void CAppStateGame::CheckHighScores() {
 	else {
 		// Check whether player made it to the list
 		if( HighScore.CheckPoints(Player->Points) ){
-			HighScore.Add(PLAYER_NAME,Player->Points);
+			Input.Show();
 		}
 	}
 }

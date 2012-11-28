@@ -29,6 +29,8 @@ class CUIElement{
 		int		State;
 		bool	Hoverable;
 
+		bool	Focus;
+
 	protected:
 		bool	Hover;
 
@@ -44,6 +46,9 @@ class CUIElement{
 		virtual void OnRender(SDL_Surface* Surf_Display);
 		virtual void OnCleanup();
 
+		virtual void OnKeyDown(SDLKey sym, SDLMod mod, Uint16 unicode);
+		virtual void OnKeyUp(SDLKey sym, SDLMod mod, Uint16 unicode);
+
 		virtual	void Disable();
 		virtual	void Enable();
 		virtual	void Hide();
@@ -51,7 +56,8 @@ class CUIElement{
 
 		virtual void OnClick();
 
-		bool IsClicked(int oX, int oY);
+		virtual bool IsClicked(int oX, int oY) const;
+		virtual bool HasFocus() const;
 };
 
 //==============================================================================

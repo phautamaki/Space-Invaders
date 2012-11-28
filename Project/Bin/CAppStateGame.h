@@ -12,6 +12,7 @@
 #include "CEnemy.h"
 #include "CSurface.h"
 #include "CFileReader.h"
+#include "CInput.h"
 
 #include "CPlayer.h"
 
@@ -44,6 +45,11 @@ private:
 	// Scrolling space background
 	SDL_Surface*	SpaceBG;
 	float			BG_offset;
+
+	// Input field
+	CInput Input;
+
+	bool GameOver;
 
 	
 	//Defines the X-coordinate in which the level should change. Information should be stored on the last line of the level's info-file. 

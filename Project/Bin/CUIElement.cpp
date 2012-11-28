@@ -7,6 +7,7 @@ std::vector<CUIElement*> 	CUIElement::UIElementList;
 CUIElement::CUIElement() {
 	Hover = false;
 	Hoverable = false;
+	Focus = false;
 	Surf_Entity = NULL;
 }
 
@@ -16,6 +17,12 @@ CUIElement::~CUIElement() {
 
 //==============================================================================
 bool CUIElement::OnLoad(char* File, int Width, int Height) {
+	if((Surf_Entity = CSurface::OnLoad(File)) == NULL) {
+		return false;
+	}
+	Width = Width;
+	Height, Height;
+
 	return true;
 }
 
@@ -40,6 +47,8 @@ void CUIElement::OnLoop() {
 //-----------------------------------------------------------------------------
 void CUIElement::OnRender(SDL_Surface* Surf_Display) {
 	if(Surf_Entity == NULL || Surf_Display == NULL) return;
+
+	CSurface::OnDraw(Surf_Display, Surf_Entity, X, Y);
 }
 
 //-----------------------------------------------------------------------------
@@ -48,6 +57,14 @@ void CUIElement::OnCleanup() {
         SDL_FreeSurface(Surf_Entity);
     }
     Surf_Entity = NULL;
+}
+
+//-----------------------------------------------------------------------------
+void CUIElement::OnKeyDown(SDLKey sym, SDLMod mod, Uint16 unicode) {
+}
+
+//-----------------------------------------------------------------------------
+void CUIElement::OnKeyUp(SDLKey sym, SDLMod mod, Uint16 unicode) {
 }
 
 //==============================================================================
@@ -81,7 +98,7 @@ void CUIElement::OnClick() {
 }
 
 //-----------------------------------------------------------------------------
-bool CUIElement::IsClicked(int oX, int oY) {
+bool CUIElement::IsClicked(int oX, int oY) const{
 	if( State == UI_DISABLED || State == UI_HIDDEN ) return false;
 
 	if( oX > X && oX < X + Width ) {
@@ -90,6 +107,13 @@ bool CUIElement::IsClicked(int oX, int oY) {
 		}
 	}
 	return false;
+}
+
+//-----------------------------------------------------------------------------
+bool CUIElement::HasFocus() const {
+	if( State == UI_DISABLED || State == UI_HIDDEN ) return false;
+
+	return Focus;
 }
 
 //==============================================================================

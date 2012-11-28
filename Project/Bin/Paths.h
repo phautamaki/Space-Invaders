@@ -51,5 +51,6 @@
 #define FILENAME_PLAYER_CRASHING	"player_ship_crashing.wav"
 #define FILENAME_ENEMY_EXPLODING	"enemy_exploding.wav"
 #define FILENAME_BOSS_EXPLODING		"boss_exploding.wav"
+#define FILENAME_TILE_BREAKING		"tile_breaking.wav"
 
 #endif

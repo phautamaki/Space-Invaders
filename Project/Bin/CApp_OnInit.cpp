@@ -23,6 +23,7 @@ bool CApp::OnInit() {
 	!CSoundBank::SoundControl.OnLoad(CSoundBank::EFFECT, "PlayerCrashingSound", PATH_EFFECTS FILENAME_PLAYER_CRASHING) ? debug("Shit hit the fan when loading PlayerCrashingSound.") : debug("Loading PlayerCrashingSound was a great success!");
 	!CSoundBank::SoundControl.OnLoad(CSoundBank::EFFECT, "ShootingSoundMissile", PATH_EFFECTS FILENAME_SHOOTING_MISSILE) ? debug("Shit hit the fan when loading ShootingSoundMissile.") : debug("Loading ShootingSoundMissile was a great success!");
 	!CSoundBank::SoundControl.OnLoad(CSoundBank::EFFECT, "ButtonClickSound", PATH_EFFECTS FILENAME_BUTTON_CLICK) ? debug("Shit hit the fan when loading ButtonClickSound.") : debug("Loading ButtonClickSound was a great success!");
+	!CSoundBank::SoundControl.OnLoad(CSoundBank::EFFECT, "TileBreakingSound", PATH_EFFECTS FILENAME_TILE_BREAKING) ? debug("Shit hit the fan when loading TileBreakingSound.") : debug("Loading TileBreakingSound was a great success!");
 	
 	debug("All sounds initialized", 1);
 

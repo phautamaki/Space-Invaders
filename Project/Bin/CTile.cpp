@@ -2,6 +2,7 @@
 #include "CTile.h"
 #include "CArea.h"
 #include "CFactory.h"
+#include "CSoundBank.h"
 
 //==============================================================================
 CTile::CTile() {
@@ -21,6 +22,7 @@ void CTile::Damage(int amount) {
 			if (TileID == 3) explosionType = EXPLOSION_TILE_3;
 
 			CFactory::Factory.CreateExplosion(X-8,Y-8, explosionType);
+			CSoundBank::SoundControl.Play(CSoundBank::EFFECT, "TileBreakingSound");
 			TypeID = TILE_TYPE_NONE;
 		}
 		else {

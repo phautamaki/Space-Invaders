@@ -245,8 +245,11 @@ void CBullet::OnCollision(CEntity* Entity) {
 			}
 			break;
 		case ENTITY_TYPE_BULLET:
-			Entity->Damage(DamageOutput);
-			Die();
+			if(Entity->SubType == ENTITY_SUBTYPE_BULLET_ENEMY_MISSILE) {
+				Entity->Damage(DamageOutput);
+				Die();
+			}
+
 		default: 
 			return;
 	}
@@ -266,7 +269,6 @@ void CBullet::OnCollision(CTile* Tile) {
 			break;
 		case TILE_TYPE_BLOCK_BREAKABLE:
 			Tile->Damage(DamageOutput);
-
 			Die();
 			break;
 		default:

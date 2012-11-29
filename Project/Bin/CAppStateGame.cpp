@@ -33,6 +33,15 @@ void CAppStateGame::OnKeyDown(SDLKey sym, SDLMod mod, Uint16 unicode) {
 	else if ( sym == SDLK_F1) {
 		CFactory::Factory.FlagNonPlayerEntities();
 	}
+	else if ( sym == SDLK_F2) {
+		Player->Gun.ChangeType(GUN_NORMAL);
+	}
+	else if ( sym == SDLK_F3) {
+		Player->Gun.ChangeType(GUN_BEAM);
+	}
+	else if ( sym == SDLK_F4) {
+		Player->Gun.ChangeType(GUN_MISSILES);
+	}
 	else {
 		Player->OnKeyDown(sym, mod, unicode);
 	}

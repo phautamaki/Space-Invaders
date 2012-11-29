@@ -109,11 +109,11 @@ void CAppStateGame::OnActivate() {
 
 	//Plays the music
 	//CSoundBank::SoundControl.Play(CSoundBank::MUSIC, LevelMusicID);
-	if(!Input.OnLoad(PATH_IMAGES PATH_UI "input_field.png","",200,200, true)){
+	if(!Input.OnLoad(PATH_IMAGES PATH_UI "input_field.png","",WWIDTH/2-165,WHEIGHT/2-55, true)){
 		error("Couldn't load input field");
 		return;
 	}
-	Input.Hide();
+	//Input.Hide();
 
 	debug("Game initialization successful");
 	ResetLevel();
@@ -192,6 +192,7 @@ void CAppStateGame::OnLoop() {
 				HighScore.OnInit();
 				HighScore.Add(Input.GetValue(),Player->Points);
 			}
+			GameOver = false;
 			CAppStateManager::SetActiveAppState(NextState);
 		}
 		return;

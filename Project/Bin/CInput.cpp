@@ -5,6 +5,7 @@
 //=============================================================================
 CInput::CInput() {
 	Text = "";
+	MaxCharacters = 10;
 }
 
 //=============================================================================
@@ -43,8 +44,12 @@ void CInput::OnRender(SDL_Surface* Surf_Display) {
 
 	// Background
 	CUIElement::OnRender(Surf_Display);
+	CFont::FontControl.Write(Surf_Display,"New high score!",X,Y);
+	CFont::FontControl.SetFontColor(0,0,0,1);
+	CFont::FontControl.Write(Surf_Display,"Name",X+10,Y+70,1);
+	CFont::FontControl.SetFontColor(255,255,0,1);
 	// Write text
-	CFont::FontControl.Write(Surf_Display,Text.c_str(),X,Y);
+	CFont::FontControl.Write(Surf_Display,Text.c_str(),X+110,Y+70,1);
 }
 
 //-----------------------------------------------------------------------------
@@ -56,20 +61,24 @@ void CInput::OnCleanup() {
 
 //-----------------------------------------------------------------------------
 void CInput::OnKeyUp(SDLKey sym, SDLMod mod, Uint16 unicode) {
-	// Numbers 0-9
-	if( (char)sym >= '0' || (char)sym >= '9' ){
-		Text += (char)sym; 
+	if( Text.length() < MaxCharacters ) {
+		// Numbers 0-9
+		if( (char)sym >= '0' || (char)sym >= '9' ){
+			Text += (char)sym; 
+		}
+		// Letters a-z
+		else if( (char)sym >= 'a' || (char)sym >= 'z' ){
+			Text += (char)sym; 
+		}
+		// Space
+		else if( sym == SDLK_SPACE ){
+			//Text += (char)sym; 
+			Text += '_';
+		}
 	}
-	// Letters a-z
-	else if( (char)sym >= 'a' || (char)sym >= 'z' ){
-		Text += (char)sym; 
-	}
-	// Space
-	else if( sym == SDLK_SPACE ){
-		Text += (char)sym; 
-	}
+
 	// Remove a character from the end 
-	else if( ( sym == SDLK_BACKSPACE ) && ( Text.length() != 0 ) ) { 
+	if( ( sym == SDLK_BACKSPACE ) && ( Text.length() != 0 ) ) { 
 		Text.erase( Text.length() - 1 ); 
 	}
 	// Return

@@ -23,6 +23,7 @@ class CInput : public CUIElement {
 
 	private:
 		std::string Text;
+		int MaxCharacters;
 };
 
 //=============================================================================

@@ -42,6 +42,9 @@ void CAppStateGame::OnKeyDown(SDLKey sym, SDLMod mod, Uint16 unicode) {
 	else if ( sym == SDLK_F4) {
 		Player->Gun.ChangeType(GUN_MISSILES);
 	}
+	else if ( sym == SDLK_F5) {
+		OnLevelChange();
+	}
 	else {
 		Player->OnKeyDown(sym, mod, unicode);
 	}

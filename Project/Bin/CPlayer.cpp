@@ -223,6 +223,12 @@ void CPlayer::OnCollision(CEntity* Entity) {
 				else if( Entity->SubType == ENTITY_SUBTYPE_ITEM_POINTS ) {
 					Points = Points+900;
 				}
+				else if( Entity->SubType == ENTITY_SUBTYPE_ITEM_LIFEUP ) {
+					Points = Points+400;
+					if( Lives < 5 ) {
+						Lives++;
+					}
+				}
 				else if (Entity->SubType == ENTITY_SUBTYPE_ITEM_KILL_ENEMIES) {
 					CFactory::Factory.CreateSlowMotion(LEVEL_SLOWMO_8X, 1000);
 					CFactory::Factory.KillEnemiesOnScreen();

@@ -371,8 +371,11 @@ void CAppStateGame::RenderUIBase(SDL_Surface* Surf_Display) const {
 void CAppStateGame::RenderUIIcons(SDL_Surface* Surf_Display) const {
 	CFont::FontControl.Write(Surf_Display,"Lives:", TILE_SIZE, TILE_SIZE,1);
 	// Life icons
+	for(unsigned int i = 0; i < PLAYER_MAX_LIVES; i++ ){
+		CSurface::OnDraw(Surf_Display, UIIcons, TILE_SIZE + (i*36), TILE_SIZE*2,140,0,35,40);
+	}
 	for(unsigned int i = 0; i < Player->Lives; i++ ){
-		CSurface::OnDraw(Surf_Display, UIIcons, TILE_SIZE + (i*30), TILE_SIZE*2,0,0,35,40);
+		CSurface::OnDraw(Surf_Display, UIIcons, TILE_SIZE + (i*36), TILE_SIZE*2,0,0,35,40);
 	}
 
 	// Weapon info

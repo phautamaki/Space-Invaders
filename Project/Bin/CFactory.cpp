@@ -19,6 +19,7 @@ CFactory::CFactory() {
 
 //------------------------------------------------------------------------------
 bool CFactory::OnInit() {
+	// TODO: Popup should be somewhere else. Make a CUI or sth for it and other UI stuff
 	Popup = CPopup();
 	if( !Popup.OnLoad("Empty", 0, 0) ) {
 		error("Couldn't create Popup-object.");
@@ -82,7 +83,6 @@ void CFactory::OnCleanup() {
 	}
 	CEntity::EntityList.clear();
 
-	// TODO: Make factory keep player data while changing levels
 	Players.clear();
 }
 
@@ -145,7 +145,6 @@ void CFactory::FlagNonPlayerEntities() {
 }
 
 //------------------------------------------------------------------------------
-// TODO: Store player in factory, so the player data can be saved between levels
 CPlayer* CFactory::CreatePlayer(int nX, int nY) {
 	CPlayer* tmp = new CPlayer;
 	if( !tmp->OnLoad( PATH_IMAGES FILENAME_PLAYER, PLAYER_SPRITE_WIDTH, PLAYER_SPRITE_HEIGHT, PLAYER_MAX_FRAMES) ){
@@ -161,7 +160,7 @@ CPlayer* CFactory::CreatePlayer(int nX, int nY) {
 }
 
 //------------------------------------------------------------------------------
-// TODO: Could make a single function of these?
+// TODO: Figure out a better way to do this
 bool CFactory::CreateEnemy(int type, int nX, int nY) {
 	CEnemy* tmp = NULL;
 	
@@ -250,7 +249,7 @@ bool CFactory::CreateEnemy(int type, int nX, int nY) {
 
 //------------------------------------------------------------------------------
 bool CFactory::CreateRandomItem(int nX, int nY) {
-	/*
+	/* Algorithm based... not very random
 	int RandomizedType = 0;
 	static const int candidates[] = {
 		ENTITY_SUBTYPE_ITEM_WPN_NORMAL,
@@ -269,6 +268,7 @@ bool CFactory::CreateRandomItem(int nX, int nY) {
 		return true;
 	}*/
 
+	// Mod based... mucho better
 	int randomValue = SDL_GetTicks() % 100;
 
 	int selectedItem = -1;
@@ -283,6 +283,8 @@ bool CFactory::CreateRandomItem(int nX, int nY) {
 	else if (randomValue >= 20 && randomValue <= 24) selectedItem = ENTITY_SUBTYPE_ITEM_WPN_BEAM;
 	// 5 % chance for kill enemies item
 	else if (randomValue >= 25 && randomValue <= 29) selectedItem = ENTITY_SUBTYPE_ITEM_KILL_ENEMIES;
+	// 5 % chance for 1UP mushr...item
+	else if (randomValue >= 30 && randomValue <= 34) selectedItem = ENTITY_SUBTYPE_ITEM_LIFEUP;
 	
 	// TODO: 2% chance for extra life
 	//else if (randomValue >= 98 && randomValue <= 99) selectedItem = ENTITY_SUBTYPE_ITEM_EXTRA_LIFE;
@@ -291,7 +293,7 @@ bool CFactory::CreateRandomItem(int nX, int nY) {
 	// In level 2 also MISSILE is possible weapon
 	if (level == 2) {
 		// 5 % chance for MISSILE
-		if (randomValue >= 30 && randomValue <= 34) selectedItem = ENTITY_SUBTYPE_ITEM_WPN_MISSILE;
+		if (randomValue >= 35 && randomValue <= 39) selectedItem = ENTITY_SUBTYPE_ITEM_WPN_MISSILE;
 	}
 	
 	if (selectedItem != -1) {
@@ -304,30 +306,29 @@ bool CFactory::CreateRandomItem(int nX, int nY) {
 
 //------------------------------------------------------------------------------
 bool CFactory::CreateItem(int type, int nX, int nY) {
-	CItem* tmp = 0;
+	CItem* tmp = new CItem;
 
 	switch( type ) {
 		case ENTITY_SUBTYPE_ITEM_WPN_NORMAL:
-			tmp = new CItem;
 			tmp->OnLoad( PATH_IMAGES PATH_ITEMS FILENAME_ITEM_WPN_NORMAL, 20, 21, 1);
 			break;
 		case ENTITY_SUBTYPE_ITEM_WPN_BEAM:
-			tmp = new CItem;
 			tmp->OnLoad( PATH_IMAGES PATH_ITEMS FILENAME_ITEM_WPN_BEAM, 20, 21, 1);
 			break;
 		case ENTITY_SUBTYPE_ITEM_WPN_MISSILE:
-			tmp = new CItem;
 			tmp->OnLoad( PATH_IMAGES PATH_ITEMS FILENAME_ITEM_WPN_MISSILES, 20, 21, 1);
 			break;
 		case ENTITY_SUBTYPE_ITEM_POINTS:
-			tmp = new CItem;
 			tmp->OnLoad( PATH_IMAGES PATH_ITEMS FILENAME_ITEM_POINTS,13, 23, 7);
 			break;
 		case ENTITY_SUBTYPE_ITEM_KILL_ENEMIES:
-			tmp = new CItem;
 			tmp->OnLoad( PATH_IMAGES PATH_ITEMS FILENAME_ITEM_KILL_ENEMIES,24, 22, 1);
 			break;
+		case ENTITY_SUBTYPE_ITEM_LIFEUP:
+			tmp->OnLoad( PATH_IMAGES PATH_ITEMS FILENAME_ITEM_LIFEUP,20, 21, 1);
+			break;
 		default:
+			delete tmp;
 			return false;
 	}
 	tmp->SubType = type;

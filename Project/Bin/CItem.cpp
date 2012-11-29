@@ -1,6 +1,5 @@
 //=============================================================================
 #include "CItem.h"
-
 //=============================================================================
 CItem::CItem() {
 	MaxSpeedX = 3;
@@ -25,7 +24,6 @@ bool CItem::OnLoad(char* File, int Width, int Height, int MaxFrames) {
 	Manouvers.push_back(tmpMan);
 	
 	CurrentManouver = Manouvers.begin();
-	
     return true;
 }
 
@@ -38,6 +36,7 @@ void CItem::OnLoop() {
 
 //-----------------------------------------------------------------------------
 void CItem::OnRender(SDL_Surface* Surf_Display) {
+
 	CManouvarableEntity::OnRender(Surf_Display);
 }
 

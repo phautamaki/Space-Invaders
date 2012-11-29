@@ -35,6 +35,7 @@
 //-----------------------------------------------------------------------------
 /* Player specific settings */
 #define PLAYER_STARTING_LIVES	3
+#define PLAYER_MAX_LIVES		5
 #define PLAYER_STARTING_X		100
 #define PLAYER_STARTING_Y		240
 

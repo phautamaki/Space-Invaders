@@ -25,6 +25,10 @@ bool CApp::OnInit() {
 	!CSoundBank::SoundControl.OnLoad(CSoundBank::EFFECT, "ButtonClickSound", PATH_EFFECTS FILENAME_BUTTON_CLICK) ? debug("Shit hit the fan when loading ButtonClickSound.") : debug("Loading ButtonClickSound was a great success!");
 	!CSoundBank::SoundControl.OnLoad(CSoundBank::EFFECT, "TileBreakingSound", PATH_EFFECTS FILENAME_TILE_BREAKING) ? debug("Shit hit the fan when loading TileBreakingSound.") : debug("Loading TileBreakingSound was a great success!");
 	
+	//Loads all the music
+	!CSoundBank::SoundControl.OnLoad(CSoundBank::MUSIC, "MenuMusic", PATH_MUSIC FILENAME_MENU_MUSIC) ? debug("Shit hit the fan when loading MenuMusic.") : debug("Loading MenuMusic was a great success!");
+
+
 	debug("All sounds initialized", 1);
 
 	if (TTF_Init() < 0) {

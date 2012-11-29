@@ -55,4 +55,6 @@
 #define FILENAME_BOSS_EXPLODING		"boss_exploding.wav"
 #define FILENAME_TILE_BREAKING		"tile_breaking.wav"
 
+#define FILENAME_MENU_MUSIC			"menumusic.ogg"
+
 #endif

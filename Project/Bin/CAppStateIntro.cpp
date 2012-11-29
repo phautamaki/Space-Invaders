@@ -1,6 +1,7 @@
 //=============================================================================
 #include "CAppStateIntro.h"
 #include "CAppStateManager.h"
+#include "CSoundBank.h"
 
 #include "Paths.h"
 
@@ -16,6 +17,8 @@ CAppStateIntro::CAppStateIntro() {
 void CAppStateIntro::OnActivate() {
 	NextState = APPSTATE_MAINMENU;
 	IntroLength = 3000;
+
+	CSoundBank::SoundControl.Play(CSoundBank::MUSIC, "MenuMusic");
 
 	// Load Simple Logo
 	Surf_Logo = CSurface::OnLoad(PATH_IMAGES "spaceship_splash.png");

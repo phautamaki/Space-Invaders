@@ -70,7 +70,7 @@
 
 // Cannon
 #define ENEMY_CANNON_HP				1
-#define ENEMY_CANNON_INTERVAL		300
+#define ENEMY_CANNON_INTERVAL		1200
 
 // Boss
 #define ENEMY_BOSS_1_HP				3000

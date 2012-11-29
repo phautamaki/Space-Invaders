@@ -24,7 +24,7 @@ bool CEnemyCannon::OnLoad(char* File, int Width, int Height, int MaxFrames) {
 //-----------------------------------------------------------------------------
 void CEnemyCannon::OnLoop() {
 	if( !Broken ) {
-		if(static_cast<unsigned int>(TimeStart + Interval/CFPS::FPSControl.GetSpeedFactor()) < SDL_GetTicks()) {
+		if(static_cast<unsigned int>(TimeStart + Interval) < SDL_GetTicks()) {
 			CBullet* tmp = 0;
 			if( OnRoof ) {
 				tmp = CFactory::Factory.CreateBullet(ENTITY_SUBTYPE_BULLET_GENERIC,(int)X-6,(int)Y+45);

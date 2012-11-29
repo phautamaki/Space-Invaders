@@ -154,8 +154,8 @@ bool CManouver::OnLoop() {
 		
 		if( TargetX != -1 && TargetY != -1  ) {
 
-			float YDifference = static_cast<float>(TargetY - Parent->Y);
-			float XDifference = static_cast<float>(TargetX - Parent->X);
+			float YDifference = static_cast<float>(TargetY+15 - Parent->Y);
+			float XDifference = static_cast<float>(TargetX+10 - Parent->X);
 			int AngleToTarget = XDifference > 0.0 ? (int)(atan( YDifference / XDifference ) * 180 / PI) : (int)(atan( YDifference / XDifference ) * 180 / PI) + 180;
 
 			Parent->SpeedX = cos(DegreesToRadian(AngleToTarget)) * Speed;

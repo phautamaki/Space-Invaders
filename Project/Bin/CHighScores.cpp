@@ -18,6 +18,9 @@ bool CHighScores::OnInit() {
 		return false;
 	}
 
+	NameList.clear();
+	ScoreList.clear();
+
 	// Get scores
 	std::vector<std::string> RowValues;
 	for( unsigned int i = 0; i < Rows.size(); i++ ) {

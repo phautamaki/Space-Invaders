@@ -122,7 +122,7 @@ CTile* CArea::GetNextHorizontalTile(int X, int Y) {
 
 	while( i < MAP_WIDTH ) {
 		RightMost = this->GetTile(X + (TILE_SIZE*i) ,Y);
-		if( RightMost != NULL && RightMost->TypeID != TILE_TYPE_NONE ) {
+		if( RightMost != NULL && RightMost->TypeID != TILE_TYPE_NONE && RightMost->TypeID != 3 ) {
 			break;
 		}
 		i++;

@@ -1,3 +1,6 @@
+mikko;66000
+elama;34700
+mikko;16300
 AAA;15
 BBB;14
 CCC;13
@@ -10,6 +13,3 @@ III;7
 JJJ;6
 KKK;5
 LLL;4
-MMM;3
-NNN;2
-OOO;1

@@ -19,6 +19,7 @@
 enum ExplType {			// TODO: move this code to SpecialEffect.h
 	EXPLOSION_ENEMY = 0,
 	EXPLOSION_ENEMY_BOSS_1,
+	EXPLOSION_ENEMY_BOSS_2,
 	EXPLOSION_TILE_1,
 	EXPLOSION_TILE_2,
 	EXPLOSION_TILE_3,
@@ -75,8 +76,7 @@ class CFactory {
 		bool CreateExplosion(int nX, int nY, ExplType explosion);
 		void CreateSlowMotion(SlowMotionLevel level, int duration_ms);
 
-		// Create special effects (acquired from s-box)
-		void FreezeEnemies(SlowMotionLevel level, int duration_ms);
+		// Create special effects
 		void KillEnemiesOnScreen();
 
 		void CreateText(std::string& text, int durationMS, int x, int y);

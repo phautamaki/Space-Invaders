@@ -73,6 +73,7 @@
 
 // Boss
 #define ENEMY_BOSS_1_HP				3000
+#define ENEMY_BOSS_2_HP				5000
 
 //-----------------------------------------------------------------------------
 /* Bullet strengths */

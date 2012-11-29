@@ -1,6 +1,7 @@
 //=============================================================================
 #include "CEnemyCannon.h"
 #include "CFactory.h"
+#include "CSoundBank.h"
 //=============================================================================
 
 CEnemyCannon::CEnemyCannon() {
@@ -78,6 +79,10 @@ void CEnemyCannon::OnCollision(CEntity* Entity) {
 
 //-----------------------------------------------------------------------------
 void CEnemyCannon::Die() {
+	CFactory::Factory.CreateExplosion((int)X-80,(int)Y-200, EXPLOSION_ENEMY);
+	CSoundBank::SoundControl.Play(CSoundBank::EFFECT, "EnemyExplodingSound");
+	CFactory::Factory.GetPlayer()->Points = CFactory::Factory.GetPlayer()->Points + 600;
+
 	Broken = true;
 	CurrentFrameCol = 1;
 }

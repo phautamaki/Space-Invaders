@@ -223,6 +223,10 @@ void CPlayer::OnCollision(CEntity* Entity) {
 				else if( Entity->SubType == ENTITY_SUBTYPE_ITEM_POINTS ) {
 					Points = Points+900;
 				}
+				else if (Entity->SubType == ENTITY_SUBTYPE_ITEM_KILL_ENEMIES) {
+					CFactory::Factory.CreateSlowMotion(LEVEL_SLOWMO_8X, 1000);
+					CFactory::Factory.KillEnemiesOnScreen();
+				}
 			}
 			Entity->Die();
 			break;
@@ -323,7 +327,7 @@ void CPlayer::Die() {
 	if(!TookHit){
 		Gun.Reset();
 
-		CFactory::Factory.CreateExplosion((int)X, (int)Y-200, EXPLOSION_ENEMY);
+		CFactory::Factory.CreateExplosion((int)X-60, (int)Y-200, EXPLOSION_ENEMY);
 		CFactory::Factory.CreateSlowMotion(LEVEL_SLOWMO_8X, 3000);
 		
 		DeathMoment = SDL_GetTicks();

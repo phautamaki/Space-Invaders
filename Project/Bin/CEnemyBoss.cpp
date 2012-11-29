@@ -6,12 +6,14 @@
 //=============================================================================
 
 CEnemyBoss::CEnemyBoss(int level) {
-	SpeedY = 2;
-
+	SpeedY = 5;
+	this->level = level;
 	lastBubble = 0;
 	MakeBossDeathScene = false;
 	DeathMoment = 0;
 	bossDead = false;
+
+	lastCloudSmallOne = false;
 }
 
 bool CEnemyBoss::OnLoad(char* File, int Width, int Height, int MaxFrames) {
@@ -27,14 +29,39 @@ void CEnemyBoss::OnLoop() {
 	if (Y > 250+GUI_HEIGHT) SpeedY = -2;
 	else if (Y < 50+GUI_HEIGHT) SpeedY = 2;
 
-	// Make a new little bubble enemy every second
-	if ( CAppStateGame::Instance.Player->IsActive() &&
-		CAppStateGame::Instance.BossFightOn &&
-		!MakeBossDeathScene &&
-		(SDL_GetTicks()-lastBubble > 1000) ) {
+	// Get random value from 20 to 140
+	int randomY = (SDL_GetTicks() % 120) + 20;
 
-		CFactory::Factory.CreateEnemy(ENTITY_SUBTYPE_ENEMY_BOSS_1_LITTLE_BUBBLES, (int)X-64, (int)Y+80);
-		lastBubble = SDL_GetTicks();
+	if (level == 1) {
+		// Make a new little bubble enemy every 750ms
+		if ( CAppStateGame::Instance.Player->IsActive() &&
+			CAppStateGame::Instance.BossFightOn &&
+			!MakeBossDeathScene &&
+			(SDL_GetTicks()-lastBubble > 750) ) {
+
+			CFactory::Factory.CreateEnemy(ENTITY_SUBTYPE_ENEMY_BOSS_1_LITTLE_BUBBLES, (int)X-64, (int)Y+randomY);
+			lastBubble = SDL_GetTicks();
+		}
+	}
+	else if (level == 2) {
+		// Make a new little cloud enemy every half
+		if ( CAppStateGame::Instance.Player->IsActive() &&
+			CAppStateGame::Instance.BossFightOn &&
+			!MakeBossDeathScene &&
+			(SDL_GetTicks()-lastBubble > 500) ) {
+
+			// Make every other little enemy to be the other one
+			if (lastCloudSmallOne) {
+				CFactory::Factory.CreateEnemy(ENTITY_SUBTYPE_ENEMY_BOSS_2_MEDIUM_CLOUD, (int)X-64, (int)Y+randomY);
+				lastCloudSmallOne = false;
+			}
+			else {
+				CFactory::Factory.CreateEnemy(ENTITY_SUBTYPE_ENEMY_BOSS_2_LITTLE_CLOUD, (int)X-64, (int)Y+randomY);
+				lastCloudSmallOne = true;
+			}
+
+			lastBubble = SDL_GetTicks();
+		}
 	}
 
 	CEnemy::OnLoop();
@@ -97,11 +124,21 @@ void CEnemyBoss::Die() {
 	MakeBossDeathScene = true;
 	DeathMoment = SDL_GetTicks();
 
-	CFactory::Factory.CreateExplosion((int)X,(int)Y-60, EXPLOSION_ENEMY_BOSS_1);
-	CFactory::Factory.CreateExplosion((int)X-40,(int)Y-120, EXPLOSION_ENEMY_BOSS_1);
-	CFactory::Factory.CreateExplosion((int)X+30,(int)Y-170, EXPLOSION_ENEMY_BOSS_1);
-	CSoundBank::SoundControl.Play(CSoundBank::EFFECT, "BossExplodingSound");
-	CFactory::Factory.GetPlayer()->Points = CFactory::Factory.GetPlayer()->Points + 5000;
+	if (level == 1) {
+		CFactory::Factory.CreateExplosion((int)X,(int)Y-60, EXPLOSION_ENEMY_BOSS_1);
+		CFactory::Factory.CreateExplosion((int)X-40,(int)Y-120, EXPLOSION_ENEMY_BOSS_1);
+		CFactory::Factory.CreateExplosion((int)X+30,(int)Y-170, EXPLOSION_ENEMY_BOSS_1);
+		CSoundBank::SoundControl.Play(CSoundBank::EFFECT, "BossExplodingSound");
+		CFactory::Factory.GetPlayer()->Points = CFactory::Factory.GetPlayer()->Points + 5000;
+	}
+	else if (level == 2) {
+		CFactory::Factory.CreateExplosion((int)X-10,(int)Y-60, EXPLOSION_ENEMY_BOSS_2);
+		CFactory::Factory.CreateExplosion((int)X+20,(int)Y-10, EXPLOSION_ENEMY_BOSS_2);
+		CFactory::Factory.CreateExplosion((int)X-40,(int)Y-120, EXPLOSION_ENEMY_BOSS_2);
+		CFactory::Factory.CreateExplosion((int)X+30,(int)Y-170, EXPLOSION_ENEMY_BOSS_2);
+		CSoundBank::SoundControl.Play(CSoundBank::EFFECT, "BossExplodingSound");
+		CFactory::Factory.GetPlayer()->Points = CFactory::Factory.GetPlayer()->Points + 10000;
+	}
 }
 
 bool CEnemyBoss::IsDead() {

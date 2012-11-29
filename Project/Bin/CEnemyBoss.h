@@ -27,6 +27,9 @@ private:
 	int lastBubble;
 	bool MakeBossDeathScene;
 	int DeathMoment;
+	int level;
+
+	bool lastCloudSmallOne;
 
 	bool bossDead;
 };

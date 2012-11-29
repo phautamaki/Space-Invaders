@@ -213,9 +213,6 @@ void CAppStateGame::OnLoop() {
 
 		CAppStateGame::LevelInfo TmpInfo = Level.at(LevelInfoIndex);
 
-		int halfScreenX = WWIDTH/2 - WWIDTH/4;
-		int topScreenY = GUI_HEIGHT;
-
 		switch(TmpInfo.Type) { 
 			case ENTITY_TYPE_ENEMY:
 				debug("creating enemy of type: " + IntToString(TmpInfo.SubType));
@@ -229,19 +226,12 @@ void CAppStateGame::OnLoop() {
 
 				if (TmpInfo.SubType == ENTITY_SUBTYPE_SPECIAL_EFFECT_SLOWMO_2X) {
 					CFactory::Factory.CreateSlowMotion(LEVEL_SLOWMO_2X, TmpInfo.YPosition);
-					std::string text = "2X SLOWMO";
-					
-					CFactory::Factory.CreateText(text, 2000, halfScreenX, topScreenY);
 				}
 				else if (TmpInfo.SubType == ENTITY_SUBTYPE_SPECIAL_EFFECT_SLOWMO_4X) {
 					CFactory::Factory.CreateSlowMotion(LEVEL_SLOWMO_4X, TmpInfo.YPosition);
-					std::string text = "4X SLOWMO";
-					CFactory::Factory.CreateText(text, 2000, halfScreenX, topScreenY);
 				}
 				else if (TmpInfo.SubType == ENTITY_SUBTYPE_SPECIAL_EFFECT_SLOWMO_8X) {
 					CFactory::Factory.CreateSlowMotion(LEVEL_SLOWMO_8X, TmpInfo.YPosition);
-					std::string text = "8X SLOWMO";
-					CFactory::Factory.CreateText(text, 2000, halfScreenX, topScreenY);
 				}
 				break;
 			default:

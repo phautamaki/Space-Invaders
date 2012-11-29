@@ -216,6 +216,27 @@ bool CFactory::CreateEnemy(int type, int nX, int nY) {
 			tmp->Y = static_cast<float>(nY+GUI_HEIGHT);
 			tmp->SetHP(ENEMY_SHIP_1_HP);
 			break;
+		case ENTITY_SUBTYPE_ENEMY_BOSS_2:
+			tmp = new CEnemyBoss(2);
+			tmp->OnLoad( PATH_IMAGES PATH_ENEMIES "boss_level2.png",128, 160, 1);
+			tmp->X = static_cast<float>(nX);
+			tmp->Y = static_cast<float>(nY+GUI_HEIGHT);
+			tmp->SetHP(ENEMY_BOSS_2_HP);
+			break;
+		case ENTITY_SUBTYPE_ENEMY_BOSS_2_LITTLE_CLOUD:
+			tmp = new CEnemyShip;
+			tmp->OnLoad( PATH_IMAGES PATH_ENEMIES "boss_level2_cloud_small.png",32, 64, 1);
+			tmp->X = static_cast<float>(nX);
+			tmp->Y = static_cast<float>(nY);
+			tmp->SetHP(ENEMY_SHIP_1_HP);
+			break;
+		case ENTITY_SUBTYPE_ENEMY_BOSS_2_MEDIUM_CLOUD:
+			tmp = new CEnemyShip;
+			tmp->OnLoad( PATH_IMAGES PATH_ENEMIES "boss_level2_cloud_medium.png",64, 64, 1);
+			tmp->X = static_cast<float>(nX);
+			tmp->Y = static_cast<float>(nY);
+			tmp->SetHP(ENEMY_SHIP_1_HP*2);
+			break;
 		default:
 			return false;
 	}
@@ -260,6 +281,8 @@ bool CFactory::CreateRandomItem(int nX, int nY) {
 	else if (randomValue >= 10 && randomValue <= 19) selectedItem = ENTITY_SUBTYPE_ITEM_WPN_NORMAL;
 	// 5 % chance for laser beam
 	else if (randomValue >= 20 && randomValue <= 24) selectedItem = ENTITY_SUBTYPE_ITEM_WPN_BEAM;
+	// 5 % chance for kill enemies item
+	else if (randomValue >= 25 && randomValue <= 29) selectedItem = ENTITY_SUBTYPE_ITEM_KILL_ENEMIES;
 	
 	// TODO: 2% chance for extra life
 	//else if (randomValue >= 98 && randomValue <= 99) selectedItem = ENTITY_SUBTYPE_ITEM_EXTRA_LIFE;
@@ -268,7 +291,7 @@ bool CFactory::CreateRandomItem(int nX, int nY) {
 	// In level 2 also MISSILE is possible weapon
 	if (level == 2) {
 		// 5 % chance for MISSILE
-		if (randomValue >= 25 && randomValue <= 29) selectedItem = ENTITY_SUBTYPE_ITEM_WPN_MISSILE;
+		if (randomValue >= 30 && randomValue <= 34) selectedItem = ENTITY_SUBTYPE_ITEM_WPN_MISSILE;
 	}
 	
 	if (selectedItem != -1) {
@@ -299,6 +322,10 @@ bool CFactory::CreateItem(int type, int nX, int nY) {
 		case ENTITY_SUBTYPE_ITEM_POINTS:
 			tmp = new CItem;
 			tmp->OnLoad( PATH_IMAGES PATH_ITEMS FILENAME_ITEM_POINTS,13, 23, 7);
+			break;
+		case ENTITY_SUBTYPE_ITEM_KILL_ENEMIES:
+			tmp = new CItem;
+			tmp->OnLoad( PATH_IMAGES PATH_ITEMS FILENAME_ITEM_KILL_ENEMIES,24, 22, 1);
 			break;
 		default:
 			return false;
@@ -345,6 +372,12 @@ bool CFactory::CreateExplosion(int nX, int nY, ExplType explosion){
 		}
 		tmp->Anim_Control.AnimateOnce = true;
 	}
+	else if (explosion == EXPLOSION_ENEMY_BOSS_2) {
+		if(!tmp->OnLoad( PATH_IMAGES PATH_SPECIALEFFECTS "animations/blue_explosion.png",120, 120, 12)){
+			return false;
+		}
+		tmp->Anim_Control.AnimateOnce = true;
+	}
 	/*
 	// TODO: own explosion .png
 	else if (explosion == EXPLOSION_TILE_2) {
@@ -382,24 +415,18 @@ void CFactory::CreateSlowMotion(SlowMotionLevel level, int duration_ms) {
 	SMLevel = level;
 }
 
-//------------------------------------------------------------------------------
-void CFactory::FreezeEnemies(SlowMotionLevel level, int duration_ms) {
-	return; // TODO: make
-}
 
 //------------------------------------------------------------------------------
-// TODO: seems to be very unstable
 void CFactory::KillEnemiesOnScreen() {
-	std::vector<CEntity*>::iterator it = CEntity::EntityList.begin();
-	while( it != CEntity::EntityList.end() ) {
-		if ((*it) != NULL && (*it)->Type == ENTITY_TYPE_ENEMY && !((*it)->IsDead())) {
-			int x = (int)((*it)->X);
-			int y = (int)((*it)->Y);
-			//CreateExplosion(x, y, EXPLOSION_ENEMY);
-			(*it)->Kill();
-		}
-		++it;
-	}
+	for(unsigned int i = 0;i < CEntity::EntityList.size();i++) {
+		if(!CEntity::EntityList[i] || CEntity::EntityList[i]->Type == ENTITY_TYPE_PLAYER) continue;
+		else if (CEntity::EntityList[i]->Type != ENTITY_TYPE_ENEMY) continue;
+		else if (CEntity::EntityList[i]->SubType == ENTITY_SUBTYPE_ENEMY_BOSS_1) continue;
+		else if (CEntity::EntityList[i]->SubType == ENTITY_SUBTYPE_ENEMY_BOSS_2) continue;
+
+		CEntity::EntityList[i]->Die();
+		CEntity::EntityList[i]->Kill();
+    }
 
 	return;
 }

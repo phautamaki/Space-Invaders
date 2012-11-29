@@ -30,6 +30,9 @@ void CAppStateGame::OnKeyDown(SDLKey sym, SDLMod mod, Uint16 unicode) {
 	if( Input.HasFocus() ){
 		Input.OnKeyDown(sym,mod,unicode);
 	}
+	else if ( sym == SDLK_F1) {
+		CFactory::Factory.FlagNonPlayerEntities();
+	}
 	else {
 		Player->OnKeyDown(sym, mod, unicode);
 	}
@@ -113,7 +116,7 @@ void CAppStateGame::OnActivate() {
 		error("Couldn't load input field");
 		return;
 	}
-	//Input.Hide();
+	Input.Hide();
 
 	debug("Game initialization successful");
 	ResetLevel();

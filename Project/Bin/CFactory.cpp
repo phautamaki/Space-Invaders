@@ -424,6 +424,7 @@ void CFactory::KillEnemiesOnScreen() {
 		else if (CEntity::EntityList[i]->Type != ENTITY_TYPE_ENEMY) continue;
 		else if (CEntity::EntityList[i]->SubType == ENTITY_SUBTYPE_ENEMY_BOSS_1) continue;
 		else if (CEntity::EntityList[i]->SubType == ENTITY_SUBTYPE_ENEMY_BOSS_2) continue;
+		else if (CEntity::EntityList[i]->SubType == ENTITY_SUBTYPE_ENEMY_METEORITE) continue;
 
 		CEntity::EntityList[i]->Die();
 		CEntity::EntityList[i]->Kill();

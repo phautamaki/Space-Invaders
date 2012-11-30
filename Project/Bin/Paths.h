@@ -56,5 +56,9 @@
 #define FILENAME_TILE_BREAKING		"tile_breaking.wav"
 
 #define FILENAME_MENU_MUSIC			"menumusic.ogg"
+#define FILENAME_LEVEL_1_MUSIC		"level1music.ogg"
+#define FILENAME_LEVEL_2_MUSIC		"level2music.ogg"
+#define FILENAME_BOSS_1_MUSIC		"boss1music.ogg"
+#define	FILENAME_BOSS_2_MUSIC		"boss2music.ogg"
 
 #endif

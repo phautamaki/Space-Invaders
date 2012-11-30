@@ -32,7 +32,7 @@ class CSoundBank {
 		void OnCleanup();
 
 	public:
-		int Play(SoundType type, std::string ID, bool loop = false);
+		int Play(SoundType type, std::string ID, bool loop = false, int volume = 128);
 
 		void StopChannel(int channel);
 

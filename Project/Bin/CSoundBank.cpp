@@ -42,10 +42,9 @@ bool CSoundBank::OnLoad(SoundType type, std::string ID, char* File) {
 
 		MusicList.insert(make_pair(ID, TempMusic));
 
-		if( MusicList.size() - 1) {
+		if(MusicList.size()) {
 			std::string filename = File;
 			debug("Loaded music " + filename, 2);
-			return false;
 		}
 		return true;
 		break;
@@ -93,27 +92,32 @@ void CSoundBank::OnCleanup() {
 }
 
 //==============================================================================
-int CSoundBank::Play(SoundType type, std::string ID, bool loop) {
+int CSoundBank::Play(SoundType type, std::string ID, bool loop, int volume) {
 
 	int channel = -1;
+	int tmpChannel = -1;
 	
 	switch(type) {
 	
 	case EFFECT:
  		if(SoundList[ID] == NULL) return channel;
- 
-		loop ? channel = Mix_PlayChannel(-1, SoundList[ID], -1) : Mix_PlayChannel(-1, SoundList[ID], 0);
+
+		tmpChannel = loop ? Mix_PlayChannel(-1, SoundList[ID], -1) : Mix_PlayChannel(-1, SoundList[ID], 0);
+		Mix_Volume(tmpChannel, volume);
+
+		if(loop) channel = tmpChannel;
 
 		break;
 	
 	case MUSIC:
 		if(MusicList[ID] == NULL) return channel;
 
-		//Stops the current music playback
-		Mix_HaltMusic();
+		//Stops the current music playback	
+		if(Mix_PlayingMusic()) Mix_FadeOutMusic(500);
 			
 		//Plays the new music
-		Mix_PlayMusic(MusicList[ID], -1);
+		Mix_FadeInMusic(MusicList[ID], -1, 500);
+		Mix_VolumeMusic(volume);
 		
 		break;
 	}
@@ -129,7 +133,7 @@ void CSoundBank::StopChannel(int channel) {
 
 void CSoundBank::StopMusic() {
 
-	Mix_HaltMusic();
+	Mix_FadeOutMusic(500);
 
 }
 

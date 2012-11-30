@@ -30,6 +30,8 @@ private:
 	bool MakeBossDeathScene;
 	int DeathMoment;
 	int level;
+	unsigned int spawningMoment;
+	bool bossMusicPlaying;
 
 	bool lastCloudSmallOne;
 

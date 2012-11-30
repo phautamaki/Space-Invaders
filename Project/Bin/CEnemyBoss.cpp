@@ -3,6 +3,7 @@
 #include "CAppStateGame.h"
 #include "CFactory.h"
 #include "CSoundBank.h"
+#include "functions.h"
 //=============================================================================
 
 CEnemyBoss::CEnemyBoss(int level) {
@@ -14,6 +15,11 @@ CEnemyBoss::CEnemyBoss(int level) {
 	bossDead = false;
 
 	lastCloudSmallOne = false;
+
+	CSoundBank::SoundControl.StopMusic();
+
+	spawningMoment = SDL_GetTicks();
+	bossMusicPlaying = false;
 }
 
 bool CEnemyBoss::OnLoad(char* File, int Width, int Height, int MaxFrames) {
@@ -25,6 +31,17 @@ bool CEnemyBoss::OnLoad(char* File, int Width, int Height, int MaxFrames) {
 }
 
 void CEnemyBoss::OnLoop() {
+
+	if(!bossMusicPlaying && SDL_GetTicks() > spawningMoment + 1000) {
+		
+		//Plays boss music
+		std::string BossMusicID = "Boss"+IntToString(level) + "Music";
+
+		//Loads the level music
+		CSoundBank::SoundControl.Play(CSoundBank::MUSIC, BossMusicID, false, 100);
+
+		bossMusicPlaying = true;
+	}
 
 	if (Y > 250+GUI_HEIGHT) SpeedY = -2;
 	else if (Y < 50+GUI_HEIGHT) SpeedY = 2;
@@ -139,6 +156,8 @@ void CEnemyBoss::Die() {
 		CSoundBank::SoundControl.Play(CSoundBank::EFFECT, "BossExplodingSound");
 		CFactory::Factory.GetPlayer()->Points = CFactory::Factory.GetPlayer()->Points + 10000;
 	}
+
+	CSoundBank::SoundControl.StopMusic();
 }
 
 bool CEnemyBoss::IsDead() {

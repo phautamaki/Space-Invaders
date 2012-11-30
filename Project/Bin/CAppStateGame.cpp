@@ -118,14 +118,11 @@ void CAppStateGame::OnActivate() {
 	CCamera::CameraControl.TargetMode = TARGET_MODE_NORMAL;
 	debug("Camera set", 1);
 
-	std::string LevelMusicID = IntToString(CurrentLevelNumber);
-	std::string LevelMusicFile = "level" + IntToString(CurrentLevelNumber) + "music.ogg";
+	std::string LevelMusicID = "Level"+IntToString(CurrentLevelNumber) + "Music";
 
-	//Loads the level music TODO: Music!
-	//CSoundBank::SoundControl.OnLoad(CSoundBank::MUSIC, LevelMusicID, PATH_MUSIC "level1music.ogg");
+	//Plays the level music
+	CSoundBank::SoundControl.Play(CSoundBank::MUSIC, LevelMusicID, false, 70);
 
-	//Plays the music
-	//CSoundBank::SoundControl.Play(CSoundBank::MUSIC, LevelMusicID);
 	if(!Input.OnLoad(PATH_IMAGES PATH_UI "input_field.png","",WWIDTH/2-165,WHEIGHT/2-55, true)){
 		error("Couldn't load input field");
 		return;
@@ -174,14 +171,10 @@ void CAppStateGame::OnLevelChange() {
 	//Let's set the new level ending point
 	LevelEndingPoint = Level.back().ActiveXPosition;
 
-	std::string LevelMusicID = IntToString(CurrentLevelNumber);
-	std::string LevelMusicFile = "level"+IntToString(CurrentLevelNumber) + "music.ogg";
+	std::string LevelMusicID = "Level"+IntToString(CurrentLevelNumber) + "Music";
 
-	//Loads the level music TODO: Music!
-	//CSoundBank::SoundControl.OnLoad(CSoundBank::MUSIC, LevelMusicID, PATH_MUSIC "level2music.ogg");
-
-	//Plays the music
-	//CSoundBank::SoundControl.Play(CSoundBank::MUSIC, LevelMusicID);
+	//Play the level music
+	CSoundBank::SoundControl.Play(CSoundBank::MUSIC, LevelMusicID, false, 70);
 
 	levelBeginningScores = Player->Points;
 	keepOldGun = true;
@@ -199,8 +192,6 @@ void CAppStateGame::OnDeactivate() {
 
 	// Empty entities
 	CFactory::Factory.OnCleanup();
-
-	//CSoundBank::SoundControl.OnCleanup();
 }
 
 //-----------------------------------------------------------------------------
@@ -215,6 +206,9 @@ void CAppStateGame::OnLoop() {
 			}
 			GameOver = false;
 			CAppStateManager::SetActiveAppState(NextState);
+
+			CSoundBank::SoundControl.Play(CSoundBank::MUSIC, "MenuMusic");
+
 		}
 		return;
 	}
@@ -479,6 +473,10 @@ void CAppStateGame::ResetLevel(){
 			}
 		}
 
+		std::string LevelMusicID = "Level"+IntToString(CurrentLevelNumber) + "Music";
+
+		//Loads the level music
+		CSoundBank::SoundControl.Play(CSoundBank::MUSIC, LevelMusicID, false, 70);
 
 		std::stringstream ss;
 		ss << CurrentLevelNumber;

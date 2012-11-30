@@ -27,6 +27,10 @@ bool CApp::OnInit() {
 	
 	//Loads all the music
 	!CSoundBank::SoundControl.OnLoad(CSoundBank::MUSIC, "MenuMusic", PATH_MUSIC FILENAME_MENU_MUSIC) ? debug("Shit hit the fan when loading MenuMusic.") : debug("Loading MenuMusic was a great success!");
+	!CSoundBank::SoundControl.OnLoad(CSoundBank::MUSIC, "Level1Music", PATH_MUSIC FILENAME_LEVEL_1_MUSIC) ? debug("Shit hit the fan when loading Level1Music.") : debug("Loading Level1Music was a great success!");
+	!CSoundBank::SoundControl.OnLoad(CSoundBank::MUSIC, "Boss1Music", PATH_MUSIC FILENAME_BOSS_1_MUSIC) ? debug("Shit hit the fan when loading Boss1Music.") : debug("Loading Boss1Music was a great success!");
+	!CSoundBank::SoundControl.OnLoad(CSoundBank::MUSIC, "Level2Music", PATH_MUSIC FILENAME_LEVEL_2_MUSIC) ? debug("Shit hit the fan when loading Level2Music.") : debug("Loading Level2Music was a great success!");	
+	!CSoundBank::SoundControl.OnLoad(CSoundBank::MUSIC, "Boss2Music", PATH_MUSIC FILENAME_BOSS_2_MUSIC) ? debug("Shit hit the fan when loading Boss2Music.") : debug("Loading Boss2Music was a great success!");
 
 
 	debug("All sounds initialized", 1);

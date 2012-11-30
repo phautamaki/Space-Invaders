@@ -23,6 +23,8 @@ class CEnemyBoss : public CEnemy {
 
 		virtual bool IsDead();
 
+		virtual void Kill();
+
 private:
 	int lastBubble;
 	bool MakeBossDeathScene;

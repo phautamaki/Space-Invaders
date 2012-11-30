@@ -19,6 +19,8 @@ class CEnemy : public CManouvarableEntity {
 
 		virtual bool IsDead();
 
+		virtual void Kill();
+
 //------------------------------------------------------------------------------
 	public:
 		bool OnRoof;

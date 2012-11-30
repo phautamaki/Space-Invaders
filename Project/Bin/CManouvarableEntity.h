@@ -22,6 +22,8 @@ class CManouvarableEntity : public CEntity {
 
 		virtual bool IsDead();
 
+		virtual void Kill();
+
 	protected:
 		std::vector<CManouver*>::iterator CurrentManouver;
 		std::vector<CManouver*> Manouvers;

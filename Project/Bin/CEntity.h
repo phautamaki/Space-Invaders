@@ -133,7 +133,7 @@ public:
 	bool IsActive();
 	virtual void Die();
 	virtual bool IsDead();
-	void Kill(); // Sets Dead = true
+	virtual void Kill(); // Sets Dead = true
 	void Damage(int Amount);
 	void SetHP(int Amount);
 

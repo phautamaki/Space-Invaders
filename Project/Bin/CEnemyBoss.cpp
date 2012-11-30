@@ -144,3 +144,7 @@ void CEnemyBoss::Die() {
 bool CEnemyBoss::IsDead() {
 	return bossDead;
 }
+
+void CEnemyBoss::Kill() {
+	bossDead = true;
+}

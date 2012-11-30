@@ -39,6 +39,9 @@ class CGun {
 		SDL_Surface* LaserBody;
 		SDL_Surface* LaserEnd;
 
+		unsigned int LaserStartTime;
+		unsigned int LaserInterval;
+
 	public:
 		int X;
 		int Y;

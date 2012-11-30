@@ -24,6 +24,9 @@ CGun::CGun() {
 	BeamOn		= false;
 	BeamWidth   = 0;
 	Enemy = false;
+
+	LaserStartTime = 0;
+	LaserInterval  = 10; //ms
 }
 
 //=============================================================================
@@ -278,11 +281,14 @@ int CGun::UpdateBeamWidth(int StartX, int StartY) {
 		BeamWidth = MaxWidth;
 
 		// Damage
-		if( FoundTile ){
-			ClosestTile->Damage(BULLET_BEAM_STR+(BULLET_BEAM_STR*Level));
-		}
-		else if( FoundEnemy ) {
-			ClosestEntity->Damage(BULLET_BEAM_STR+(BULLET_BEAM_STR*Level));
+		if(static_cast<unsigned int>(LaserStartTime + LaserInterval) < SDL_GetTicks()) {
+			if( FoundTile ){
+				ClosestTile->Damage(BULLET_BEAM_STR+(BULLET_BEAM_STR*Level));
+			}
+			else if( FoundEnemy ) {
+				ClosestEntity->Damage(BULLET_BEAM_STR+(BULLET_BEAM_STR*Level));
+			}
+			LaserStartTime = SDL_GetTicks();
 		}
 	}
 	else {

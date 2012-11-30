@@ -20,13 +20,13 @@ void debug( std::string message, int tabs ) {
 
 //------------------------------------------------------------------------------
 void debug( int value, int tabs ) {
-	int counter = 0;
+	/*int counter = 0;
 	while( counter < tabs )
 	{
 		std::cout << '\t';
 		counter++;
 	}
-	std::cout << SDL_GetTicks() << ": " << value << std::endl;
+	std::cout << SDL_GetTicks() << ": " << value << std::endl;*/
 }
 
 //------------------------------------------------------------------------------

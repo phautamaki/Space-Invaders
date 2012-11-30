@@ -47,6 +47,10 @@ void CAppStateGame::OnKeyDown(SDLKey sym, SDLMod mod, Uint16 unicode) {
 	else if ( sym == SDLK_F5) {
 		OnLevelChange();
 	}
+	else if ( sym == SDLK_ESCAPE) {
+		NextState = APPSTATE_MAINMENU;
+		CAppStateManager::SetActiveAppState(NextState);
+	}
 	else {
 		Player->OnKeyDown(sym, mod, unicode);
 	}

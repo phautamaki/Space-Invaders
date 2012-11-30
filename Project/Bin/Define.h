@@ -8,7 +8,7 @@
 
 #define GUI_HEIGHT	160
 
-#define FULLSCREEN_MODE false
+#define FULLSCREEN_MODE true
 
 #define PLAYER_NAME "Player1"
 

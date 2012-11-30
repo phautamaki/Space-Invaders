@@ -210,7 +210,7 @@ bool CFactory::CreateEnemy(int type, int nX, int nY) {
 			break;
 		case ENTITY_SUBTYPE_ENEMY_SHOOTING:
 			tmp = new CEnemyShipShooting();
-			tmp->OnLoad( PATH_IMAGES PATH_ENEMIES "ship1.png",ENEMY_SHIP_1_SPRITE_WIDTH, ENEMY_SHIP_1_SPRITE_HEIGHT, ENEMY_SHIP_1_MAX_FRAMES);
+			tmp->OnLoad( PATH_IMAGES PATH_ENEMIES "ship2.png",ENEMY_SHIP_1_SPRITE_WIDTH, ENEMY_SHIP_1_SPRITE_HEIGHT, ENEMY_SHIP_1_MAX_FRAMES);
 			tmp->X = static_cast<float>(nX);
 			tmp->Y = static_cast<float>(nY+GUI_HEIGHT);
 			tmp->SetHP(ENEMY_SHIP_1_HP);

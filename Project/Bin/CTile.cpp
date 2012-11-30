@@ -25,7 +25,7 @@ void CTile::Damage(int amount) {
 			CSoundBank::SoundControl.Play(CSoundBank::EFFECT, "TileBreakingSound");
 			TypeID = TILE_TYPE_NONE;
 
-			CFactory::Factory.GetPlayer()->Points = CFactory::Factory.GetPlayer()->Points + 5;
+			CFactory::Factory.GetPlayer()->Points = CFactory::Factory.GetPlayer()->Points + 50;
 		}
 		else {
 			CFactory::Factory.CreateExplosion(X,Y, EXPLOSION_TILE_DAMAGE);

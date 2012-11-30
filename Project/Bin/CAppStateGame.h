@@ -38,6 +38,9 @@ public:
 
 private:
 	
+	int levelBeginningScores;
+	bool keepOldGun;
+
 	// GUI
 	SDL_Surface*	UIIcons;
 	SDL_Surface*	UItiles;

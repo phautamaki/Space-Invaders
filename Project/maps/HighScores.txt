@@ -1,6 +1,8 @@
 tjuu;187400
 jouuuu;157100
+uuujeaaa;125200
 en_ossoo;109200
+_ugazaga;108800
 aaaaa;82200
 f;82100
 mikko;66000
@@ -11,5 +13,3 @@ vittu;12700
 fsa;2500
 AAA;15
 BBB;14
-CCC;13
-DDD;12

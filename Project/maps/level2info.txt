@@ -75,6 +75,6 @@
 8000 2 104 350
 
 # The ending point of level 2
-8340 2 101 200
+8340 2 107 200
 
 # ...end of level information.

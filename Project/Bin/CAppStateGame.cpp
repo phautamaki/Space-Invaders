@@ -23,6 +23,8 @@ CAppStateGame::CAppStateGame() {
 	BossFightOn = false;
 	BossDead = false;
 	GameOver = false;
+	levelBeginningScores = 0;
+	keepOldGun = false;
 }
 
 //=============================================================================
@@ -180,6 +182,9 @@ void CAppStateGame::OnLevelChange() {
 
 	//Plays the music
 	//CSoundBank::SoundControl.Play(CSoundBank::MUSIC, LevelMusicID);
+
+	levelBeginningScores = Player->Points;
+	keepOldGun = true;
 
 	ResetLevel();
 
@@ -436,6 +441,7 @@ void CAppStateGame::ResetLevel(){
 	
 	if( Player->Lives == 0 ) {
 		CheckHighScores();
+		levelBeginningScores = 0;
 
 		NextState = APPSTATE_MAINMENU;
 
@@ -447,7 +453,12 @@ void CAppStateGame::ResetLevel(){
 		Player->X = PLAYER_STARTING_X;
 		Player->Y = PLAYER_STARTING_Y+GUI_HEIGHT;
 		Player->SpeedX = Player->SpeedY = Player->AccelX = Player->AccelY = 0;
-		Player->Gun.Reset();
+		
+		if (!keepOldGun) {
+			Player->Gun.Reset();
+		}
+		keepOldGun = false;
+		Player->Points = levelBeginningScores;
 
 		//Let's set spawner index back to the start
 		LevelInfoIndex = 0;

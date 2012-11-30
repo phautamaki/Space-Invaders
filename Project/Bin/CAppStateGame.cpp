@@ -156,6 +156,7 @@ void CAppStateGame::OnLevelChange() {
 	}
 	else if(CurrentLevelNumber > 2) {
 		NextState = APPSTATE_MAINMENU;
+		levelBeginningScores = 0;
 		GameOver = true;
 		CheckHighScores();
 		return;
